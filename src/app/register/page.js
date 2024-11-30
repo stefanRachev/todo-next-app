@@ -6,7 +6,7 @@ import SocialLogin from "@/components/SocialLogin";
 
 const RegistrationForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false); // за индикатор за зареждане
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handlerSubmit(e) {
@@ -18,13 +18,16 @@ const RegistrationForm = () => {
       const name = formData.get("name");
       const email = formData.get("email");
       const password = formData.get("password");
-
-      
-      
+      const confirmPassword = formData.get("confirmPassword");
 
       if (!name || !email || !password) {
         setLoading(false);
         return setErrorMessage("Please fill out all fields.");
+      }
+
+      if (password !== confirmPassword) {
+        setLoading(false);
+        return setErrorMessage("Passwords do not match.");
       }
 
       const response = await fetch("/api/auth/register", {
@@ -38,7 +41,7 @@ const RegistrationForm = () => {
           password,
         }),
       });
-    
+
       if (response.status === 201) {
         router.push("/");
       } else {
@@ -92,6 +95,17 @@ const RegistrationForm = () => {
             className="border p-2 w-full border-gray-500 rounded"
           />
         </div>
+        <div className="w-full flex flex-col items-start">
+          <label htmlFor="confirmPassword" className="mb-1 text-sm font-medium">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            className="border p-2 w-full border-gray-500 rounded"
+          />
+        </div>
 
         <button
           type="submit"
@@ -101,11 +115,12 @@ const RegistrationForm = () => {
           {loading ? "Registering..." : "Register"}
         </button>
       </form>
-      {errorMessage && <div className="text-red-500 mt-4 text-center">{errorMessage}</div>}
+      {errorMessage && (
+        <div className="text-red-500 mt-4 text-center">{errorMessage}</div>
+      )}
       <SocialLogin />
     </>
   );
 };
 
 export default RegistrationForm;
-

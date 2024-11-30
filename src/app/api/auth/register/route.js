@@ -7,8 +7,6 @@ export async function POST(req) {
   try {
     const { name, email, password } = await req.json();
 
- 
-
     if (!name || !email || !password) {
       return new NextResponse(
         JSON.stringify({ error: "All fields are required" }),
@@ -27,7 +25,7 @@ export async function POST(req) {
     if (password.length < 6) {
       return new NextResponse(
         JSON.stringify({
-          error: "Password must be at least 6 characters long",
+          message: "Password must be at least 6 characters long",
         }),
         { status: 400 }
       );
