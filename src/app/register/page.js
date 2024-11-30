@@ -57,10 +57,13 @@ const RegistrationForm = () => {
   }
 
   return (
-    <>
+    <div className="container mx-auto p-4 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-center mb-6">
+        Регистрация
+      </h1>
       <form
         onSubmit={handlerSubmit}
-        className="my-5 flex flex-col items-center p-5 border border-gray-200 rounded-md max-w-lg mx-auto w-full space-y-4"
+        className="my-5 flex flex-col items-center p-5 border border-gray-200 rounded-md max-w-lg mx-auto w-full space-y-4 sm:max-w-md md:max-w-lg lg:max-w-xl"
       >
         <div className="w-full flex flex-col items-start">
           <label htmlFor="name" className="mb-1 text-sm font-medium">
@@ -119,7 +122,7 @@ const RegistrationForm = () => {
         <div className="text-red-500 mt-4 text-center">{errorMessage}</div>
       )}
       <SocialLogin />
-    </>
+      </div>
   );
 };
 
