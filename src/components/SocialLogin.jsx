@@ -1,16 +1,11 @@
-import { signIn } from "@/auth";
-
 //components/SocialLogin
 
-//import { doSocialLogin } from "@/app/actions";
+import { doSocialLogin } from "@/app/actions";
+
 function SocialLogin() {
   return (
     <form
-      action={async () => {
-        "use server";
-        const action = formData.get("actions");
-        await signIn(action);
-      }}
+      action={doSocialLogin}
       className="flex flex-col justify-center items-center space-y-4"
     >
       <button
