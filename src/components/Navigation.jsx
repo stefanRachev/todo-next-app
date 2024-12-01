@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { doLogout } from "@/app/actions";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,13 +47,14 @@ export default function Navigation() {
           >
             Начало
           </Link>
-          <Link
-            href="/about"
-            className="block py-2 px-4 hover:bg-blue-600"
-            onClick={() => setIsOpen(false)}
+          <button
+            onClick={async () => {
+              await doLogout();
+            }}
+            className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
           >
-            За нас
-          </Link>
+            Изход
+          </button>
           <Link
             href="/login"
             className="block py-2 px-4 hover:bg-blue-600"
@@ -67,7 +69,6 @@ export default function Navigation() {
           >
             Регистрация
           </Link>
-        
         </div>
       </div>
     </nav>
