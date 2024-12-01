@@ -9,12 +9,10 @@ export default function Navigation() {
   return (
     <nav className="bg-blue-500 text-white">
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
-       
         <Link href="/" className="text-xl font-bold">
           MyApp
         </Link>
 
-      
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden block focus:outline-none"
@@ -36,7 +34,6 @@ export default function Navigation() {
           </svg>
         </button>
 
-        {/* Линкове */}
         <div
           className={`absolute top-16 left-0 w-full bg-blue-500 md:static md:flex md:items-center md:space-x-6 ${
             isOpen ? "block" : "hidden"
@@ -57,22 +54,22 @@ export default function Navigation() {
             За нас
           </Link>
           <Link
-            href="/services"
+            href="/login"
             className="block py-2 px-4 hover:bg-blue-600"
             onClick={() => setIsOpen(false)}
           >
-            Услуги
+            Вход
           </Link>
           <Link
-            href="/contact"
+            href="/register"
             className="block py-2 px-4 hover:bg-blue-600"
             onClick={() => setIsOpen(false)}
           >
-            Контакти
+            Регистрация
           </Link>
+        
         </div>
       </div>
     </nav>
   );
 }
-
