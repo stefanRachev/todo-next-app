@@ -67,7 +67,7 @@ const RegistrationForm = () => {
       >
         <div className="w-full flex flex-col items-start">
           <label htmlFor="name" className="mb-1 text-sm font-medium">
-            Name
+            Име
           </label>
           <input
             type="text"
@@ -78,7 +78,7 @@ const RegistrationForm = () => {
         </div>
         <div className="w-full flex flex-col items-start">
           <label htmlFor="email" className="mb-1 text-sm font-medium">
-            Email Address
+            Имейл Адрес
           </label>
           <input
             type="email"
@@ -89,7 +89,7 @@ const RegistrationForm = () => {
         </div>
         <div className="w-full flex flex-col items-start">
           <label htmlFor="password" className="mb-1 text-sm font-medium">
-            Password
+            Парола
           </label>
           <input
             type="password"
@@ -100,7 +100,7 @@ const RegistrationForm = () => {
         </div>
         <div className="w-full flex flex-col items-start">
           <label htmlFor="confirmPassword" className="mb-1 text-sm font-medium">
-            Confirm Password
+            Птвърди Паролата
           </label>
           <input
             type="password"
@@ -115,7 +115,7 @@ const RegistrationForm = () => {
           className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
           disabled={loading}
         >
-          {loading ? "Registering..." : "Register"}
+          {loading ? "Регистрира се..." : "Регистрация"}
         </button>
       </form>
       {errorMessage && (
