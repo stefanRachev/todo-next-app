@@ -7,7 +7,6 @@ import bcrypt from "bcryptjs";
 import { User } from "./models/User";
 import connectToDatabase from "./lib/mongoDB";
 
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     GoogleProvider({
@@ -38,28 +37,41 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const { email, password } = credentials;
+        try {
+          const { email, password } = credentials;
 
-      
-        await connectToDatabase();
+          if (!email || !password) {
+            throw new Error("MissingCredentials");
+          }
 
-       
-        const user = await User.findOne({ email });
-        if (!user) {
-          throw new Error("User not found");
+          await connectToDatabase();
+          const user = await User.findOne({ email }).select("+password");
+
+          if (!user) {
+            throw new Error("UserNotFound");
+          }
+
+          const isPasswordCorrect = await bcrypt.compare(
+            password,
+            user.password
+          );
+          if (!isPasswordCorrect) {
+            throw new Error("InvalidCredentials");
+          }
+
+          return { id: user._id, name: user.name, email: user.email };
+        } catch (error) {
+          console.error("Authorize Error:", error.message);
+          throw new Error(error.message || "AuthenticationError");
         }
-
-     
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-          throw new Error("Invalid credentials");
-        }
-
-       
-        return { id: user._id, name: user.name, email: user.email };
       },
     }),
   ],
+
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
   session: {
     strategy: "jwt",
   },

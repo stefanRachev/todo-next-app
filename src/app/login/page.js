@@ -1,40 +1,56 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import SocialLogin from "@/components/SocialLogin";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const searchParams = useSearchParams();
+  const errorParams = searchParams.get("error");
   const router = useRouter();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+console.log(errorParams);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Извличаме данните от формата
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // Проверка дали са попълнени полетата
     if (!email || !password) {
       setError("Моля, попълнете всички полета.");
       return;
     }
 
-    // Извикване на signIn от NextAuth
-    const result = await signIn("credentials", {
-      redirect: false, // Избягва автоматичното пренасочване
-      email,
-      password,
-    });
+    if (password.length < 6) {
+      setError("Паролата трябва да е минимум 6 символа.");
+      return;
+    }
 
-    if (result?.error) {
-      setError(result.error);
-    } else {
-      // Пренасочване към началната страница или друга
-      router.push("/");
+    setLoading(true);
+
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      console.log(result);
+      console.log(errorParams);
+      if (result?.error) {
+        console.log(result.error);
+
+        setError(result.error);
+      } else {
+        router.push("/home");
+      }
+    } catch (error) {
+      console.error("Login error: ", error);
+      setError("Нещо се обърка при входа. Моля, опитайте отново.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,6 +72,7 @@ const Login = () => {
             name="email"
             id="email"
             className="border p-2 w-full border-gray-500 rounded"
+            defaultValue={errorParams || ""}
           />
         </div>
         <div className="w-full flex flex-col items-start">
@@ -73,11 +90,31 @@ const Login = () => {
           type="submit"
           className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
         >
-          Вход
+          {loading ? "Влизане..." : "Вход"}
         </button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-red-500 mt-2">{error}</p>}{" "}
       </form>
-      <SocialLogin />
+      <div className="flex flex-col items-center mt-4">
+        <button
+          className="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-800 mb-2"
+          onClick={() => signIn("google")}
+        >
+          Вход с Google
+        </button>
+        <button
+          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+          onClick={() => signIn("github")}
+        >
+          Вход с GitHub
+        </button>
+        <div className="text-center text-gray-500 mt-4">- или -</div>
+        <a
+          href="/register"
+          className="block text-center text-blue-500 hover:underline mt-2"
+        >
+          Регистрирайте се тук
+        </a>
+      </div>
     </div>
   );
 };
