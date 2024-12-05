@@ -1,16 +1,13 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Login = () => {
-  const searchParams = useSearchParams();
-  const errorParams = searchParams.get("error");
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-console.log(errorParams);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,18 +34,16 @@ console.log(errorParams);
         email,
         password,
       });
-      console.log(result);
-      console.log(errorParams);
-      if (result?.error) {
-        console.log(result.error);
 
-        setError(result.error);
+      if (!!result.error) {
+        console.error(response.error);
+        setError(response.error.message);
       } else {
         router.push("/home");
       }
     } catch (error) {
       console.error("Login error: ", error);
-      setError("Нещо се обърка при входа. Моля, опитайте отново.");
+      setError("Грешни входни данни.");
     } finally {
       setLoading(false);
     }
@@ -72,7 +67,6 @@ console.log(errorParams);
             name="email"
             id="email"
             className="border p-2 w-full border-gray-500 rounded"
-            defaultValue={errorParams || ""}
           />
         </div>
         <div className="w-full flex flex-col items-start">
