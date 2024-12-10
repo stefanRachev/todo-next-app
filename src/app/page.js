@@ -11,7 +11,7 @@ export default function Home() {
             Добре дошли в нашето приложение!
           </h1>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
-            <div className="p-6 bg-blue-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all">
+            <div className="p-6 bg-blue-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
               <h2 className="text-xl sm:text-2xl font-medium text-blue-700">
                 Пазаруване на стоки
               </h2>
@@ -26,7 +26,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="p-6 bg-green-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all">
+            <div className="p-6 bg-green-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
               <h2 className="text-xl sm:text-2xl font-medium text-green-700">
                 Планиране на фитнес тренировки
               </h2>
@@ -41,7 +41,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="p-6 bg-yellow-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all">
+            <div className="p-6 bg-yellow-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
               <h2 className="text-xl sm:text-2xl font-medium text-yellow-700">
                 Разни задачи
               </h2>
