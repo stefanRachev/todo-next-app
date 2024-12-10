@@ -19,7 +19,7 @@ export default function Home() {
                 Тук можете да създадете списък с желаните стоки.
               </p>
               <Link
-                href="/shopping"
+                href="/purchases"
                 className="text-blue-600 hover:text-blue-800 transition-all"
               >
                 Вижте повече
