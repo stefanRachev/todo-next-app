@@ -9,7 +9,6 @@ export default function Purchases() {
           Създаване на списък за покупки
         </h1>
         <form className="space-y-4">
-          {/* Име на продукта */}
           <div>
             <label htmlFor="product-name" className="block text-gray-700">
               Име на продукта:
@@ -22,7 +21,6 @@ export default function Purchases() {
             />
           </div>
 
-          {/* Брой */}
           <div>
             <label htmlFor="quantity" className="block text-gray-700">
               Брой:
@@ -36,7 +34,6 @@ export default function Purchases() {
             />
           </div>
 
-          {/* Категория */}
           <div>
             <label htmlFor="category" className="block text-gray-700">
               Категория:
@@ -53,7 +50,6 @@ export default function Purchases() {
             </select>
           </div>
 
-          {/* Бутон за добавяне */}
           <div className="text-center">
             <button
               type="submit"
