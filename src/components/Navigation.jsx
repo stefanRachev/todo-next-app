@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { doLogout } from "@/app/actions";
-import { useSession } from "next-auth/react";
+
+import { signOut, useSession } from "next-auth/react";
+
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +58,7 @@ export default function Navigation() {
             <>
               <button
                 onClick={async () => {
-                  await doLogout();
+                  await signOut({ redirectTo: "/" });
                 }}
                 className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
               >

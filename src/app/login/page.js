@@ -1,5 +1,6 @@
 "use client";
 
+import SocialLogin from "@/components/SocialLogin";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -89,18 +90,7 @@ const Login = () => {
         {error && <p className="text-red-500 mt-2">{error}</p>}{" "}
       </form>
       <div className="flex flex-col items-center mt-4">
-        <button
-          className="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-800 mb-2"
-          onClick={() => signIn("google")}
-        >
-          Вход с Google
-        </button>
-        <button
-          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
-          onClick={() => signIn("github")}
-        >
-          Вход с GitHub
-        </button>
+        <SocialLogin />
         <div className="text-center text-gray-500 mt-4">- или -</div>
         <a
           href="/register"
