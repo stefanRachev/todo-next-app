@@ -70,7 +70,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   pages: {
     signIn: "/login",
-   
   },
   session: {
     strategy: "jwt",
@@ -79,5 +78,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     secret: process.env.AUTH_SECRET,
   },
   secret: process.env.AUTH_SECRET,
-  trustedHosts: ['localhost'], 
+  trustedHosts: ["localhost"],
+
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      try {
+        await connectToDatabase();
+
+        const existingUser = await User.findOne({ email: user.email });
+
+        if (!existingUser) {
+          
+          const newUser = new User({
+            name: user.name || profile.name,
+            email: user.email || profile.email,
+          });
+          console.log(newUser.name, newUser.email);
+
+          await newUser.save();
+        }
+
+        return true; 
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
+      }
+    },
+    async session({ session, token, user }) {
+      try {
+        return session;
+      } catch (error) {
+        console.error("Error in session callback:", error);
+        return session;
+      }
+    },
+  },
 });
