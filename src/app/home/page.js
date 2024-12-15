@@ -7,9 +7,12 @@ const HomePage = async () => {
   const session = await auth();
 
   
+  console.log(session);
   
 
   if (!session?.user) redirect("/");
+
+
   return (
     <div className="flex flex-col items-center m-4">
       <h1 className="text-3xl my-2">
