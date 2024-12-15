@@ -100,9 +100,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
-    async session({ session, token, user }) {
-      console.log("Session Callback:", { session, token, user });
-      session.user.id = token.id;
+    async session({ session, token}) {
+      console.log("Session Callback:", { session, token});
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture || null;  
+      }
+    
       return session;
     },
     async jwt({ token, user }) {

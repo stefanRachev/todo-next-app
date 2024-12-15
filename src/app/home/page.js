@@ -7,7 +7,7 @@ const HomePage = async () => {
   const session = await auth();
 
   
-  console.log(session);
+  console.log("sesssion" ,{session});
   
 
   if (!session?.user) redirect("/");
