@@ -101,11 +101,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
     async session({ session, token, user }) {
+      console.log("Session Callback:", { session, token, user });
       session.user.id = token.id;
       return session;
     },
     async jwt({ token, user }) {
       if (user) token.id = user.id;
+      console.log("Generated Token:", token);
       return token;
     },
   },
