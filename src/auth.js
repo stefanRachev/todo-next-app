@@ -94,8 +94,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: user.name || profile.name,
             email: user.email || profile.email,
           });
-          console.log(newUser.name, newUser.email);
-
           await newUser.save();
         }
 

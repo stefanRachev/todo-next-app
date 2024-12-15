@@ -34,22 +34,6 @@ export default function Purchases() {
             />
           </div>
 
-          <div>
-            <label htmlFor="category" className="block text-gray-700">
-              Категория:
-            </label>
-            <select
-              id="category"
-              className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            >
-              <option value="">Изберете категория</option>
-              <option value="Храни">Храни</option>
-              <option value="Дрехи">Дрехи</option>
-              <option value="Електроника">Електроника</option>
-              <option value="Други">Други</option>
-            </select>
-          </div>
-
           <div className="text-center">
             <button
               type="submit"
