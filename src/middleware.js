@@ -9,6 +9,9 @@ export async function middleware(req) {
 
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
 
+  console.log("Token:", token);
+  console.log("Request Headers:", req.headers);
+
   
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
