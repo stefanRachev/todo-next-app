@@ -21,7 +21,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
 
-    
     GitHibProvider({
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET,
@@ -79,7 +78,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     secret: process.env.AUTH_SECRET,
   },
   secret: process.env.AUTH_SECRET,
-  trustedHosts: ["localhost"],
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
@@ -89,7 +87,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const existingUser = await User.findOne({ email: user.email });
 
         if (!existingUser) {
-          
           const newUser = new User({
             name: user.name || profile.name,
             email: user.email || profile.email,
@@ -97,19 +94,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           await newUser.save();
         }
 
-        return true; 
+        return true;
       } catch (error) {
         console.error("Error in signIn callback:", error);
         return false;
       }
     },
     async session({ session, token, user }) {
-      try {
-        return session;
-      } catch (error) {
-        console.error("Error in session callback:", error);
-        return session;
-      }
+      session.user.id = token.id;
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) token.id = user.id;
+      return token;
     },
   },
 });
