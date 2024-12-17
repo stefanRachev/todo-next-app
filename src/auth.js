@@ -4,7 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHibProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { User } from "./models/User";
+import User from "./models/User";
 import connectToDatabase from "./lib/mongoDB";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -80,18 +80,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET,
 
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ account, profile }) {
       try {
         await connectToDatabase();
 
-        const existingUser = await User.findOne({ email: user.email });
+        if (account?.provider === "google") {
+          const { email, name, sub } = profile;
 
-        if (!existingUser) {
-          const newUser = new User({
-            name: user.name || profile.name,
-            email: user.email || profile.email,
-          });
-          await newUser.save();
+          const existingUser = await User.findOne({ email });
+
+          if (!existingUser) {
+            await User.create({
+              email,
+              name,
+              authProvideId: sub,
+            });
+          }
         }
 
         return true;
@@ -100,21 +104,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
-    async session({ session, token}) {
-      console.log("Session Callback:", { session, token});
+
+    async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.name = token.name;
         session.user.email = token.email;
-        session.user.image = token.picture || null;  
+        session.user.name = token.name;
+        if (token.authProvideId) {
+          session.user.authProvideId = token.authProvideId;
+        }
       }
-    
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) token.id = user.id;
-      console.log("Generated Token:", token);
-      return token;
-    },
+  },
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user._id;
+      token.email = user.email;
+      token.name = user.name;
+      if (user.authProvideId) {
+        token.authProvideId = user.authProvideId; 
+      }
+    }
+    return token;
   },
 });
