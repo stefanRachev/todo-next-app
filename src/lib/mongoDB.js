@@ -1,5 +1,9 @@
 //lib/mongoDB.js
 
+export const config = {
+  runtime: "nodejs", 
+};
+
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
