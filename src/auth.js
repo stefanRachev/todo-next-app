@@ -4,7 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHibProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { User } from "./models/User";
+import { User } from "@/models/User";
 import connectToDatabase from "./lib/mongoDB";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
