@@ -1,7 +1,14 @@
 // app/purchases/page.js
-"use client";
 
-export default function Purchases() {
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+
+export default async function Purchases() {
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
