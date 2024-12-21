@@ -30,7 +30,7 @@ export async function POST(req) {
   }
 
   try {
-    const userId = token.sub;
+    const userId = token?.sub;
 
     const { productName, quantity } = await req.json();
 
