@@ -7,7 +7,7 @@ const productSchema = new Schema({
     ref: "User",
     required: true,
   },
-  name: {
+  productName: {
     type: String,
     required: true,
   },

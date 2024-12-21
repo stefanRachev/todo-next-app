@@ -1,36 +1,52 @@
 "use client";
-//import { useState } from "react";
-import { auth } from "@/auth";
+import { useState } from "react";
 import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-export default async function Purchases() {
-  const session = await auth();
-  if (!session?.user) {
+export default function Purchases() {
+  const { data: session } = useSession();
+
+  const user = session?.user?.id;
+
+  if (!user) {
     redirect("/login");
+    return;
   }
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const [productName, setProductName] = useState("");
+  const [quantity, setQuantity] = useState([]);
+  const [error, setError] = useState("");
 
-  //   const name = e.target["product-name"].value;
-  //   const quantity = e.target["quantity"].value;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   
-  //   const res = await fetch("/api/products", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ name, quantity }),
-  //   });
+    if (!productName || quantity < 1) {
+      setError("Моля, попълнете всички полета коректно.");
+      return;
+    }
 
-  //   if (res.ok) {
-  //     const newProduct = await res.json();
-  //     console.log("Продуктът е създаден успешно:", newProduct);
-  //   } else {
-  //     console.error("Неуспешно добавяне на продукт");
-  //   }
-  // };
+    try {
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.user?.id}`,
+        },
+        body: JSON.stringify({ productName, quantity }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Неуспешно създаване на покупка");
+      }
+
+      setProductName("");
+      setQuantity(1);
+      setError("");
+      alert("Покупката беше добавена успешно!");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -39,7 +55,7 @@ export default async function Purchases() {
           Създаване на списък за покупки
         </h1>
 
-        <form  className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="product-name" className="block text-gray-700">
               Име на продукта:
@@ -47,6 +63,8 @@ export default async function Purchases() {
             <input
               type="text"
               id="product-name"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
               placeholder="Въведете име на продукта"
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
@@ -59,11 +77,15 @@ export default async function Purchases() {
             <input
               type="number"
               id="quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
               min="1"
               placeholder="Въведете количество"
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
+
+          {error && <p className="text-red-500 text-center">{error}</p>}
 
           <div className="text-center">
             <button
