@@ -7,14 +7,17 @@ import connectToDatabase from "@/lib/mongoDB";
 export async function POST(req) {
   await connectToDatabase();
 
-  
-  
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-  
-  console.log("печатане на req.headers", req.headers);
-  console.log("печатане на cookies", req.cookies);
-  console.log("печатане на токен", token);
- 
+  //const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+
+  // console.log("печатане на req.headers", req.headers);
+  // console.log("печатане на cookies", req.cookies);
+  // console.log("печатане на токен", token);
+
+  const token = req.headers["authorization"]?.split(" ")[1]; // Accessing token from Authorization header
+  const vercelSignature = req.headers["x-vercel-proxy-signature"];
+
+  console.log("Authorization Token:", token);
+  console.log("Vercel Signature:", vercelSignature);
 
   if (!token) {
     return NextResponse.json(
