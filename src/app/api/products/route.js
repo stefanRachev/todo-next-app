@@ -7,14 +7,14 @@ import connectToDatabase from "@/lib/mongoDB";
 export async function POST(req) {
   await connectToDatabase();
 
+  
+  
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  
   console.log("печатане на req.headers", req.headers);
   console.log("печатане на cookies", req.cookies);
   console.log("печатане на токен", token);
-  
-
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-
-  console.log("печатане на апи сървър токен", token);
+ 
 
   if (!token) {
     return NextResponse.json(
