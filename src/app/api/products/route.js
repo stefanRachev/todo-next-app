@@ -7,7 +7,9 @@ import connectToDatabase from "@/lib/mongoDB";
 export async function POST(req) {
   await connectToDatabase();
 
-  console.log("test request ..",req);
+  console.log("печатане на req.headers", req.headers);
+  console.log("печатане на cookies", req.cookies);
+  console.log("печатане на токен", token);
   
 
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
