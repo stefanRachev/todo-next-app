@@ -1,5 +1,5 @@
-// app/purchases/page.js
-
+"use client";
+//import { useState } from "react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -9,13 +9,37 @@ export default async function Purchases() {
     redirect("/login");
   }
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const name = e.target["product-name"].value;
+  //   const quantity = e.target["quantity"].value;
+
+   
+  //   const res = await fetch("/api/products", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ name, quantity }),
+  //   });
+
+  //   if (res.ok) {
+  //     const newProduct = await res.json();
+  //     console.log("Продуктът е създаден успешно:", newProduct);
+  //   } else {
+  //     console.error("Неуспешно добавяне на продукт");
+  //   }
+  // };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Създаване на списък за покупки
         </h1>
-        <form className="space-y-4">
+
+        <form  className="space-y-4">
           <div>
             <label htmlFor="product-name" className="block text-gray-700">
               Име на продукта:
