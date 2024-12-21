@@ -1,5 +1,5 @@
 // /pages/api/products/index.js
-import { getToken } from "next-auth/jwt";
+//import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { Product } from "@/models/Product";
 import connectToDatabase from "@/lib/mongoDB";
@@ -13,11 +13,14 @@ export async function POST(req) {
   // console.log("печатане на cookies", req.cookies);
   // console.log("печатане на токен", token);
 
-  const token = req.headers["authorization"]?.split(" ")[1]; // Accessing token from Authorization header
-  const vercelSignature = req.headers["x-vercel-proxy-signature"];
+  const authorizationHeader = req.headers.get("authorization");
+  const vercelSignature = req.headers.get("x-vercel-proxy-signature");
 
-  console.log("Authorization Token:", token);
+  console.log("Authorization Header:", authorizationHeader);
   console.log("Vercel Signature:", vercelSignature);
+
+
+  const token = authorizationHeader?.split(" ")[1];
 
   if (!token) {
     return NextResponse.json(
