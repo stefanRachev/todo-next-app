@@ -4,8 +4,6 @@
 
 import mongoose from "mongoose";
 
-console.log("MONGODB_URI in runtime:", process.env.MONGODB_URI);
-
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
