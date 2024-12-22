@@ -1,4 +1,4 @@
-// /pages/api/products/index.js
+// /pages/api/products/route.js
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { Product } from "@/models/Product";
@@ -18,9 +18,10 @@ export async function POST(req) {
     );
   }
 
-  try {
-    const userId = token.sub;
 
+ 
+
+  try {
     const { productName, quantity } = await req.json();
 
     if (!productName || quantity < 1) {
@@ -33,7 +34,7 @@ export async function POST(req) {
     const newProduct = new Product({
       productName,
       quantity,
-      user: userId,
+      user: token.sub,
     });
 
     await newProduct.save();
