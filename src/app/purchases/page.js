@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 
 export default function Purchases() {
   const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState("");
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
 
@@ -52,8 +52,8 @@ export default function Purchases() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!productName || quantity < 1) {
-      setError("Моля, попълнете всички полета коректно.");
+    if (!productName) {
+      setError("Моля, попълнете полето за продукт.");
       return;
     }
     
@@ -72,7 +72,7 @@ export default function Purchases() {
       }
       
       setProductName("");
-      setQuantity(1);
+      setQuantity("");
       setError("");
       alert("Покупката беше добавена успешно!");
     } catch (err) {
@@ -83,7 +83,7 @@ export default function Purchases() {
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
@@ -111,11 +111,10 @@ export default function Purchases() {
               Брой:
             </label>
             <input
-              type="number"
+              type="text"
               id="quantity"
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              min="1"
+              onChange={(e) => setQuantity(e.target.value)}
               placeholder="Въведете количество"
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />

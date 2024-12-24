@@ -11,9 +11,8 @@ const productSchema = new Schema({
     required: true,
   },
   quantity: {
-    type: Number,
-    required: true,
-    min: 1,
+    type: String,
+    default: '',
   },
   createdAt: {
     type: Date,

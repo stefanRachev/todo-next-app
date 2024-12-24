@@ -12,7 +12,7 @@ export async function POST(req) {
   try {
     const { productName, quantity } = await req.json();
 
-    if (!productName || quantity < 1) {
+    if (!productName) {
       return NextResponse.json(
         { message: "Невалидни данни за продукта" },
         { status: 400 }
