@@ -7,7 +7,13 @@ import connectToDatabase from "@/lib/mongoDB";
 export async function POST(req) {
   await connectToDatabase();
 
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET,
+    cookieName: "__Secure-authjs.session-token",
+  });
+
+  // const token = await getToken({ req, secret: process.env.AUTH_SECRET });
 
   console.log("печатане на апи сървър токен", token);
 
@@ -17,8 +23,6 @@ export async function POST(req) {
       { status: 401 }
     );
   }
-
-
 
   try {
     const { productName, quantity } = await req.json();
