@@ -3,6 +3,8 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { Product } from "@/models/Product";
 import connectToDatabase from "@/lib/mongoDB";
+import mongoose from "mongoose"
+
 
 export async function POST(req) {
   await connectToDatabase();
@@ -17,13 +19,15 @@ export async function POST(req) {
   });
 
 
-
+  
   if (!token) {
     return NextResponse.json(
       { message: "Не сте влезли в системата" },
       { status: 401 }
     );
   }
+  
+  const userId = new mongoose.Types.ObjectId(token?.sub);
 
   try {
     const { productName, quantity } = await req.json();
@@ -38,7 +42,7 @@ export async function POST(req) {
     const newProduct = new Product({
       productName,
       quantity,
-      user: token.sub,
+      user: userId,
     });
 
     await newProduct.save();
