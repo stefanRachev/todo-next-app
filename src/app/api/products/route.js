@@ -1,33 +1,13 @@
 // /pages/api/products/route.js
-import { getToken } from "next-auth/jwt";
+import { getUserIdFromToken } from "@/lib/tokenUtils";
 import { NextResponse } from "next/server";
 import { Product } from "@/models/Product";
 import connectToDatabase from "@/lib/mongoDB";
-import mongoose from "mongoose"
-
 
 export async function POST(req) {
   await connectToDatabase();
 
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET,
-    cookieName:
-      process.env.NODE_ENV === "production"
-        ? "__Secure-authjs.session-token"
-        : "authjs.session-token",
-  });
-
-
-  
-  if (!token) {
-    return NextResponse.json(
-      { message: "Не сте влезли в системата" },
-      { status: 401 }
-    );
-  }
-  
-  const userId = token?.sub
+  const userId = await getUserIdFromToken(req);
 
   try {
     const { productName, quantity } = await req.json();
@@ -55,6 +35,23 @@ export async function POST(req) {
     console.error("Error creating product:", error.message);
     return NextResponse.json(
       { message: "Грешка при създаването на продукта" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req) {
+  await connectToDatabase();
+
+  try {
+    const userId = await getUserIdFromToken(req);
+    const products = await Product.find({ user: userId });
+
+    return NextResponse.json(products, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching products:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при взимането на продуктите" },
       { status: 500 }
     );
   }

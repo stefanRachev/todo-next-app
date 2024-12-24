@@ -1,21 +1,53 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function Purchases() {
-  const { data: session } = useSession();
-
-  const user = session?.user?.id;
-
-  if (!user) {
-    redirect("/login");
-    return;
-  }
 
   const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState([]);
+  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const { data: session,status } = useSession();
+
+  if (status === "loading") {
+    return <div>Зареждам сесията...</div>;
+  }
+
+  
+  const user = session?.user?.id;
+
+  useEffect(() => {
+    if (!user) {
+      redirect("/login");
+    }
+  }, [user]);
+
+
+  useEffect(() => {
+  
+    const fetchProducts = async () => {
+      const response = await fetch("/api/products", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session?.user?.id}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      } else {
+        setError("Неуспешно зареждане на продуктите");
+      }
+    };
+
+    if (user) {
+      fetchProducts();
+    }
+  }, [user,session]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,6 +128,19 @@ export default function Purchases() {
             </button>
           </div>
         </form>
+
+        <div>
+          <h2 className="mt-8 text-xl font-bold text-gray-800">
+            Списък с продукти
+          </h2>
+          <ul className="mt-4">
+            {products.map((product) => (
+              <li key={product._id} className="mb-2">
+                {product.productName} - {product.quantity}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
