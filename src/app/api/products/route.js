@@ -27,7 +27,7 @@ export async function POST(req) {
     );
   }
   
-  const userId = new mongoose.Types.ObjectId(token?.sub);
+  const userId = token?.sub
 
   try {
     const { productName, quantity } = await req.json();

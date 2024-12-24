@@ -59,7 +59,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("InvalidCredentials");
           }
 
-          return { id: user._id, name: user.name, email: user.email };
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          };
         } catch (error) {
           console.error("Authorize Error:", error.message);
           throw new Error(error.message || "AuthenticationError");
@@ -96,6 +100,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               authProvideId: sub,
             });
           }
+          profile.id = user._id.toString();
         }
 
         return true;
@@ -106,7 +111,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async session({ session, token }) {
-
       if (token) {
         session.user.id = token.id || token.sub;
         session.user.email = token.email;
@@ -120,7 +124,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   async jwt({ token, user }) {
     if (user) {
-     
       token.id = user.id || user.sub;
       token.email = user.email;
       token.name = user.name;
