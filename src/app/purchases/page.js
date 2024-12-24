@@ -1,33 +1,34 @@
 "use client";
+
+
+
 import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
+//import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function Purchases() {
-
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
 
-  const { data: session,status } = useSession();
+  const router = useRouter();
 
-  if (status === "loading") {
-    return <div>Зареждам сесията...</div>;
-  }
+  const { data: session, status } = useSession();
 
   
   const user = session?.user?.id;
-
-  useEffect(() => {
-    if (!user) {
-      redirect("/login");
-    }
-  }, [user]);
-
-
-  useEffect(() => {
   
+  
+  
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+  
+  useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch("/api/products", {
         method: "GET",
@@ -35,7 +36,7 @@ export default function Purchases() {
           Authorization: `Bearer ${session?.user?.id}`,
         },
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -43,20 +44,19 @@ export default function Purchases() {
         setError("Неуспешно зареждане на продуктите");
       }
     };
-
-    if (user) {
-      fetchProducts();
-    }
-  }, [user,session]);
-
+    
+    fetchProducts();
+    
+  }, [status,user]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (!productName || quantity < 1) {
       setError("Моля, попълнете всички полета коректно.");
       return;
     }
-
+    
     try {
       const response = await fetch("/api/products", {
         method: "POST",
@@ -66,11 +66,11 @@ export default function Purchases() {
         },
         body: JSON.stringify({ productName, quantity }),
       });
-
+      
       if (!response.ok) {
         throw new Error("Неуспешно създаване на покупка");
       }
-
+      
       setProductName("");
       setQuantity(1);
       setError("");
@@ -79,7 +79,11 @@ export default function Purchases() {
       setError(err.message);
     }
   };
-
+  
+  if (status === "loading") {
+    return <div>Зареждам сесията...</div>;
+  }
+  
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
