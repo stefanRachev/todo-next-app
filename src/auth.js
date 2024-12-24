@@ -100,7 +100,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               authProvideId: sub,
             });
           }
-          profile.id = user._id.toString();
+        
         }
 
         return true;
