@@ -10,12 +10,13 @@ export async function POST(req) {
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET,
-    cookieName: "__Secure-authjs.session-token",
+    cookieName:
+      process.env.NODE_ENV === "production"
+        ? "__Secure-authjs.session-token"
+        : "authjs.session-token",
   });
 
-  // const token = await getToken({ req, secret: process.env.AUTH_SECRET });
 
-  console.log("печатане на апи сървър токен", token);
 
   if (!token) {
     return NextResponse.json(
