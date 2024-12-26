@@ -15,7 +15,7 @@ export default function Purchases() {
 
   const router = useRouter();
   const { data: session, status } = useSession();
-  const user = session?.user?.id;
+  const user = session?.user?.email;
   
   
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Purchases() {
       const response = await fetch("/api/products", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${session?.user?.id}`,
+          Authorization: `Bearer ${session?.user?.email}`,
         },
       });
       
@@ -60,7 +60,7 @@ export default function Purchases() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.user?.id}`,
+          Authorization: `Bearer ${session?.user?.email}`,
         },
         body: JSON.stringify({ productName, quantity }),
       });

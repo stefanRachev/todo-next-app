@@ -13,6 +13,7 @@ export async function getUserIdFromToken(req) {
     if (!token) {
       throw new Error("Не сте влезли в системата");
     }
+ 
   
-    return token?.sub; 
+    return token?.email; 
   }

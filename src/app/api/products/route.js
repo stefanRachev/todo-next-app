@@ -7,7 +7,10 @@ import connectToDatabase from "@/lib/mongoDB";
 export async function POST(req) {
   await connectToDatabase();
 
-  const userId = await getUserIdFromToken(req);
+  const emailId= await getUserIdFromToken(req);
+
+ 
+  
 
   try {
     const { productName, quantity } = await req.json();
@@ -22,7 +25,7 @@ export async function POST(req) {
     const newProduct = new Product({
       productName,
       quantity,
-      user: userId,
+      user: emailId,
     });
 
     await newProduct.save();
@@ -44,8 +47,8 @@ export async function GET(req) {
   await connectToDatabase();
 
   try {
-    const userId = await getUserIdFromToken(req);
-    const products = await Product.find({ user: userId });
+    const emailId = await getUserIdFromToken(req);
+    const products = await Product.find({ user: emailId });
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
