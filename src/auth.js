@@ -97,10 +97,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             await User.create({
               email,
               name,
+              authProvider: "google",
               authProvideId: sub,
             });
           }
-        
+        }
+
+        if (account?.provider === "github") {
+          const { email, name, id } = profile;
+
+          const existingUser = await User.findOne({ email });
+
+          if (!existingUser) {
+            await User.create({
+              email,
+              name,
+              authProvider: "github",
+              authProvideId: id,
+            });
+          }
         }
 
         return true;
@@ -118,6 +133,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (token.authProvideId) {
           session.user.authProvideId = token.authProvideId;
         }
+        if (token.authProvider) {
+          session.user.authProvider = token.authProvider;
+        }
       }
       return session;
     },
@@ -129,6 +147,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.name = user.name;
       if (user.authProvideId) {
         token.authProvideId = user.authProvideId;
+      }
+      if (user.authProvider) {
+        token.authProvider = user.authProvider;
       }
     }
     return token;

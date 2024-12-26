@@ -7,7 +7,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-     select: false
+    select: false,
   },
   email: {
     type: String,
@@ -15,8 +15,12 @@ const userSchema = new Schema({
     unique: true,
   },
   authProvideId: {
-     type: String 
-    },
+    type: String,
+  },
+  authProvider: {
+    type: String,
+    enum: ["google", "github"],
+  },
 });
 
 const User = mongoose.models?.User ?? mongoose.model("User", userSchema);
