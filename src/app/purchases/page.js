@@ -14,12 +14,8 @@ export default function Purchases() {
   const [products, setProducts] = useState([]);
 
   const router = useRouter();
-
   const { data: session, status } = useSession();
-
-  
   const user = session?.user?.id;
-  
   
   
   useEffect(() => {
@@ -30,6 +26,8 @@ export default function Purchases() {
   
   useEffect(() => {
     const fetchProducts = async () => {
+
+      if (status !== "authenticated") return;
       const response = await fetch("/api/products", {
         method: "GET",
         headers: {
@@ -82,6 +80,10 @@ export default function Purchases() {
   
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
+  }
+
+  if (status === "unauthenticated") {
+    return null;
   }
 
   return (
