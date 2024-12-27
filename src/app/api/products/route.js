@@ -10,8 +10,6 @@ export async function POST(req) {
   const emailId= await getUserIdFromToken(req);
 
  
-  
-
   try {
     const { productName, quantity } = await req.json();
 
