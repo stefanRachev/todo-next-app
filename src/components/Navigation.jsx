@@ -10,11 +10,10 @@ export default function Navigation() {
   const { data: session, status } = useSession();
 
   const isLoading = status === "loading";
-console.log({session});
 
   return (
     <>
-      {/* Header за логнатия потребител */}
+    
       {session && (
         <header className="bg-gray-800 text-white py-2 px-4 text-sm flex justify-between items-center">
           <span>Добре дошли, {session.user.name}!</span>
@@ -69,18 +68,7 @@ console.log({session});
             </Link>
             {isLoading ? (
               <span className="block py-2 px-4">Зареждане...</span>
-            ) : session ? (
-              <>
-                <button
-                  onClick={async () => {
-                    await signOut({ redirectTo: "/" });
-                  }}
-                  className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
-                >
-                  Изход
-                </button>
-              </>
-            ) : (
+            ) : session ? null : (
               <>
                 <Link
                   href="/login"
