@@ -1,4 +1,4 @@
-// /pages/api/products/route.js
+//app/api/products/route.js
 import { getUserIdFromToken } from "@/lib/tokenUtils";
 import { NextResponse } from "next/server";
 import { Product } from "@/models/Product";
@@ -7,9 +7,8 @@ import connectToDatabase from "@/lib/mongoDB";
 export async function POST(req) {
   await connectToDatabase();
 
-  const emailId= await getUserIdFromToken(req);
+  const emailId = await getUserIdFromToken(req);
 
- 
   try {
     const { productName, quantity } = await req.json();
 
