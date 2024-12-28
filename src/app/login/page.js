@@ -4,6 +4,7 @@ import SocialLogin from "@/components/SocialLogin";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -91,13 +92,13 @@ const Login = () => {
       </form>
       <div className="flex flex-col items-center mt-4">
         <SocialLogin />
-        <div className="text-center text-gray-500 mt-4">- или -</div>
-        <a
+        <div className="text-center text-gray-500 mt-4">- Все още не сте се регистрирали ? -</div>
+        <Link
           href="/register"
           className="block text-center text-blue-500 hover:underline mt-2"
         >
           Регистрирайте се тук
-        </a>
+        </Link>
       </div>
     </div>
   );

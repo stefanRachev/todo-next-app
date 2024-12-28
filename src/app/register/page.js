@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SocialLogin from "@/components/SocialLogin";
+import Link from "next/link";
 
 const RegistrationForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -122,7 +123,16 @@ const RegistrationForm = () => {
       {errorMessage && (
         <div className="text-red-500 mt-4 text-center">{errorMessage}</div>
       )}
-      <SocialLogin />
+       <div className="flex flex-col items-center mt-4">
+        <SocialLogin />
+        <div className="text-center text-gray-500 mt-4">- Вече имате регистрация ? -</div>
+        <Link
+          href="/login"
+          className="block text-center text-blue-500 hover:underline mt-2"
+        >
+          Влез
+        </Link>
+      </div>
       </div>
   );
 };
