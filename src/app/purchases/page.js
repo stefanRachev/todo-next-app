@@ -9,21 +9,20 @@ export default function Purchases() {
   const [quantity, setQuantity] = useState("");
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const { data: session, status } = useSession();
   const user = session?.user?.email;
-  
-  
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
   }, [status, router]);
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
-
       if (status !== "authenticated") return;
       const response = await fetch("/api/products", {
         method: "GET",
@@ -31,7 +30,7 @@ export default function Purchases() {
           Authorization: `Bearer ${session?.user?.email}`,
         },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
@@ -39,19 +38,19 @@ export default function Purchases() {
         setError("Неуспешно зареждане на продуктите");
       }
     };
-    
+
     fetchProducts();
-    
-  }, [status,user]);
-  
+  }, [status, user]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setLoading(true);
+
     if (!productName) {
       setError("Моля, попълнете полето за продукт.");
       return;
     }
-    
+
     try {
       const response = await fetch("/api/products", {
         method: "POST",
@@ -61,23 +60,24 @@ export default function Purchases() {
         },
         body: JSON.stringify({ productName, quantity }),
       });
-      
+
       if (!response.ok) {
         throw new Error("Неуспешно създаване на покупка");
       }
 
       const { product } = await response.json();
-      setProducts((prevProduct) => [product, ...prevProduct]);
-      
+      setProducts((prevProduct) => [...prevProduct, product]);
+
       setProductName("");
       setQuantity("");
       setError("");
-      alert("Покупката беше добавена успешно!");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
-  
+
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
@@ -88,6 +88,16 @@ export default function Purchases() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      {loading && (
+        <div className="loader flex justify-center items-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50 z-50">
+          <div
+            className="spinner-border animate-spin inline-block w-12 sm:w-16 md:w-24 lg:w-32 xl:w-40 border-4 border-t-4 border-gray-200 rounded-full"
+            role="status"
+          >
+            <span className="sr-only">Зареждане...</span>
+          </div>
+        </div>
+      )}
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Създаване на списък за покупки
