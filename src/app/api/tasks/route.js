@@ -24,9 +24,13 @@ export async function POST(req) {
     });
 
     await newTask.save();
+    const createdTask = newTask.toObject(); 
 
     return NextResponse.json(
-      { message: "Задачата беше създадена успешно!" },
+      {
+        message: "Задачата беше създадена успешно!",
+        task: createdTask, 
+      },
       { status: 201 }
     );
   } catch (error) {

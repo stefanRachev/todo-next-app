@@ -62,9 +62,11 @@ export default function MemoPage() {
         throw new Error("Неуспешно създаване на задачата");
       }
      
-      const newTask = await response.json();
 
-      setTasks((prevTasks) => [newTask, ...prevTasks]);
+      const { task } = await response.json(); 
+    
+      setTasks((prevTasks) => [task, ...prevTasks]); 
+    
       setTaskText("");
       setError("");
     } catch (err) {
