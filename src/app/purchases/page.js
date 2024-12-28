@@ -65,6 +65,9 @@ export default function Purchases() {
       if (!response.ok) {
         throw new Error("Неуспешно създаване на покупка");
       }
+
+      const { product } = await response.json();
+      setProducts((prevProduct) => [product, ...prevProduct]);
       
       setProductName("");
       setQuantity("");

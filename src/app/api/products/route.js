@@ -26,9 +26,14 @@ export async function POST(req) {
     });
 
     await newProduct.save();
+    const createdProduct = newProduct.toObject();
 
+    
     return NextResponse.json(
-      { message: "Продуктът беше създаден успешно!" },
+      {
+        message: "Задачата беше създадена успешно!",
+        product: createdProduct,
+      },
       { status: 201 }
     );
   } catch (error) {
