@@ -79,6 +79,14 @@ export default function Purchases() {
     }
   };
 
+  const handleProductNameChange = (e) => {
+    const inputValue = e.target.value;
+
+    if (inputValue.length <= 31) {
+      setProductName(inputValue);
+    }
+  };
+
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
@@ -113,10 +121,14 @@ export default function Purchases() {
               type="text"
               id="product-name"
               value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              onChange={handleProductNameChange}
               placeholder="Въведете име на продукта"
+              maxLength="31"
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
+            {productName.length >= 31 && (
+              <p className="text-red-500 text-sm">Максимум 31 символа!</p>
+            )}
           </div>
 
           {error && <p className="text-red-500 text-center">{error}</p>}

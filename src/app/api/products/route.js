@@ -19,6 +19,15 @@ export async function POST(req) {
       );
     }
 
+    if (productName.length > 31) {
+      return NextResponse.json(
+        {
+          message: "Името на продукта не може да бъде по-дълго от 31 символа.",
+        },
+        { status: 400 }
+      );
+    }
+
     const formattedName =
       productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
 
