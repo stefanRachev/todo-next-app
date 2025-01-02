@@ -149,14 +149,14 @@ export default function Purchases() {
                     onClick={() => handleEdit(product)}
                     className="text-blue-600 hover:underline"
                   >
-                    Промяна
+                    Пром.
                   </button>
                  
                   <button
                     onClick={() => handleDelete(product._id)}
                     className="text-red-600 hover:underline"
                   >
-                    Изтриване
+                    Изтр.
                   </button>
                 </div>
               </li>

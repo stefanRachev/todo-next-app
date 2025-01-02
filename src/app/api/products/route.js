@@ -10,7 +10,7 @@ export async function POST(req) {
   const emailId = await getUserIdFromToken(req);
 
   try {
-    const { productName} = await req.json();
+    const { productName } = await req.json();
 
     if (!productName) {
       return NextResponse.json(
@@ -19,15 +19,17 @@ export async function POST(req) {
       );
     }
 
+    const formattedName =
+      productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
+
     const newProduct = new Product({
-      productName,
+      productName: formattedName,
       user: emailId,
     });
 
     await newProduct.save();
     const createdProduct = newProduct.toObject();
 
-    
     return NextResponse.json(
       {
         message: "Задачата беше създадена успешно!",

@@ -10,10 +10,6 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  quantity: {
-    type: String,
-    default: '',
-  },
   createdAt: {
     type: Date,
     default: Date.now,
