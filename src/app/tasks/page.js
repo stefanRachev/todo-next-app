@@ -46,7 +46,6 @@ export default function MemoPage() {
       setError("Моля, въведете текст за задачата.");
       return;
     }
-  
 
     try {
       const response = await fetch("/api/tasks", {
@@ -61,12 +60,11 @@ export default function MemoPage() {
       if (!response.ok) {
         throw new Error("Неуспешно създаване на задачата");
       }
-     
 
-      const { task } = await response.json(); 
-    
-      setTasks((prevTasks) => [task, ...prevTasks]); 
-    
+      const { task } = await response.json();
+
+      setTasks((prevTasks) => [task, ...prevTasks]);
+
       setTaskText("");
       setError("");
     } catch (err) {
@@ -104,7 +102,7 @@ export default function MemoPage() {
       {error && <p className="text-red-500">{error}</p>}
 
       <ul className="space-y-2">
-        {tasks.map((task,index) => (
+        {tasks.map((task, index) => (
           <li key={task._id || index} className="border p-2 rounded">
             <p className="font-semibold">{task.taskName}</p>
             <span className="text-sm text-gray-500">
@@ -113,6 +111,8 @@ export default function MemoPage() {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </span>
           </li>
