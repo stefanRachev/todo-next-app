@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 
 export default function Purchases() {
   const [productName, setProductName] = useState("");
-  const [quantity, setQuantity] = useState("");
+
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -58,7 +58,7 @@ export default function Purchases() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.user?.email}`,
         },
-        body: JSON.stringify({ productName, quantity }),
+        body: JSON.stringify({ productName }),
       });
 
       if (!response.ok) {
@@ -69,7 +69,7 @@ export default function Purchases() {
       setProducts((prevProduct) => [...prevProduct, product]);
 
       setProductName("");
-      setQuantity("");
+     
       setError("");
     } catch (err) {
       setError(err.message);
@@ -118,20 +118,6 @@ export default function Purchases() {
             />
           </div>
 
-          <div>
-            <label htmlFor="quantity" className="block text-gray-700">
-              Брой:
-            </label>
-            <input
-              type="text"
-              id="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="Въведете количество"
-              className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-          </div>
-
           {error && <p className="text-red-500 text-center">{error}</p>}
 
           <div className="text-center">
@@ -150,8 +136,29 @@ export default function Purchases() {
           </h2>
           <ul className="mt-4">
             {products.map((product) => (
-              <li key={product._id} className="mb-2">
-                {product.productName} - {product.quantity}
+              <li
+                key={product._id}
+                className="flex items-center justify-between mb-2 border-b pb-2"
+              >
+                <div>
+                  {product.productName}
+                </div>
+                <div className="flex space-x-2">
+                
+                  <button
+                    onClick={() => handleEdit(product)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Промяна
+                  </button>
+                 
+                  <button
+                    onClick={() => handleDelete(product._id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Изтриване
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

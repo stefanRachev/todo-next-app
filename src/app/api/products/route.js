@@ -10,7 +10,7 @@ export async function POST(req) {
   const emailId = await getUserIdFromToken(req);
 
   try {
-    const { productName, quantity } = await req.json();
+    const { productName} = await req.json();
 
     if (!productName) {
       return NextResponse.json(
@@ -21,7 +21,6 @@ export async function POST(req) {
 
     const newProduct = new Product({
       productName,
-      quantity,
       user: emailId,
     });
 
