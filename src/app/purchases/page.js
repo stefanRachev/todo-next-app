@@ -1,5 +1,6 @@
 "use client";
 
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -69,7 +70,7 @@ export default function Purchases() {
       setProducts((prevProduct) => [...prevProduct, product]);
 
       setProductName("");
-     
+
       setError("");
     } catch (err) {
       setError(err.message);
@@ -140,23 +141,21 @@ export default function Purchases() {
                 key={product._id}
                 className="flex items-center justify-between mb-2 border-b pb-2"
               >
-                <div>
-                  {product.productName}
-                </div>
+                <div>{product.productName}</div>
                 <div className="flex space-x-2">
-                
                   <button
                     onClick={() => handleEdit(product)}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 hover:text-blue-800"
+                    aria-label="Редактирай"
                   >
-                    Пром.
+                    <FaPencilAlt className="h-5 w-5" />
                   </button>
-                 
                   <button
                     onClick={() => handleDelete(product._id)}
-                    className="text-red-600 hover:underline"
+                    className="text-red-600 hover:text-red-800"
+                    aria-label="Изтрий"
                   >
-                    Изтр.
+                    <FaTrashAlt className="h-5 w-5" />
                   </button>
                 </div>
               </li>
