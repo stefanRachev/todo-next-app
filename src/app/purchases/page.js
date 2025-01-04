@@ -4,6 +4,7 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { deleteProduct } from "@/utils/api";
 
 export default function Purchases() {
   const [productName, setProductName] = useState("");
@@ -84,6 +85,16 @@ export default function Purchases() {
 
     if (inputValue.length <= 31) {
       setProductName(inputValue);
+    }
+  };
+
+
+  const handleDelete = async (productId) => {
+    try {
+      await deleteProduct(productId, accessToken);
+      setProducts((prevProducts) => prevProducts.filter((product) => product._id !== productId));
+    } catch (error) {
+      setError(error.message);
     }
   };
 
