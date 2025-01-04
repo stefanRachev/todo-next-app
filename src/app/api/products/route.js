@@ -71,3 +71,51 @@ export async function GET(req) {
     );
   }
 }
+
+
+export async function DELETE(req) {
+
+  await connectToDatabase();
+
+  const emailId = await getUserIdFromToken(req);
+
+  try {
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Невалидни данни за продукта" },
+        { status: 400 }
+      );
+    }
+
+    const product = await Product.findOne({ _id: id });
+
+    if (!product) {
+      return NextResponse.json(
+        { message: "Продуктът не беше намерен" },
+        { status: 404 }
+      );
+    }
+
+    if (product.user !== emailId) {
+      return NextResponse.json(
+        { message: "Нямате права да изтриете този продукт" },
+        { status: 403 }
+      );
+    }
+
+    await Product.deleteOne({ _id: id });
+
+    return NextResponse.json(
+      { message: "Продуктът беше изтрит успешно" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting product:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при изтриването на продукта" },
+      { status: 500 }
+    );
+  }
+}

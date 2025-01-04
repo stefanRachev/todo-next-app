@@ -130,6 +130,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id || token.sub;
         session.user.email = token.email;
         session.user.name = token.name;
+        session.user.accessToken = token.accessToken;
         if (token.authProvideId) {
           session.user.authProvideId = token.authProvideId;
         }
@@ -139,19 +140,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
-  },
-  async jwt({ token, user }) {
-    if (user) {
-      token.id = user.id || user.sub;
-      token.email = user.email;
-      token.name = user.name;
-      if (user.authProvideId) {
-        token.authProvideId = user.authProvideId;
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id || user.sub;
+        token.email = user.email;
+        token.name = user.name;
+        if (user.authProvideId) {
+          token.authProvideId = user.authProvideId;
+        }
+        if (user.authProvider) {
+          token.authProvider = user.authProvider;
+        }
       }
-      if (user.authProvider) {
-        token.authProvider = user.authProvider;
+      if (account?.access_token) {
+        token.accessToken = account.access_token;
       }
-    }
-    return token;
+      return token;
+    },
   },
 });

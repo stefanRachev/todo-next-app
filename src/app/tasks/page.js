@@ -11,7 +11,7 @@ export default function MemoPage() {
 
   const router = useRouter();
   const { data: session, status } = useSession();
-  const user = session?.user?.email;
+  const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -21,12 +21,12 @@ export default function MemoPage() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      if (status !== "authenticated") return;
+      if (status !== "authenticated" || !accessToken) return;
 
       const response = await fetch("/api/tasks", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${session?.user?.email}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -39,7 +39,7 @@ export default function MemoPage() {
     };
 
     fetchTasks();
-  }, [status, user]);
+  }, [status, accessToken]);
 
   const addTask = async () => {
     if (!taskText) {

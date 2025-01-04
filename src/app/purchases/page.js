@@ -14,7 +14,7 @@ export default function Purchases() {
 
   const router = useRouter();
   const { data: session, status } = useSession();
-  const user = session?.user?.email;
+  const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -24,11 +24,11 @@ export default function Purchases() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      if (status !== "authenticated") return;
+      if (status !== "authenticated" || !accessToken) return;
       const response = await fetch("/api/products", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${session?.user?.email}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -41,7 +41,7 @@ export default function Purchases() {
     };
 
     fetchProducts();
-  }, [status, user]);
+  }, [status, accessToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +57,7 @@ export default function Purchases() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.user?.email}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ productName }),
       });
