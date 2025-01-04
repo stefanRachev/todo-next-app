@@ -52,7 +52,7 @@ export default function MemoPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.user?.email}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ taskName: taskText }),
       });
