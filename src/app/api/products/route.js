@@ -72,9 +72,7 @@ export async function GET(req) {
   }
 }
 
-
 export async function DELETE(req) {
-
   await connectToDatabase();
 
   const emailId = await getUserIdFromToken(req);
@@ -115,6 +113,69 @@ export async function DELETE(req) {
     console.error("Error deleting product:", error.message);
     return NextResponse.json(
       { message: "Грешка при изтриването на продукта" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req) {
+  await connectToDatabase();
+
+  const emailId = await getUserIdFromToken(req);
+
+  try {
+    const { id, productName } = await req.json();
+
+    if (!id || !productName) {
+      return NextResponse.json(
+        { message: "Невалидни данни за продукта" },
+        { status: 400 }
+      );
+    }
+
+    if (productName.length > 31) {
+      return NextResponse.json(
+        {
+          message: "Името на продукта не може да бъде по-дълго от 31 символа.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const formattedName =
+      productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
+
+    const product = await Product.findOne({ _id: id });
+
+    if (!product) {
+      return NextResponse.json(
+        { message: "Продуктът не беше намерен" },
+        { status: 404 }
+      );
+    }
+
+    if (product.user !== emailId) {
+      return NextResponse.json(
+        { message: "Нямате права да редактирате този продукт" },
+        { status: 403 }
+      );
+    }
+
+    product.productName = formattedName;
+
+    await product.save();
+
+    return NextResponse.json(
+      {
+        message: "Продуктът беше редактиран успешно",
+        product: product.toObject(),
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error editing product:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при редактирането на продукта" },
       { status: 500 }
     );
   }

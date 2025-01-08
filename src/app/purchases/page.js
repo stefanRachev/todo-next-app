@@ -4,11 +4,11 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { deleteProduct } from "@/utils/api";
+import { deleteProduct, editProduct } from "@/utils/api";
 
 export default function Purchases() {
   const [productName, setProductName] = useState("");
-
+  const [editingProductId, setEditingProductId] = useState(null);
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -48,30 +48,47 @@ export default function Purchases() {
     e.preventDefault();
     setLoading(true);
 
-    if (!productName) {
+    if (!productName || productName.trim() === "") {
       setError("Моля, попълнете полето за продукт.");
+      setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ productName }),
-      });
+      if (editingProductId) {
+      
+        const updatedProduct = await editProduct(
+          editingProductId,
+          { productName },
+          accessToken
+        );
 
-      if (!response.ok) {
-        throw new Error("Неуспешно създаване на покупка");
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product._id === editingProductId ? updatedProduct : product
+          )
+        );
+        setEditingProductId(null); 
+      } else {
+        
+        const response = await fetch("/api/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ productName }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Неуспешно създаване на покупка");
+        }
+
+        const { product } = await response.json();
+        setProducts((prevProduct) => [...prevProduct, product]);
       }
 
-      const { product } = await response.json();
-      setProducts((prevProduct) => [...prevProduct, product]);
-
-      setProductName("");
-
+      setProductName(""); 
       setError("");
     } catch (err) {
       setError(err.message);
@@ -88,14 +105,20 @@ export default function Purchases() {
     }
   };
 
-
   const handleDelete = async (productId) => {
     try {
       await deleteProduct(productId, accessToken);
-      setProducts((prevProducts) => prevProducts.filter((product) => product._id !== productId));
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product._id !== productId)
+      );
     } catch (error) {
       setError(error.message);
     }
+  };
+
+  const startEditing = (product) => {
+    setEditingProductId(product._id);
+    setProductName(product.productName);
   };
 
   if (status === "loading") {
@@ -149,7 +172,7 @@ export default function Purchases() {
               type="submit"
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-all"
             >
-              Добави в списъка
+              {editingProductId ? "Запази промените" : "Добави в списъка"}
             </button>
           </div>
         </form>
@@ -167,7 +190,7 @@ export default function Purchases() {
                 <div>{product.productName}</div>
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => handleEdit(product)}
+                    onClick={() => startEditing(product)}
                     className="text-blue-600 hover:text-blue-800"
                     aria-label="Редактирай"
                   >
