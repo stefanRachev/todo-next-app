@@ -19,7 +19,7 @@ export async function POST(req) {
       );
     }
 
-    if (productName.length > 26) {
+    if (productName.length > 31) {
       return NextResponse.json(
         {
           message: "Името на продукта не може да бъде по-дълго от 26 символа.",
@@ -133,7 +133,7 @@ export async function PUT(req) {
       );
     }
 
-    if (productName.length > 26) {
+    if (productName.length > 31) {
       return NextResponse.json(
         {
           message: "Името на продукта не може да бъде по-дълго от 26 символа.",

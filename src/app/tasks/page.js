@@ -73,8 +73,6 @@ export default function MemoPage() {
     }
   };
 
-  
-
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
@@ -92,12 +90,9 @@ export default function MemoPage() {
           value={taskText}
           onChange={(e) => setTaskText(e.target.value)}
           placeholder="Добави задача..."
-           maxLength="41"
           className="border p-2 rounded w-full"
         />
-        {taskText.length >= 41 && (
-          <p className="text-red-500 text-sm">Максимум 41 символа!</p>
-        )}
+
         <button
           onClick={addTask}
           className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
@@ -107,12 +102,11 @@ export default function MemoPage() {
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
-
-      <ul className="space-y-2 flex-wrap">
+      <ul className="space-y-4">
         {tasks.map((task, index) => (
-          <li key={task._id || index} className="border p-2 rounded">
-            <p className="font-semibold truncate">{task.taskName}</p>
-            <div className="flex space-x-2">
+          <li key={task._id || index} className="border p-4 rounded">
+            <p className="font-semibold break-words">{task.taskName}</p>
+            <div className="flex space-x-2 mt-2">
               <button
                 onClick={() => startEditing(task)}
                 className="text-blue-600 hover:text-blue-800"
