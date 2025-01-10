@@ -1,5 +1,6 @@
 "use client";
 
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -8,6 +9,7 @@ export default function MemoPage() {
   const [tasks, setTasks] = useState([]);
   const [taskText, setTaskText] = useState("");
   const [error, setError] = useState("");
+
 
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -82,6 +84,7 @@ export default function MemoPage() {
 
   return (
     <div className="p-4">
+     
       <h1 className="text-2xl font-bold mb-4">Мемо задачи</h1>
       <div className="mb-4">
         <input
@@ -105,6 +108,22 @@ export default function MemoPage() {
         {tasks.map((task, index) => (
           <li key={task._id || index} className="border p-2 rounded">
             <p className="font-semibold">{task.taskName}</p>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => startEditing(task)}
+                className="text-blue-600 hover:text-blue-800"
+                aria-label="Редактирай"
+              >
+                <FaPencilAlt className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => handleDelete(task._id)}
+                className="text-red-600 hover:text-red-800"
+                aria-label="Изтрий"
+              >
+                <FaTrashAlt className="h-5 w-5" />
+              </button>
+            </div>
             <span className="text-sm text-gray-500">
               Създадена на:{" "}
               {new Date(task.createdAt).toLocaleDateString("bg-BG", {
