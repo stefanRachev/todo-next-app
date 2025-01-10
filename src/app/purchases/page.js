@@ -56,7 +56,6 @@ export default function Purchases() {
 
     try {
       if (editingProductId) {
-      
         const updatedProduct = await editProduct(
           editingProductId,
           { productName },
@@ -68,9 +67,8 @@ export default function Purchases() {
             product._id === editingProductId ? updatedProduct : product
           )
         );
-        setEditingProductId(null); 
+        setEditingProductId(null);
       } else {
-        
         const response = await fetch("/api/products", {
           method: "POST",
           headers: {
@@ -85,10 +83,10 @@ export default function Purchases() {
         }
 
         const { product } = await response.json();
-        setProducts((prevProduct) => [product,...prevProduct]);
+        setProducts((prevProduct) => [product, ...prevProduct]);
       }
 
-      setProductName(""); 
+      setProductName("");
       setError("");
     } catch (err) {
       setError(err.message);
@@ -96,8 +94,6 @@ export default function Purchases() {
       setLoading(false);
     }
   };
-
-
 
   const handleDelete = async (productId) => {
     try {

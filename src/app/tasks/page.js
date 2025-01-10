@@ -4,6 +4,7 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { deleteTask } from "@/utils/api";
 
 export default function MemoPage() {
   const [tasks, setTasks] = useState([]);
@@ -70,6 +71,15 @@ export default function MemoPage() {
       setError("");
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleDelete = async (taskId) => {
+    try {
+      await deleteTask(taskId, accessToken);
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+    } catch (error) {
+      setError(error.message);
     }
   };
 

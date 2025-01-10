@@ -82,6 +82,9 @@ export async function DELETE(req) {
   try {
     const { id } = await req.json();
 
+   
+
+
     if (!id) {
       return NextResponse.json(
         { message: "Невалидни данни за продукта" },
@@ -90,6 +93,7 @@ export async function DELETE(req) {
     }
 
     const product = await Product.findOne({ _id: id });
+
 
     if (!product) {
       return NextResponse.json(
@@ -104,6 +108,7 @@ export async function DELETE(req) {
         { status: 403 }
       );
     }
+
 
     await Product.deleteOne({ _id: id });
 

@@ -17,9 +17,11 @@ export async function POST(req) {
         { status: 400 }
       );
     }
+    const formattedTaskName =
+      taskName.charAt(0).toUpperCase() + taskName.slice(1).toLowerCase();
 
     const newTask = new Task({
-      taskName,
+      taskName: formattedTaskName,
       user: emailId,
     });
 
@@ -55,6 +57,52 @@ export async function GET(req) {
     console.error("Error fetching tasks:", error.message);
     return NextResponse.json(
       { message: "Грешка при взимането на задачите" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req) {
+  await connectToDatabase();
+
+  const emailId = await getUserIdFromToken(req);
+
+  try {
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Невалидни данни за задачата" },
+        { status: 400 }
+      );
+    }
+
+    const task = await Task.findOne({ _id: id });
+
+    if (!task) {
+      return NextResponse.json(
+        { message: "Задачата не беше намерена" },
+        { status: 404 }
+      );
+    }
+
+    if (task.user !== emailId) {
+      return NextResponse.json(
+        { message: "Нямате права да изтриете тази задача" },
+        { status: 403 }
+      );
+    }
+
+    await Task.deleteOne({ _id: id });
+
+    return NextResponse.json(
+      { message: "Задачата беше изтрита успешно!" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting task:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при изтриването на задачата" },
       { status: 500 }
     );
   }
