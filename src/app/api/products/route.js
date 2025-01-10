@@ -60,7 +60,9 @@ export async function GET(req) {
 
   try {
     const emailId = await getUserIdFromToken(req);
-    const products = await Product.find({ user: emailId });
+    const products = await Product.find({ user: emailId }).sort({
+      createdAt: -1,
+    });
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {

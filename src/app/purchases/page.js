@@ -85,7 +85,7 @@ export default function Purchases() {
         }
 
         const { product } = await response.json();
-        setProducts((prevProduct) => [...prevProduct, product]);
+        setProducts((prevProduct) => [product,...prevProduct]);
       }
 
       setProductName(""); 

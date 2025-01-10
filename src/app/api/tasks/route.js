@@ -24,12 +24,12 @@ export async function POST(req) {
     });
 
     await newTask.save();
-    const createdTask = newTask.toObject(); 
+    const createdTask = newTask.toObject();
 
     return NextResponse.json(
       {
         message: "Задачата беше създадена успешно!",
-        task: createdTask, 
+        task: createdTask,
       },
       { status: 201 }
     );
@@ -46,7 +46,9 @@ export async function GET(req) {
   await connectToDatabase();
   try {
     const emailId = await getUserIdFromToken(req);
-    const tasks = await Task.find({ user: emailId });
+    const tasks = await Task.find({ user: emailId }).sort({
+      createdAt: -1,
+    });
 
     return NextResponse.json(tasks, { status: 200 });
   } catch (error) {
