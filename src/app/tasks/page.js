@@ -10,7 +10,6 @@ export default function MemoPage() {
   const [taskText, setTaskText] = useState("");
   const [error, setError] = useState("");
 
-
   const router = useRouter();
   const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
@@ -74,16 +73,7 @@ export default function MemoPage() {
     }
   };
 
-  const handleProductNameChange = (e) => {
-    const inputValue = e.target.value;
-
-    console.log("Input value:", inputValue);
-
-    if (inputValue.length <= 40) {
-      setTaskText(inputValue);
-    }
-  };
-
+  
 
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
@@ -95,16 +85,19 @@ export default function MemoPage() {
 
   return (
     <div className="p-4">
-     
       <h1 className="text-2xl font-bold mb-4">Мемо задачи</h1>
       <div className="mb-4">
         <input
           type="text"
           value={taskText}
-          onChange={handleProductNameChange}
+          onChange={(e) => setTaskText(e.target.value)}
           placeholder="Добави задача..."
+           maxLength="43"
           className="border p-2 rounded w-full"
         />
+        {taskText.length >= 43 && (
+          <p className="text-red-500 text-sm">Максимум 43 символа!</p>
+        )}
         <button
           onClick={addTask}
           className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
@@ -115,10 +108,10 @@ export default function MemoPage() {
 
       {error && <p className="text-red-500">{error}</p>}
 
-      <ul className="space-y-2">
+      <ul className="space-y-2 flex-wrap">
         {tasks.map((task, index) => (
           <li key={task._id || index} className="border p-2 rounded">
-            <p className="font-semibold">{task.taskName}</p>
+            <p className="font-semibold truncate">{task.taskName}</p>
             <div className="flex space-x-2">
               <button
                 onClick={() => startEditing(task)}

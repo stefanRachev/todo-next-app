@@ -97,13 +97,7 @@ export default function Purchases() {
     }
   };
 
-  const handleProductNameChange = (e) => {
-    const inputValue = e.target.value;
 
-    if (inputValue.length <= 31) {
-      setProductName(inputValue);
-    }
-  };
 
   const handleDelete = async (productId) => {
     try {
@@ -155,7 +149,7 @@ export default function Purchases() {
               type="text"
               id="product-name"
               value={productName}
-              onChange={handleProductNameChange}
+              onChange={(e) => setProductName(e.target.value)}
               placeholder="Въведете име на продукта"
               maxLength="31"
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -181,13 +175,13 @@ export default function Purchases() {
           <h2 className="mt-8 text-xl font-bold text-gray-800">
             Списък с продукти
           </h2>
-          <ul className="mt-4">
+          <ul className="mt-4 flex-wrap">
             {products.map((product) => (
               <li
                 key={product._id}
                 className="flex items-center justify-between mb-2 border-b pb-2"
               >
-                <div>{product.productName}</div>
+                <div className="truncate">{product.productName}</div>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => startEditing(product)}
