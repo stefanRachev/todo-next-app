@@ -19,10 +19,10 @@ export async function POST(req) {
       );
     }
 
-    if (productName.length > 31) {
+    if (productName.length > 26) {
       return NextResponse.json(
         {
-          message: "Името на продукта не може да бъде по-дълго от 31 символа.",
+          message: "Името на продукта не може да бъде по-дълго от 26 символа.",
         },
         { status: 400 }
       );
@@ -133,10 +133,10 @@ export async function PUT(req) {
       );
     }
 
-    if (productName.length > 31) {
+    if (productName.length > 26) {
       return NextResponse.json(
         {
-          message: "Името на продукта не може да бъде по-дълго от 31 символа.",
+          message: "Името на продукта не може да бъде по-дълго от 26 символа.",
         },
         { status: 400 }
       );

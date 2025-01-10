@@ -151,11 +151,11 @@ export default function Purchases() {
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               placeholder="Въведете име на продукта"
-              maxLength="31"
+              maxLength="26"
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
-            {productName.length >= 31 && (
-              <p className="text-red-500 text-sm">Максимум 31 символа!</p>
+            {productName.length >= 26 && (
+              <p className="text-red-500 text-sm">Максимум 26 символа!</p>
             )}
           </div>
 
