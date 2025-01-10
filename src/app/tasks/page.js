@@ -92,11 +92,11 @@ export default function MemoPage() {
           value={taskText}
           onChange={(e) => setTaskText(e.target.value)}
           placeholder="Добави задача..."
-           maxLength="43"
+           maxLength="41"
           className="border p-2 rounded w-full"
         />
-        {taskText.length >= 43 && (
-          <p className="text-red-500 text-sm">Максимум 43 символа!</p>
+        {taskText.length >= 41 && (
+          <p className="text-red-500 text-sm">Максимум 41 символа!</p>
         )}
         <button
           onClick={addTask}
