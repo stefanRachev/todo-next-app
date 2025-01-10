@@ -74,6 +74,17 @@ export default function MemoPage() {
     }
   };
 
+  const handleProductNameChange = (e) => {
+    const inputValue = e.target.value;
+
+    console.log("Input value:", inputValue);
+
+    if (inputValue.length <= 40) {
+      setTaskText(inputValue);
+    }
+  };
+
+
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
@@ -90,7 +101,7 @@ export default function MemoPage() {
         <input
           type="text"
           value={taskText}
-          onChange={(e) => setTaskText(e.target.value)}
+          onChange={handleProductNameChange}
           placeholder="Добави задача..."
           className="border p-2 rounded w-full"
         />
