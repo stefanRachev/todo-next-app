@@ -107,3 +107,57 @@ export async function DELETE(req) {
     );
   }
 }
+
+export async function PUT(req) {
+  await connectToDatabase();
+
+  const emailId = await getUserIdFromToken(req);
+
+  try {
+    const { id, taskName } = await req.json();
+
+    if (!id || !taskName) {
+      return NextResponse.json(
+        { message: "Невалидни данни за задачата!" },
+        { status: 400 }
+      );
+    }
+
+    const formattedTaskName =
+      taskName.charAt(0).toUpperCase() + taskName.slice(1).toLowerCase();
+
+    const task = await Task.findOne({ _id: id });
+
+    if (!task) {
+      return NextResponse.json(
+        { message: "Задачата не беше намерена!" },
+        { status: 404 }
+      );
+    }
+
+    if (task.user !== emailId) {
+      return NextResponse.json(
+        { message: "Нямате права да редактирате този продукт" },
+        { status: 403 }
+      );
+    }
+
+    task.taskName = formattedTaskName;
+
+    await task.save();
+
+    return NextResponse.json(
+      {
+        message: "Задачата беше редактиран успешно",
+        task: task.toObject(),
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error editing task:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при редактирането на задачата" },
+      { status: 500 }
+    );
+  }
+}

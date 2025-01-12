@@ -73,3 +73,29 @@ export const deleteTask = async (taskId, accessToken) => {
     throw error;
   }
 };
+
+export const editTask = async (taskId, updatedData, accessToken) => {
+  try {
+    const response = await fetch(`/api/tasks`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ id: taskId, ...updatedData }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Грешка при редактиране на задачата"
+      );
+    }
+
+    const { task } = await response.json();
+    return task;
+  } catch (error) {
+    console.error("Error editing task:", error.message);
+    throw error;
+  }
+};

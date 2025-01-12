@@ -4,12 +4,14 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { deleteTask } from "@/utils/api";
+import { deleteTask, editTask } from "@/utils/api";
 
 export default function MemoPage() {
   const [tasks, setTasks] = useState([]);
   const [taskText, setTaskText] = useState("");
   const [error, setError] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editedTaskText, setEditedTaskText] = useState("");
 
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -83,6 +85,40 @@ export default function MemoPage() {
     }
   };
 
+  const handleEdit = async () => {
+    if (!editedTaskText) {
+      setError("Моля, въведете текст за задачата.");
+      return;
+    }
+
+    try {
+      const updatedTask = await editTask(
+        editingTaskId,
+        { taskName: editedTaskText },
+        accessToken
+      );
+
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === editingTaskId
+            ? { ...task, taskName: updatedTask.taskName }
+            : task
+        )
+      );
+
+      setEditingTaskId(null);
+      setEditedTaskText("");
+      setError("");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const startEditing = (task) => {
+    setEditingTaskId(task._id);
+    setEditedTaskText(task.taskName);
+  };
+
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
@@ -115,23 +151,52 @@ export default function MemoPage() {
       <ul className="space-y-4">
         {tasks.map((task, index) => (
           <li key={task._id || index} className="border p-4 rounded">
-            <p className="font-semibold break-words">{task.taskName}</p>
-            <div className="flex space-x-2 mt-2">
-              <button
-                onClick={() => startEditing(task)}
-                className="text-blue-600 hover:text-blue-800"
-                aria-label="Редактирай"
-              >
-                <FaPencilAlt className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => handleDelete(task._id)}
-                className="text-red-600 hover:text-red-800"
-                aria-label="Изтрий"
-              >
-                <FaTrashAlt className="h-5 w-5" />
-              </button>
-            </div>
+            {editingTaskId === task._id ? (
+             
+              <div>
+                <input
+                  type="text"
+                  value={editedTaskText}
+                  onChange={(e) => setEditedTaskText(e.target.value)}
+                  className="border p-2 rounded w-full"
+                />
+                <div className="flex space-x-2 mt-2">
+                  <button
+                    onClick={handleEdit}
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                  >
+                    Запази
+                  </button>
+                  <button
+                    onClick={() => setEditingTaskId(null)}
+                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                  >
+                    Откажи
+                  </button>
+                </div>
+              </div>
+            ) : (
+           
+              <div>
+                <p className="font-semibold break-words">{task.taskName}</p>
+                <div className="flex space-x-2 mt-2">
+                  <button
+                    onClick={() => startEditing(task)}
+                    className="text-blue-600 hover:text-blue-800"
+                    aria-label="Редактирай"
+                  >
+                    <FaPencilAlt className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(task._id)}
+                    className="text-red-600 hover:text-red-800"
+                    aria-label="Изтрий"
+                  >
+                    <FaTrashAlt className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            )}
             <span className="text-sm text-gray-500">
               Създадена на:{" "}
               {new Date(task.createdAt).toLocaleDateString("bg-BG", {
