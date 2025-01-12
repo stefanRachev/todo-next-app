@@ -46,7 +46,7 @@ export default function MemoPage() {
   }, [status, accessToken]);
 
   const addTask = async () => {
-    if (!taskText) {
+    if (!taskText ||  taskText.trim() === "") {
       setError("Моля, въведете текст за задачата.");
       return;
     }
