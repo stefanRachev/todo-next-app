@@ -1,7 +1,7 @@
 "use client";
 
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { deleteProduct, editProduct } from "@/utils/api";
@@ -12,6 +12,7 @@ export default function Purchases() {
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const productInputRef = useRef(null);
 
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -43,6 +44,12 @@ export default function Purchases() {
 
     fetchProducts();
   }, [status, accessToken]);
+
+  useEffect(() => {
+    if (editingProductId && productInputRef.current) {
+      productInputRef.current.focus();
+    }
+  }, [editingProductId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,6 +116,9 @@ export default function Purchases() {
   const startEditing = (product) => {
     setEditingProductId(product._id);
     setProductName(product.productName);
+    if (productInputRef.current) {
+      productInputRef.current.focus();
+    }
   };
 
   if (status === "loading") {
@@ -148,6 +158,7 @@ export default function Purchases() {
               onChange={(e) => setProductName(e.target.value)}
               placeholder="Въведете име на продукта"
               maxLength="31"
+              ref={productInputRef} 
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
             {productName.length >= 31 && (
