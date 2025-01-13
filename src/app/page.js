@@ -28,10 +28,11 @@ export default function Home() {
 
             <div className="p-6 bg-green-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
               <h2 className="text-xl sm:text-2xl font-medium text-green-700">
-                Планиране на фитнес тренировки
+                Брояч на пелети и разход
               </h2>
               <p className="text-gray-500 mt-2 mb-4">
-                Тук можете да създавате упражнения за вашите тренировки.
+                Следете ефективно разхода на пелети за отопление. Добавяйте
+                броя на използваните торби, изчислявайте дневния и общия разход.
               </p>
               <Link
                 href="/fitness-planning"
