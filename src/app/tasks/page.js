@@ -10,6 +10,7 @@ export default function MemoPage() {
   const [tasks, setTasks] = useState([]);
   const [taskText, setTaskText] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editedTaskText, setEditedTaskText] = useState("");
 
@@ -27,18 +28,26 @@ export default function MemoPage() {
     const fetchTasks = async () => {
       if (status !== "authenticated" || !accessToken) return;
 
-      const response = await fetch("/api/tasks", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      setIsLoading(true);
 
-      if (response.ok) {
-        const data = await response.json();
-        setTasks(data);
-      } else {
-        setError("Неуспешно зареждане на задачите");
+      try {
+        const response = await fetch("/api/tasks", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setTasks(data);
+        } else {
+          setError("Неуспешно зареждане на задачите");
+        }
+      } catch (error) {
+        setError("Грешка при зареждането на задачите");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -46,7 +55,7 @@ export default function MemoPage() {
   }, [status, accessToken]);
 
   const addTask = async () => {
-    if (!taskText ||  taskText.trim() === "") {
+    if (!taskText || taskText.trim() === "") {
       setError("Моля, въведете текст за задачата.");
       return;
     }
@@ -130,6 +139,16 @@ export default function MemoPage() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Мемо задачи</h1>
+      {isLoading && (
+        <div className="loader flex justify-center items-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50 z-50">
+          <div
+            className="spinner-border animate-spin inline-block w-12 sm:w-16 md:w-24 lg:w-32 xl:w-40 border-4 border-t-4 border-gray-200 rounded-full"
+            role="status"
+          >
+            <span className="sr-only">Зареждане...</span>
+          </div>
+        </div>
+      )}
       <div className="mb-4">
         <input
           type="text"
@@ -152,7 +171,6 @@ export default function MemoPage() {
         {tasks.map((task, index) => (
           <li key={task._id || index} className="border p-4 rounded">
             {editingTaskId === task._id ? (
-             
               <div>
                 <input
                   type="text"
@@ -176,7 +194,6 @@ export default function MemoPage() {
                 </div>
               </div>
             ) : (
-           
               <div>
                 <p className="font-semibold break-words">{task.taskName}</p>
                 <div className="flex space-x-2 mt-2">
