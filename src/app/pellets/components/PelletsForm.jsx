@@ -1,9 +1,8 @@
-// src/app/pellets/components/PelletsForm.js
+// src/app/pellets/components/PelletsForm.jsx
 "use client";
 import { useState } from "react";
 
 export default function PelletsForm() {
-  const [quantity, setQuantity] = useState("");
   const [dayOfMonth, setDayOfMonth] = useState(new Date().getDate());
   const [bags, setBags] = useState("");
 
@@ -11,7 +10,7 @@ export default function PelletsForm() {
     e.preventDefault();
     // Изпращане на данните към базата
     console.log(
-      `Въведени данни: ${quantity} пелети на ${dayOfMonth} дата, ${bags} чувала`
+      `Въведени данни: ${dayOfMonth} дата, ${bags} чувала`
     );
     // Изпращаш данните към база
   };
@@ -21,22 +20,6 @@ export default function PelletsForm() {
       onSubmit={handleSubmit}
       className="space-y-4"
     >
-      <div className="mb-4">
-        <label
-          htmlFor="quantity"
-          className="block text-gray-700"
-        >
-          Брой чували
-        </label>
-        <input
-          type="number"
-          id="quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
-      </div>
-
       <div className="mb-4">
         <label
           htmlFor="dayOfMonth"

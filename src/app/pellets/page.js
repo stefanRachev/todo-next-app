@@ -1,3 +1,5 @@
+//src/app/pellets/page.js
+
 import PelletsForm from "./components/PelletsForm";
 
 export default function Page() {
