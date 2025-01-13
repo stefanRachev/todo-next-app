@@ -35,7 +35,7 @@ export default function Home() {
                 броя на използваните торби, изчислявайте дневния и общия разход.
               </p>
               <Link
-                href="/fitness-planning"
+                href="/pellets"
                 className="text-green-600 hover:text-green-800 transition-all"
               >
                 Вижте повече
