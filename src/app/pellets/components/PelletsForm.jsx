@@ -34,10 +34,16 @@ export default function PelletsForm() {
 
       const result = await response.json();
       console.log("Успешно изпратени данни:", result);
-      // console.log(
-      //       `Въведени данни: ${date.day}-${date.month}-${date.year}, ${bags} чувала`
-      //     );
+      const pelletDate = new Date(result.pellet.date);
 
+      // Изваждане на деня, месеца и годината от парсната дата
+      const day = pelletDate.getDate(); // 13
+      const month = pelletDate.getMonth() + 1; // 1 (тъй като месеците са нулирани от 0)
+      const year = pelletDate.getFullYear(); // 2025
+
+      console.log(
+        `Пелетът беше създаден на: ${day}-${month}-${year}, ${result.pellet.bags} чувала`
+      );
       setBags("");
       setDate({
         day: today.getDate(),

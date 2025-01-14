@@ -2,8 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const pelletSchema = new Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "User",
+    type: String,
     required: true,
   },
   date: {

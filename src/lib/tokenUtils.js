@@ -14,6 +14,7 @@ export async function getUserIdFromToken(req) {
     throw new Error("Не сте влезли в системата");
   }
 
+ 
   //return token?.accessToken;
   return token?.email;
 }
