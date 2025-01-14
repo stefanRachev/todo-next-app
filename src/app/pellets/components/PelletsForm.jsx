@@ -3,53 +3,85 @@
 import { useState } from "react";
 
 export default function PelletsForm() {
-  const [dayOfMonth, setDayOfMonth] = useState(new Date().getDate());
+  const today = new Date();
+  const [date, setDate] = useState({
+    day: today.getDate(),
+    month: today.getMonth() + 1,
+    year: today.getFullYear(),
+  });
   const [bags, setBags] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Изпращане на данните към базата
     console.log(
-      `Въведени данни: ${dayOfMonth} дата, ${bags} чувала`
+      `Въведени данни: ${date.day}-${date.month}-${date.year}, ${bags} чувала`
     );
-    // Изпращаш данните към база
+    // Изпращане на данните към базата
+  };
+
+  const isValidDate = (day, month, year) => {
+    // Проверка дали датата е валидна
+    const daysInMonth = new Date(year, month, 0).getDate();
+    const inputDate = new Date(year, month - 1, day);
+    return (
+      day >= 1 && day <= daysInMonth && inputDate <= today // Не допускаме бъдещи дати
+    );
+  };
+
+  const handleDateChange = (e, field) => {
+    const value = parseInt(e.target.value, 10);
+    setDate((prevDate) => {
+      const updatedDate = { ...prevDate, [field]: value };
+      if (isValidDate(updatedDate.day, updatedDate.month, updatedDate.year)) {
+        return updatedDate;
+      }
+      return prevDate; // Ако датата не е валидна, връщаме предишната
+    });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="mb-4">
-        <label
-          htmlFor="dayOfMonth"
-          className="block text-gray-700"
-        >
+        <label htmlFor="dayOfMonth" className="block text-gray-700">
           Ден от месеца
         </label>
         <input
           type="number"
           id="dayOfMonth"
-          value={dayOfMonth}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (value < 1) {
-              setDayOfMonth(1);
-            } else if (value > 31) {
-              setDayOfMonth(31);
-            } else {
-              setDayOfMonth(value);
-            }
-          }}
+          value={date.day}
+          onChange={(e) => handleDateChange(e, "day")}
           className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
       </div>
 
       <div className="mb-4">
-        <label
-          htmlFor="bags"
-          className="block text-gray-700"
-        >
+        <label htmlFor="month" className="block text-gray-700">
+          Месец
+        </label>
+        <input
+          type="number"
+          id="month"
+          value={date.month}
+          onChange={(e) => handleDateChange(e, "month")}
+          className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="year" className="block text-gray-700">
+          Година
+        </label>
+        <input
+          type="number"
+          id="year"
+          value={date.year}
+          onChange={(e) => handleDateChange(e, "year")}
+          className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="bags" className="block text-gray-700">
           Брой чували
         </label>
         <input
