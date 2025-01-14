@@ -11,12 +11,42 @@ export default function PelletsForm() {
   });
   const [bags, setBags] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(
-      `Въведени данни: ${date.day}-${date.month}-${date.year}, ${bags} чувала`
-    );
-    // Изпращане на данните към базата
+
+    const dataToSend = {
+      date: new Date(date.year, date.month - 1, date.day).toISOString(),
+      bags: parseInt(bags, 10),
+    };
+
+    try {
+      const response = await fetch("/api/pellets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error("Грешка при изпращане на данните към сървъра!");
+      }
+
+      const result = await response.json();
+      console.log("Успешно изпратени данни:", result);
+      // console.log(
+      //       `Въведени данни: ${date.day}-${date.month}-${date.year}, ${bags} чувала`
+      //     );
+
+      setBags("");
+      setDate({
+        day: today.getDate(),
+        month: today.getMonth() + 1,
+        year: today.getFullYear(),
+      });
+    } catch (error) {
+      console.error("Грешка:", error.message);
+    }
   };
 
   const isValidDate = (day, month, year) => {
