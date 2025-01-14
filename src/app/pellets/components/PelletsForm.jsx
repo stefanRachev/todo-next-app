@@ -20,12 +20,9 @@ export default function PelletsForm() {
   };
 
   const isValidDate = (day, month, year) => {
-    // Проверка дали датата е валидна
     const daysInMonth = new Date(year, month, 0).getDate();
     const inputDate = new Date(year, month - 1, day);
-    return (
-      day >= 1 && day <= daysInMonth && inputDate <= today // Не допускаме бъдещи дати
-    );
+    return day >= 1 && day <= daysInMonth && inputDate <= today;
   };
 
   const handleDateChange = (e, field) => {
@@ -35,7 +32,7 @@ export default function PelletsForm() {
       if (isValidDate(updatedDate.day, updatedDate.month, updatedDate.year)) {
         return updatedDate;
       }
-      return prevDate; // Ако датата не е валидна, връщаме предишната
+      return prevDate;
     });
   };
 
