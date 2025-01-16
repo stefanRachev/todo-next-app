@@ -1,7 +1,6 @@
 //src/app/pellets/page.js
 
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+
 import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
 
