@@ -167,66 +167,70 @@ export default function MemoPage() {
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
-      <ul className="space-y-4">
-        {tasks.map((task, index) => (
-          <li key={task._id || index} className="border p-4 rounded">
-            {editingTaskId === task._id ? (
-              <div>
-                <input
-                  type="text"
-                  value={editedTaskText}
-                  onChange={(e) => setEditedTaskText(e.target.value)}
-                  className="border p-2 rounded w-full"
-                />
-                <div className="flex space-x-2 mt-2">
-                  <button
-                    onClick={handleEdit}
-                    className="bg-green-500 text-white px-4 py-2 rounded"
-                  >
-                    Запази
-                  </button>
-                  <button
-                    onClick={() => setEditingTaskId(null)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded"
-                  >
-                    Откажи
-                  </button>
+      {tasks.length === 0 ? (
+        <div className="text-gray-500 italic">Няма добавени задачи.</div>
+      ) : (
+        <ul className="space-y-4">
+          {tasks.map((task, index) => (
+            <li key={task._id || index} className="border p-4 rounded">
+              {editingTaskId === task._id ? (
+                <div>
+                  <input
+                    type="text"
+                    value={editedTaskText}
+                    onChange={(e) => setEditedTaskText(e.target.value)}
+                    className="border p-2 rounded w-full"
+                  />
+                  <div className="flex space-x-2 mt-2">
+                    <button
+                      onClick={handleEdit}
+                      className="bg-green-500 text-white px-4 py-2 rounded"
+                    >
+                      Запази
+                    </button>
+                    <button
+                      onClick={() => setEditingTaskId(null)}
+                      className="bg-gray-500 text-white px-4 py-2 rounded"
+                    >
+                      Откажи
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div>
-                <p className="font-semibold break-words">{task.taskName}</p>
-                <div className="flex space-x-2 mt-2">
-                  <button
-                    onClick={() => startEditing(task)}
-                    className="text-blue-600 hover:text-blue-800"
-                    aria-label="Редактирай"
-                  >
-                    <FaPencilAlt className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(task._id)}
-                    className="text-red-600 hover:text-red-800"
-                    aria-label="Изтрий"
-                  >
-                    <FaTrashAlt className="h-5 w-5" />
-                  </button>
+              ) : (
+                <div>
+                  <p className="font-semibold break-words">{task.taskName}</p>
+                  <div className="flex space-x-2 mt-2">
+                    <button
+                      onClick={() => startEditing(task)}
+                      className="text-blue-600 hover:text-blue-800"
+                      aria-label="Редактирай"
+                    >
+                      <FaPencilAlt className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task._id)}
+                      className="text-red-600 hover:text-red-800"
+                      aria-label="Изтрий"
+                    >
+                      <FaTrashAlt className="h-5 w-5" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
-            <span className="text-sm text-gray-500">
-              Създадена на:{" "}
-              {new Date(task.createdAt).toLocaleDateString("bg-BG", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
-          </li>
-        ))}
-      </ul>
+              )}
+              <span className="text-sm text-gray-500">
+                Създадена на:{" "}
+                {new Date(task.createdAt).toLocaleDateString("bg-BG", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
