@@ -1,6 +1,9 @@
 //src/app/pellets/page.js
 
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import PelletsForm from "./components/PelletsForm";
+import PelletsList from "./components/PelletList";
 
 export default function Page() {
   return (
@@ -12,6 +15,7 @@ export default function Page() {
 
         <div className="space-y-4">
           <PelletsForm />
+          <PelletsList />
         </div>
       </div>
     </div>

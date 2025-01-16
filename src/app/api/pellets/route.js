@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongoDB";
 import { Pellet } from "@/models/Pellet";
 import { getUserIdFromToken } from "@/lib/tokenUtils";
-import mongoose from "mongoose";
 
 export async function POST(req) {
   await connectToDatabase();
@@ -41,6 +40,35 @@ export async function POST(req) {
     console.error("Error creating pellet:", error.message);
     return NextResponse.json(
       { message: "Грешка при създаването на записа" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req) {
+  await connectToDatabase();
+
+  try {
+    const emailId = await getUserIdFromToken(req);
+
+    if (!emailId) {
+      return NextResponse.json(
+        { message: "Неоторизиран достъп" },
+        { status: 401 }
+      );
+    }
+    const pellets = await Pellet.find({ user: emailId });
+    if (pellets.length === 0) {
+      return NextResponse.json(
+        { message: "Няма налични пелети за този потребител.", pellets: [] },
+        { status: 200 }
+      );
+    }
+    return NextResponse.json(pellets, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching tasks:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при взимането на пелетите" },
       { status: 500 }
     );
   }
