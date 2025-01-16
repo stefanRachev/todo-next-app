@@ -17,8 +17,6 @@ export default function Purchases() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
-  console.log(accessToken);
-  
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -160,7 +158,7 @@ export default function Purchases() {
               onChange={(e) => setProductName(e.target.value)}
               placeholder="Въведете име на продукта"
               maxLength="31"
-              ref={productInputRef} 
+              ref={productInputRef}
               className="w-full border border-gray-300 rounded-md p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
             {productName.length >= 31 && (
@@ -184,32 +182,38 @@ export default function Purchases() {
           <h2 className="mt-8 text-xl font-bold text-gray-800">
             Списък с продукти
           </h2>
-          <ul className="mt-4 flex-wrap">
-            {products.map((product) => (
-              <li
-                key={product._id}
-                className="flex items-center justify-between mb-2 border-b pb-2"
-              >
-                <div className="truncate">{product.productName}</div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => startEditing(product)}
-                    className="text-blue-600 hover:text-blue-800"
-                    aria-label="Редактирай"
-                  >
-                    <FaPencilAlt className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(product._id)}
-                    className="text-red-600 hover:text-red-800"
-                    aria-label="Изтрий"
-                  >
-                    <FaTrashAlt className="h-5 w-5" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {products.length === 0 ? (
+            <p className="mt-4 text-gray-500">
+              Няма добавени продукти. Започнете като добавите нов продукт!
+            </p>
+          ) : (
+            <ul className="mt-4 flex-wrap">
+              {products.map((product) => (
+                <li
+                  key={product._id}
+                  className="flex items-center justify-between mb-2 border-b pb-2"
+                >
+                  <div className="truncate">{product.productName}</div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => startEditing(product)}
+                      className="text-blue-600 hover:text-blue-800"
+                      aria-label="Редактирай"
+                    >
+                      <FaPencilAlt className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product._id)}
+                      className="text-red-600 hover:text-red-800"
+                      aria-label="Изтрий"
+                    >
+                      <FaTrashAlt className="h-5 w-5" />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>
