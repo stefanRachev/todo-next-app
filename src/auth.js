@@ -151,6 +151,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (user.authProvider) {
           token.authProvider = user.authProvider;
         }
+        if (account?.provider === "credentials") {
+          token.accessToken = user.id;
+        }
       }
       if (account?.access_token) {
         token.accessToken = account.access_token;
