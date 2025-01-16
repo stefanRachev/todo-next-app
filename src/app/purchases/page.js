@@ -17,6 +17,8 @@ export default function Purchases() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
+  console.log(accessToken);
+  
 
   useEffect(() => {
     if (status === "unauthenticated") {

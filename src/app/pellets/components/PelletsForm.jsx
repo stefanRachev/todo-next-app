@@ -36,10 +36,10 @@ export default function PelletsForm() {
       console.log("Успешно изпратени данни:", result);
       const pelletDate = new Date(result.pellet.date);
 
-      // Изваждане на деня, месеца и годината от парсната дата
-      const day = pelletDate.getDate(); // 13
-      const month = pelletDate.getMonth() + 1; // 1 (тъй като месеците са нулирани от 0)
-      const year = pelletDate.getFullYear(); // 2025
+     
+      const day = pelletDate.getDate(); 
+      const month = pelletDate.getMonth() + 1;
+      const year = pelletDate.getFullYear();
 
       console.log(
         `Пелетът беше създаден на: ${day}-${month}-${year}, ${result.pellet.bags} чувала`
