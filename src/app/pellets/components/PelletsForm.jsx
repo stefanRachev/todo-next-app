@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 
-export default function PelletsForm({ accessToken }) {
+export default function PelletsForm({ accessToken, onPelletAdded }) {
   const today = new Date();
   const [date, setDate] = useState({
     day: today.getDate(),
@@ -35,10 +35,12 @@ export default function PelletsForm({ accessToken }) {
 
       const result = await response.json();
       console.log("Успешно изпратени данни:", result);
+
+      onPelletAdded();
+
       const pelletDate = new Date(result.pellet.date);
 
-     
-      const day = pelletDate.getDate(); 
+      const day = pelletDate.getDate();
       const month = pelletDate.getMonth() + 1;
       const year = pelletDate.getFullYear();
 
