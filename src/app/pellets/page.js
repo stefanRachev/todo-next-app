@@ -29,8 +29,8 @@ export default function PelletsPage() {
         </h1>
 
         <div className="space-y-4">
-          <PelletsForm />
-          <PelletsList />
+          <PelletsForm accessToken={accessToken} />
+          <PelletsList accessToken={accessToken} />
         </div>
       </div>
     </div>

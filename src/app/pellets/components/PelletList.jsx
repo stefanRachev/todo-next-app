@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function PelletsList() {
+export default function PelletsList({ accessToken }) {
   const [pellets, setPellets] = useState([]);
 
   useEffect(() => {
@@ -11,6 +11,7 @@ export default function PelletsList() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
@@ -20,7 +21,7 @@ export default function PelletsList() {
 
         const data = await response.json();
         console.log(data);
-        
+
         setPellets(data);
       } catch (error) {
         console.error("Грешка:", error.message);
@@ -28,7 +29,7 @@ export default function PelletsList() {
     };
 
     fetchPellets();
-  }, []);
+  }, [accessToken]);
 
   return (
     <div className="mt-6">

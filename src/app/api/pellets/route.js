@@ -58,12 +58,7 @@ export async function GET(req) {
       );
     }
     const pellets = await Pellet.find({ user: emailId });
-    if (pellets.length === 0) {
-      return NextResponse.json(
-        { message: "Няма налични пелети за този потребител.", pellets: [] },
-        { status: 200 }
-      );
-    }
+ 
     return NextResponse.json(pellets, { status: 200 });
   } catch (error) {
     console.error("Error fetching tasks:", error.message);

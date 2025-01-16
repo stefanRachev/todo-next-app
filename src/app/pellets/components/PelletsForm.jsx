@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 
-export default function PelletsForm() {
+export default function PelletsForm({ accessToken }) {
   const today = new Date();
   const [date, setDate] = useState({
     day: today.getDate(),
@@ -24,6 +24,7 @@ export default function PelletsForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(dataToSend),
       });
