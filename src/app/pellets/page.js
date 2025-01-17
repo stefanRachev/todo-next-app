@@ -8,10 +8,12 @@ import { useState, useEffect } from "react";
 
 import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
+import EditPelletForm from "./components/EditPelletForm";
 
 export default function PelletsPage() {
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
+  const [editingPellet, setEditingPellet] = useState(null);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -52,6 +54,20 @@ export default function PelletsPage() {
     }
   };
 
+  const handlePelletEdit = (pelletId) => {
+    const pelletToEdit = pelletsData.find((p) => p._id === pelletId);
+    setEditingPellet(pelletToEdit);
+  };
+
+  const handleUpdatePellet = (updatedPellet) => {
+    setPelletsData((prevData) =>
+      prevData.map((pellet) =>
+        pellet._id === updatedPellet._id ? updatedPellet : pellet
+      )
+    );
+    setEditingPellet(null);
+  };
+
   if (status === "loading" || status === "unauthenticated") {
     return <div>Зареждане...</div>;
   }
@@ -71,8 +87,19 @@ export default function PelletsPage() {
           <PelletsList
             pelletsData={pelletsData}
             onDelete={handleDeletePellet}
+            onEdit={handlePelletEdit}
           />
         </div>
+
+        {editingPellet && (
+          <div className="mt-6 p-4 bg-white rounded-lg shadow-sm">
+            <h2 className="text-xl font-bold mb-4">Редактиране на пелет</h2>
+            <EditPelletForm
+              pellet={editingPellet}
+              onUpdate={handleUpdatePellet}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

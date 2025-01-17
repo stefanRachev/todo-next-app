@@ -1,6 +1,6 @@
 import { FaTrashAlt, FaPencilAlt } from "react-icons/fa";
 
-export default function PelletsList({ pelletsData, onDelete }) {
+export default function PelletsList({ pelletsData, onDelete ,onEdit}) {
   return (
     <div className="mt-6">
       <h2 className="text-xl font-bold mb-4">Добавени пелети</h2>
