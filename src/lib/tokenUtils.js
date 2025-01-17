@@ -13,8 +13,6 @@ export async function getUserIdFromToken(req) {
   if (!token) {
     throw new Error("Не сте влезли в системата");
   }
-console.log(token?.email);
 
-  //return token?.accessToken;
   return token?.email;
 }
