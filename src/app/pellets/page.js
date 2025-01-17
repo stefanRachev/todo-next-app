@@ -3,7 +3,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { fetchPellets } from "./utils/apiUtils";
+import { fetchPellets, deletePellet } from "./utils/apiUtils";
 import { useState, useEffect } from "react";
 
 import PelletsForm from "./components/PelletsForm";
@@ -40,7 +40,17 @@ export default function PelletsPage() {
     setIsDataChanged(true);
   };
 
- 
+  const handleDeletePellet = async (pelletId) => {
+    try {
+      await deletePellet(pelletId, accessToken);
+
+      setPelletsData((prevData) =>
+        prevData.filter((pellet) => pellet._id !== pelletId)
+      );
+    } catch (error) {
+      console.error("Грешка при изтриване на пелет:", error.message);
+    }
+  };
 
   if (status === "loading" || status === "unauthenticated") {
     return <div>Зареждане...</div>;
@@ -58,7 +68,10 @@ export default function PelletsPage() {
             accessToken={accessToken}
             onPelletAdded={handlePelletAdded}
           />
-          <PelletsList pelletsData={pelletsData} />
+          <PelletsList
+            pelletsData={pelletsData}
+            onDelete={handleDeletePellet}
+          />
         </div>
       </div>
     </div>
