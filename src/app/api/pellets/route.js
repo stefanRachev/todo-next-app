@@ -77,8 +77,6 @@ export async function DELETE(req) {
   try {
     const { id } = await req.json();
 
-    console.log("id: ", id, "emailId: ", emailId);
-
     if (!id) {
       return NextResponse.json(
         { message: "Невалидни данни за пелетите" },
@@ -113,6 +111,71 @@ export async function DELETE(req) {
     console.error("Error deleting pellet:", error.message);
     return NextResponse.json(
       { message: "Грешка при изтриването на пелета" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req) {
+  await connectToDatabase();
+
+  const emailId = await getUserIdFromToken(req);
+
+  try {
+    const { id, date, bags } = await req.json();
+
+    if (!id || !date || !bags) {
+      return NextResponse.json(
+        { message: "Невалидни данни за пелетите" },
+        { status: 400 }
+      );
+    }
+
+    const pellet = await Pellet.findOne({ _id: id });
+
+    if (!pellet) {
+      return NextResponse.json(
+        { message: "Данните за пелетът не беше намерен!" },
+        { status: 404 }
+      );
+    }
+
+    if (pellet.user !== emailId) {
+      return NextResponse.json(
+        { message: "Нямате права да редактирате данните за пелетите" },
+        { status: 403 }
+      );
+    }
+
+    const dateValue = new Date(date);
+    if (isNaN(dateValue.getTime())) {
+      return NextResponse.json({ message: "Невалидна дата" }, { status: 400 });
+    }
+
+    const bagsParsed = parseInt(bags, 10);
+    if (isNaN(bagsParsed)) {
+      return NextResponse.json(
+        { message: "Невалиден брой пелети" },
+        { status: 400 }
+      );
+    }
+
+    pellet.date = dateValue;
+    pellet.bags = bagsParsed;
+
+    await pellet.save();
+
+    return NextResponse.json(
+      {
+        message: "Пелетът беше редактиран успешно",
+        pellet: pellet.toObject(),
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error editing pellet:", error.message);
+    return NextResponse.json(
+      { message: "Грешка при редактирането на пелета" },
       { status: 500 }
     );
   }

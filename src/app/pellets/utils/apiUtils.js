@@ -41,3 +41,29 @@ export const deletePellet = async (pelletId, accessToken) => {
     throw error;
   }
 };
+
+export const editPellet = async (pelletId, updatedData, accessToken) => {
+  try {
+    const response = await fetch(`/api/pellets`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ id: pelletId, ...updatedData }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Грешка при редактиране на задачата"
+      );
+    }
+
+    const { pellet } = await response.json();
+    return pellet;
+  } catch (error) {
+    console.error("Error editing task:", error.message);
+    throw error;
+  }
+};
