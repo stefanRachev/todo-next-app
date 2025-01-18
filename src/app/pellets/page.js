@@ -9,11 +9,13 @@ import { useState, useEffect } from "react";
 import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
 import EditPelletForm from "./components/EditPelletForm";
+import Modal from "./components/Modal";
 
 export default function PelletsPage() {
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
   const [editingPellet, setEditingPellet] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -57,6 +59,7 @@ export default function PelletsPage() {
   const handlePelletEdit = (pelletId) => {
     const pelletToEdit = pelletsData.find((p) => p._id === pelletId);
     setEditingPellet(pelletToEdit);
+    setIsModalOpen(true);
   };
 
   const handleUpdatePellet = (updatedPellet) => {
@@ -65,6 +68,17 @@ export default function PelletsPage() {
         pellet._id === updatedPellet._id ? updatedPellet : pellet
       )
     );
+    setEditingPellet(null);
+    closeModal();
+  };
+
+  const openModal = (pellet) => {
+    setEditingPellet(pellet);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
     setEditingPellet(null);
   };
 
@@ -90,17 +104,18 @@ export default function PelletsPage() {
             onEdit={handlePelletEdit}
           />
         </div>
-
-        {editingPellet && (
-          <div className="mt-6 p-4 bg-white rounded-lg shadow-sm">
-            <h2 className="text-xl font-bold mb-4">Редактиране на пелет</h2>
-            <EditPelletForm
-              pellet={editingPellet}
-              onUpdate={handleUpdatePellet}
-              accessToken={accessToken}
-            />
-          </div>
-        )}
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          {editingPellet && (
+            <div className="mt-6 p-4 bg-white rounded-lg shadow-sm">
+              <h2 className="text-xl font-bold mb-4">Редактиране на пелет</h2>
+              <EditPelletForm
+                pellet={editingPellet}
+                onUpdate={handleUpdatePellet}
+                accessToken={accessToken}
+              />
+            </div>
+          )}
+        </Modal>
       </div>
     </div>
   );
