@@ -101,7 +101,6 @@ export async function DELETE(req) {
     }
 
     await Pellet.deleteOne({ _id: id });
-    console.log("Проверка на намерения пелет: ", pellet);
 
     return NextResponse.json(
       { message: "Пелетът беше изтрит успешно!" },

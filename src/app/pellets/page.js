@@ -97,6 +97,7 @@ export default function PelletsPage() {
             <EditPelletForm
               pellet={editingPellet}
               onUpdate={handleUpdatePellet}
+              accessToken={accessToken}
             />
           </div>
         )}

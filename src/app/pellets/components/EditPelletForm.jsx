@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaSave } from "react-icons/fa";
-import { editPellet } from "../utils/apiUtils"; 
+import { editPellet } from "../utils/apiUtils";
 
-export default function EditPelletForm({ pellet, onUpdate }) {
+export default function EditPelletForm({ pellet, onUpdate, accessToken }) {
   const [formData, setFormData] = useState({
     date: pellet.date,
     bags: pellet.bags,
@@ -19,7 +19,7 @@ export default function EditPelletForm({ pellet, onUpdate }) {
     setIsLoading(true);
 
     try {
-      const updatedPellet = await editPellet(pellet._id, formData, session.user.accessToken);
+      const updatedPellet = await editPellet(pellet._id, formData, accessToken);
       onUpdate(updatedPellet);
     } catch (error) {
       console.error("Грешка при редактиране:", error.message);
