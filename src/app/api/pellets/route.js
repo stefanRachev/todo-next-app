@@ -57,7 +57,10 @@ export async function GET(req) {
         { status: 401 }
       );
     }
-    const pellets = await Pellet.find({ user: emailId });
+    const pellets = await Pellet.find({ user: emailId }).sort({
+      date: -1,
+      _id: -1,
+    });
 
     return NextResponse.json(pellets, { status: 200 });
   } catch (error) {

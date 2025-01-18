@@ -21,11 +21,17 @@ export default function PelletsPage() {
   const router = useRouter();
   const accessToken = session?.user?.accessToken;
 
+  // useEffect(() => {
+  //   if (status === "unauthenticated" || !accessToken) {
+  //     router.push("/login");
+  //   }
+  // }, [accessToken, status, router]);
+
   useEffect(() => {
-    if (status === "unauthenticated" || !accessToken) {
+    if (status === "unauthenticated") {
       router.push("/login");
     }
-  }, [accessToken, status, router]);
+  }, [status, router]);
 
   useEffect(() => {
     if (isDataChanged && accessToken) {
@@ -84,6 +90,9 @@ export default function PelletsPage() {
 
   if (status === "loading" || status === "unauthenticated") {
     return <div>Зареждане...</div>;
+  }
+  if (status === "unauthenticated") {
+    return null;
   }
 
   return (
