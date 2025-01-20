@@ -58,40 +58,25 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
     }
   };
 
-  // const isValidDate = (day, month, year) => {
-  //   const daysInMonth = new Date(year, month, 0).getDate();
-  //   const inputDate = new Date(year, month - 1, day);
-  //   return day >= 1 && day <= daysInMonth && inputDate <= today;
-  // };
 
   const isValidDate = (day, month, year) => {
-    const daysInMonth = new Date(year, month, 0).getDate();  // Вземи броя на дните за месеца
+    const daysInMonth = new Date(year, month, 0).getDate();  
     
-    if (day < 1 || day > daysInMonth) return false;  // Проверка за валиден ден
+    if (day < 1 || day > daysInMonth) return false; 
     
     return true;
   };
 
-  // const handleDateChange = (e, field) => {
-  //   const value = parseInt(e.target.value, 10);
-  //   setDate((prevDate) => {
-  //     const updatedDate = { ...prevDate, [field]: value };
-  //     if (isValidDate(updatedDate.day, updatedDate.month, updatedDate.year)) {
-  //       return updatedDate;
-  //     }
-  //     return prevDate;
-  //   });
-  // };
 
   const handleDateChange = (e, field) => {
     const value = parseInt(e.target.value, 10);
     setDate((prevDate) => {
       const updatedDate = { ...prevDate, [field]: value };
       if (field === "day" && value === "") {
-        updatedDate.day = "";  // Изтриване на деня
+        updatedDate.day = ""; 
       }
       if (field === "month" && value === "") {
-        updatedDate.month = "";  // Изтриване на месеца
+        updatedDate.month = "";  
       }
       if (isValidDate(updatedDate.day, updatedDate.month, updatedDate.year)) {
         return updatedDate;
