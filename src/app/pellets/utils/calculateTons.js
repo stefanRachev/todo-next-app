@@ -9,14 +9,11 @@ export const calculateTons = (pelletsData) => {
     totalBags += item.bags;
 
     while (totalBags >= 67) {
-      totalBags += item.bags;
+      totalBags -= 67;
 
-      while (totalBags >= 67) {
-        totalTons += weightPerTon;
-        totalBags -= 67;
+      totalTons += weightPerTon;
 
-        datesList.push(new Date().toLocaleDateString());
-      }
+      datesList.push(new Date().toLocaleDateString());
     }
   });
 
