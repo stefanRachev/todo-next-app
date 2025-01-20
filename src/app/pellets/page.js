@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { fetchPellets, deletePellet } from "./utils/apiUtils";
 import { useState, useEffect } from "react";
-import { calculateTons } from "./utils/calculateTons"; // new import
+import { calculateTons } from "./utils/calculateTons";
 
 import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
@@ -15,8 +15,8 @@ import Modal from "./components/Modal";
 export default function PelletsPage() {
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
-  const [totalBags, setTotalBags] = useState(0); // Стейт за общия брой чували
-  const [totalTons, setTotalTons] = useState(0); // Стейт за общия тонаж
+  const [totalBags, setTotalBags] = useState(0); 
+  const [totalTons, setTotalTons] = useState(0); 
   const [editingPellet, setEditingPellet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,8 +35,8 @@ export default function PelletsPage() {
       fetchPellets(accessToken)
         .then((data) => {
           setPelletsData(data);
-          setTotalBags(calculateTons(data).bags); // Актуализиране на общите чували
-          setTotalTons(calculateTons(data).tons); // Актуализиране на общия тонаж
+          setTotalBags(calculateTons(data).bags); 
+          setTotalTons(calculateTons(data).tons); 
           setIsDataChanged(false);
         })
         .catch((error) => {
@@ -72,18 +72,17 @@ export default function PelletsPage() {
   };
 
   const handleUpdatePellet = (updatedPellet) => {
-    // Актуализирай данните в масива
+ 
     setPelletsData((prevData) => {
       const updatedData = prevData.map((pellet) =>
         pellet._id === updatedPellet._id ? updatedPellet : pellet
       );
   
-      // Пресметни стойностите от обновените данни
       const calculated = calculateTons(updatedData);
       setTotalBags(calculated.bags);
       setTotalTons(calculated.tons);
   
-      return updatedData; // Връщане на обновените данни
+      return updatedData; 
     });
   
     setEditingPellet(null);
@@ -124,8 +123,8 @@ export default function PelletsPage() {
             pelletsData={pelletsData}
             onDelete={handleDeletePellet}
             onEdit={handlePelletEdit}
-            totalBags={totalBags}  // Подаваме общите чували към листа
-            totalTons={totalTons}  // Подаваме общия тонаж към листа
+            totalBags={totalBags}  
+            totalTons={totalTons}  
           />
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>

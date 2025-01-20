@@ -19,7 +19,7 @@ export default function PelletsList({
         <>
           <div className="mb-4">
             <p>Общо чували: {totalBags}</p>
-            <p>Общ тонаж: {totalTons} т</p>
+            <p>Общ тонаж: {totalTons} кг</p>
           </div>
           <ul className="space-y-2">
             {pelletsData.map((pellet) => (
