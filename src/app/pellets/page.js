@@ -15,8 +15,9 @@ import Modal from "./components/Modal";
 export default function PelletsPage() {
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
-  const [totalBags, setTotalBags] = useState(0); 
-  const [totalTons, setTotalTons] = useState(0); 
+  const [totalBags, setTotalBags] = useState(0);
+  const [totalTons, setTotalTons] = useState(0);
+  const [dates, setDates] = useState([]);
   const [editingPellet, setEditingPellet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,8 +36,9 @@ export default function PelletsPage() {
       fetchPellets(accessToken)
         .then((data) => {
           setPelletsData(data);
-          setTotalBags(calculateTons(data).bags); 
-          setTotalTons(calculateTons(data).tons); 
+          setTotalBags(calculateTons(data).bags);
+          setTotalTons(calculateTons(data).tons);
+          setDates(calculateTons(data).dates);
           setIsDataChanged(false);
         })
         .catch((error) => {
@@ -54,10 +56,15 @@ export default function PelletsPage() {
       await deletePellet(pelletId, accessToken);
 
       setPelletsData((prevData) => {
-        const updatedData = prevData.filter((pellet) => pellet._id !== pelletId);
+        const updatedData = prevData.filter(
+          (pellet) => pellet._id !== pelletId
+        );
         const calculated = calculateTons(updatedData);
+
         setTotalBags(calculated.bags);
         setTotalTons(calculated.tons);
+        setDates(calculated.dates);
+
         return updatedData;
       });
     } catch (error) {
@@ -72,23 +79,22 @@ export default function PelletsPage() {
   };
 
   const handleUpdatePellet = (updatedPellet) => {
- 
     setPelletsData((prevData) => {
       const updatedData = prevData.map((pellet) =>
         pellet._id === updatedPellet._id ? updatedPellet : pellet
       );
-  
+
       const calculated = calculateTons(updatedData);
       setTotalBags(calculated.bags);
       setTotalTons(calculated.tons);
-  
-      return updatedData; 
+      setDates(calculated.dates);
+
+      return updatedData;
     });
-  
+
     setEditingPellet(null);
     closeModal();
   };
-  
 
   const openModal = (pellet) => {
     setEditingPellet(pellet);
@@ -123,8 +129,9 @@ export default function PelletsPage() {
             pelletsData={pelletsData}
             onDelete={handleDeletePellet}
             onEdit={handlePelletEdit}
-            totalBags={totalBags}  
-            totalTons={totalTons}  
+            totalBags={totalBags}
+            totalTons={totalTons}
+            dates={dates}
           />
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
