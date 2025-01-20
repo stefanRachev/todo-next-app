@@ -28,7 +28,7 @@ export default function PelletsList({
                 className="p-4 border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
               >
                 <div>
-                  <p>Дата: {new Date(pellet.date).toLocaleDateString()}</p>
+                  <p>Дата: {new Date(pellet.date).toLocaleDateString('bg-BG')}</p>
                   <p>Брой чували: {pellet.bags}</p>
                 </div>
                 <div className="flex space-x-2">
