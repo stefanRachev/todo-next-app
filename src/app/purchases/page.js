@@ -26,19 +26,24 @@ export default function Purchases() {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       if (status !== "authenticated" || !accessToken) return;
-      const response = await fetch("/api/products", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      try {
+        const response = await fetch("/api/products", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        setProducts(data);
-      } else {
-        setError("Неуспешно зареждане на продуктите");
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data);
+        } else {
+          setError("Неуспешно зареждане на продуктите");
+        }
+      } catch (err) {
+        setError("Грешка при зареждане на продуктите");
+      } finally {
+        setLoading(false);
       }
     };
 

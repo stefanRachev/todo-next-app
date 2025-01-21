@@ -15,6 +15,7 @@ import Modal from "./components/Modal";
 export default function PelletsPage() {
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [totalBags, setTotalBags] = useState(0);
   const [totalTons, setTotalTons] = useState(0);
   const [dates, setDates] = useState([]);
@@ -33,6 +34,7 @@ export default function PelletsPage() {
 
   useEffect(() => {
     if (isDataChanged && accessToken) {
+      setIsLoading(true);
       fetchPellets(accessToken)
         .then((data) => {
           setPelletsData(data);
@@ -43,6 +45,9 @@ export default function PelletsPage() {
         })
         .catch((error) => {
           console.error("Неуспешно зареждане на данните:", error.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [isDataChanged, accessToken]);
@@ -106,15 +111,20 @@ export default function PelletsPage() {
     setEditingPellet(null);
   };
 
-  if (status === "loading" || status === "unauthenticated") {
-    return <div>Зареждане...</div>;
-  }
+  // if (status === "loading") {
+  //   return <div>Зареждане на данни...</div>;
+  // }
   if (status === "unauthenticated") {
     return null;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      {isLoading && (
+        <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+          <div className="loader"></div>
+        </div>
+      )}
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Въвеждане на пелети за отопление
