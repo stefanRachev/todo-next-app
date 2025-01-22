@@ -78,7 +78,7 @@ export default function Navigation() {
                 </Link>
                 <Link
                   href="/pellets"
-                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"v
+                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"
                   onClick={() => setIsOpen(false)}
                 >
                   Брояч на пелети и разход

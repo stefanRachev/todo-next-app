@@ -1,13 +1,21 @@
-import { auth } from "@/auth";
+"use client";
 
+//import { auth } from "@/auth";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-const HomePage = async () => {
-  const session = await auth();
+const HomePage =  () => {
+  const { data: session, status } = useSession();
 
-  if (!session?.user) redirect("/");
 
+  if (status === "loading") {
+    return <div>Loading...</div>; 
+  }
+
+  if (!session?.user) {
+    redirect("/"); 
+  }
 
   return (
     <div className="flex flex-col items-center m-4">
@@ -24,8 +32,6 @@ const HomePage = async () => {
           className="rounded-full"
         />
       )}
-
-     
     </div>
   );
 };
