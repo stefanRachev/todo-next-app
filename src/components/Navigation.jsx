@@ -68,36 +68,37 @@ export default function Navigation() {
             {isLoading ? (
               <span className="block py-2 px-4">Зареждане...</span>
             ) : session ? (
-              <>
-                <Link
-                  href="/purchases"
-                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Пазаруване на стоки
-                </Link>
-                <Link
-                  href="/pellets"
-                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Брояч на пелети и разход
-                </Link>
-                <Link
-                  href="/tasks"
-                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Разни задачи
-                </Link>
-                <Link
-                  href="/profile"
-                  className="block py-2 px-4 hover:bg-blue-600"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Акаунт
-                </Link>
-              </>
+              <div className="flex flex-col md:flex-row md:space-x-4 items-center justify-center">
+              <Link
+                href="/purchases"
+                className="block py-2 px-4 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded mb-2 md:mb-0"
+                onClick={() => setIsOpen(false)}
+              >
+                Пазаруване на стоки
+              </Link>
+              <Link
+                href="/pellets"
+                className="block py-2 px-4 bg-green-100 text-green-700 hover:bg-green-200 rounded mb-2 md:mb-0"
+                onClick={() => setIsOpen(false)}
+              >
+                Брояч на пелети и разход
+              </Link>
+              <Link
+                href="/tasks"
+                className="block py-2 px-4 bg-yellow-100 text-yellow-700 hover:bg-yellow-200 rounded mb-2 md:mb-0"
+                onClick={() => setIsOpen(false)}
+              >
+                Разни задачи
+              </Link>
+              <Link
+                href="/profile"
+                className="block py-2 px-4 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded mb-2 md:mb-0"
+                onClick={() => setIsOpen(false)}
+              >
+                Акаунт
+              </Link>
+            </div>
+            
             ) : (
               <>
                 <Link
