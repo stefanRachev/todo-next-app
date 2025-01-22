@@ -41,7 +41,7 @@ const Login = () => {
         console.error(response.error);
         setError(response.error.message);
       } else {
-        router.push("/home");
+        router.push("/profile");
       }
     } catch (error) {
       console.error("Login error: ", error);

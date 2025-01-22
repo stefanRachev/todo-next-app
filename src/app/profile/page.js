@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-const HomePage = () => {
+const ProfilePage = () => {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -47,4 +47,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ProfilePage;

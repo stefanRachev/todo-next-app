@@ -7,7 +7,7 @@ import { AiFillGithub } from "react-icons/ai";
 function SocialLogin() {
   const handleLogin = async (provider) => {
     try {
-      await signIn(provider, { callbackUrl: "/home" });
+      await signIn(provider, { callbackUrl: "/profile" });
     } catch (error) {
       console.error("Social login error:", error);
     }

@@ -91,7 +91,7 @@ export default function Navigation() {
                   Разни задачи
                 </Link>
                 <Link
-                  href="/home"
+                  href="/profile"
                   className="block py-2 px-4 hover:bg-blue-600"
                   onClick={() => setIsOpen(false)}
                 >
