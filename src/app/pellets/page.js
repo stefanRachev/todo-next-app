@@ -111,9 +111,7 @@ export default function PelletsPage() {
     setEditingPellet(null);
   };
 
-  // if (status === "loading") {
-  //   return <div>Зареждане на данни...</div>;
-  // }
+
   if (status === "unauthenticated") {
     return null;
   }

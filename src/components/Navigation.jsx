@@ -13,7 +13,6 @@ export default function Navigation() {
 
   return (
     <>
-    
       {session && (
         <header className="bg-gray-800 text-white py-2 px-4 text-sm flex justify-between items-center">
           <span>Добре дошли, {session.user.name}!</span>
@@ -68,7 +67,31 @@ export default function Navigation() {
             </Link>
             {isLoading ? (
               <span className="block py-2 px-4">Зареждане...</span>
-            ) : session ? null : (
+            ) : session ? (
+              <>
+                <Link
+                  href="/purchases"
+                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Пазаруване на стоки
+                </Link>
+                <Link
+                  href="/pellets"
+                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"v
+                  onClick={() => setIsOpen(false)}
+                >
+                  Брояч на пелети и разход
+                </Link>
+                <Link
+                  href="/tasks"
+                  className="block py-2 px-4 bg-purple-500 text-white hover:bg-purple-600 rounded"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Разни задачи
+                </Link>
+              </>
+            ) : (
               <>
                 <Link
                   href="/login"
