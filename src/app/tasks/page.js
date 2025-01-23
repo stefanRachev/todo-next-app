@@ -175,12 +175,13 @@ export default function MemoPage() {
             <li key={task._id || index} className="border p-4 rounded">
               {editingTaskId === task._id ? (
                 <div>
-                  <input
-                    type="text"
+                  <textarea
                     value={editedTaskText}
                     onChange={(e) => setEditedTaskText(e.target.value)}
-                    className="border p-2 rounded w-full"
-                  />
+                    className="border p-2 rounded w-full resize-none"
+                    rows={Math.min(editedTaskText.split("\n").length || 1, 5)} 
+                    placeholder="Редактирай задачата..."
+                  ></textarea>
                   <div className="flex space-x-2 mt-2">
                     <button
                       onClick={handleEdit}
