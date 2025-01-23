@@ -150,14 +150,19 @@ export default function MemoPage() {
         </div>
       )}
       <div className="mb-4">
-        <input
-          type="text"
+        <textarea
           value={taskText}
           onChange={(e) => setTaskText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addTask();
+            }
+          }}
           placeholder="Добави задача..."
-          className="border p-2 rounded w-full"
-        />
-
+          className="border p-2 rounded w-full resize-none"
+          rows={Math.min(taskText.split("\n").length || 1, 5)}
+        ></textarea>
         <button
           onClick={addTask}
           className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
@@ -178,8 +183,14 @@ export default function MemoPage() {
                   <textarea
                     value={editedTaskText}
                     onChange={(e) => setEditedTaskText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleEdit();
+                      }
+                    }}
                     className="border p-2 rounded w-full resize-none"
-                    rows={Math.min(editedTaskText.split("\n").length || 1, 5)} 
+                    rows={Math.min(editedTaskText.split("\n").length || 1, 5)}
                     placeholder="Редактирай задачата..."
                   ></textarea>
                   <div className="flex space-x-2 mt-2">
