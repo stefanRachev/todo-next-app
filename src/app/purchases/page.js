@@ -209,8 +209,13 @@ export default function Purchases() {
                     </button>
                     <button
                       onClick={() => handleDelete(product._id)}
-                      className="text-red-600 hover:text-red-800"
+                      className={`text-red-600 hover:text-red-800 ${
+                        editingProductId === product._id
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
                       aria-label="Изтрий"
+                      disabled={editingProductId === product._id}
                     >
                       <FaTrashAlt className="h-5 w-5" />
                     </button>
