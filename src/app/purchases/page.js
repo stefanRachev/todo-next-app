@@ -9,6 +9,7 @@ import { deleteProduct, editProduct } from "@/utils/api";
 export default function Purchases() {
   const [productName, setProductName] = useState("");
   const [editingProductId, setEditingProductId] = useState(null);
+  const [deletingProductId, setDeletingProductId] = useState(null);
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -108,14 +109,20 @@ export default function Purchases() {
   };
 
   const handleDelete = async (productId) => {
-    try {
-      await deleteProduct(productId, accessToken);
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product._id !== productId)
-      );
-    } catch (error) {
-      setError(error.message);
-    }
+    setDeletingProductId(productId);
+
+    setTimeout(async () => {
+      try {
+        await deleteProduct(productId, accessToken);
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== productId)
+        );
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setDeletingProductId(null);
+      }
+    }, 500);
   };
 
   const startEditing = (product) => {
@@ -137,13 +144,13 @@ export default function Purchases() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       {loading && (
-        <div className="loader flex justify-center items-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50 z-50">
-          <div
-            className="spinner-border animate-spin inline-block w-12 sm:w-16 md:w-24 lg:w-32 xl:w-40 border-4 border-t-4 border-gray-200 rounded-full"
-            role="status"
-          >
-            <span className="sr-only">Зареждане...</span>
-          </div>
+        <div className="loader fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50">
+          <div className="w-16 h-16 border-4 border-dashed border-gray-400 rounded-full animate-spin"></div>
+          <p className="text-white mt-4">
+            {products.length === 0
+              ? "Опитваме се да заредим продукти..."
+              : "Зареждам..."}
+          </p>
         </div>
       )}
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
@@ -209,15 +216,23 @@ export default function Purchases() {
                     </button>
                     <button
                       onClick={() => handleDelete(product._id)}
-                      className={`text-red-600 hover:text-red-800 ${
+                      className={`text-red-600 hover:text-red-800 transition-opacity duration-500 ${
+                        deletingProductId === product._id ||
                         editingProductId === product._id
                           ? "opacity-50 cursor-not-allowed"
-                          : ""
+                          : "opacity-100"
                       }`}
                       aria-label="Изтрий"
-                      disabled={editingProductId === product._id}
+                      disabled={deletingProductId === product._id}
                     >
-                      <FaTrashAlt className="h-5 w-5" />
+                      {deletingProductId === product._id ? (
+                        <span
+                          className="animate-spin inline-block w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full"
+                          role="status"
+                        ></span>
+                      ) : (
+                        <FaTrashAlt className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
                 </li>
