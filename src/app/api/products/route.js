@@ -29,7 +29,7 @@ export async function POST(req) {
     }
 
     const formattedName =
-      productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
+      productName.charAt(0).toUpperCase() + productName.slice(1)
 
     const newProduct = new Product({
       productName: formattedName,
@@ -150,7 +150,7 @@ export async function PUT(req) {
     }
 
     const formattedName =
-      productName.charAt(0).toUpperCase() + productName.slice(1).toLowerCase();
+      productName.charAt(0).toUpperCase() + productName.slice(1)
 
     const product = await Product.findOne({ _id: id });
 

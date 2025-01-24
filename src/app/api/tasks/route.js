@@ -18,7 +18,7 @@ export async function POST(req) {
       );
     }
     const formattedTaskName =
-      taskName.charAt(0).toUpperCase() + taskName.slice(1).toLowerCase();
+      taskName.charAt(0).toUpperCase() + taskName.slice(1)
 
     const newTask = new Task({
       taskName: formattedTaskName,
@@ -124,7 +124,7 @@ export async function PUT(req) {
     }
 
     const formattedTaskName =
-      taskName.charAt(0).toUpperCase() + taskName.slice(1).toLowerCase();
+      taskName.charAt(0).toUpperCase() + taskName.slice(1)
 
     const task = await Task.findOne({ _id: id });
 
