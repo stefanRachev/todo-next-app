@@ -14,6 +14,7 @@ export default function Purchases() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const productInputRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -59,11 +60,11 @@ export default function Purchases() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setIsSubmitting(true);
 
     if (!productName || productName.trim() === "") {
       setError("Моля, попълнете полето за продукт.");
-      setLoading(false);
+      setIsSubmitting(false);
       return;
     }
 
@@ -104,7 +105,7 @@ export default function Purchases() {
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -184,8 +185,19 @@ export default function Purchases() {
             <button
               type="submit"
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-all"
+              disabled={isSubmitting}
             >
-              {editingProductId ? "Запази промените" : "Добави в списъка"}
+              {isSubmitting ? (
+                <span className="flex justify-center items-center space-x-2">
+                  <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
+                  <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-150"></span>
+                  <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-300"></span>
+                </span>
+              ) : editingProductId ? (
+                "Запази промените"
+              ) : (
+                "Добави в списъка"
+              )}
             </button>
           </div>
         </form>
