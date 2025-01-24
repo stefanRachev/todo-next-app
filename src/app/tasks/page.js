@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { deleteTask, editTask } from "@/utils/api";
+import { set } from "mongoose";
 
 export default function MemoPage() {
   const [tasks, setTasks] = useState([]);
@@ -12,7 +13,9 @@ export default function MemoPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const [deletingTaskId, setDeletingTaskId] = useState(null);
   const [editedTaskText, setEditedTaskText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -59,6 +62,7 @@ export default function MemoPage() {
       setError("Моля, въведете текст за задачата.");
       return;
     }
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/tasks", {
@@ -82,16 +86,26 @@ export default function MemoPage() {
       setError("");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (taskId) => {
-    try {
-      await deleteTask(taskId, accessToken);
-      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
-    } catch (error) {
-      setError(error.message);
-    }
+    setDeletingTaskId(taskId);
+
+    setTimeout(async () => {
+      try {
+        await deleteTask(taskId, accessToken);
+        setTasks((prevTasks) =>
+          prevTasks.filter((task) => task._id !== taskId)
+        );
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setDeletingTaskId(null);
+      }
+    }, 500);
   };
 
   const handleEdit = async () => {
@@ -140,13 +154,13 @@ export default function MemoPage() {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Мемо задачи</h1>
       {isLoading && (
-        <div className="loader flex justify-center items-center w-full h-full fixed top-0 left-0 bg-gray-500 bg-opacity-50 z-50">
-          <div
-            className="spinner-border animate-spin inline-block w-12 sm:w-16 md:w-24 lg:w-32 xl:w-40 border-4 border-t-4 border-gray-200 rounded-full"
-            role="status"
-          >
-            <span className="sr-only">Зареждане...</span>
-          </div>
+        <div className="loader fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50">
+          <div className="w-16 h-16 border-4 border-dashed border-gray-400 rounded-full animate-spin"></div>
+          <p className="text-white mt-4">
+            {tasks.length === 0
+              ? "Опитваме се да заредим задачите..."
+              : "Зареждам..."}
+          </p>
         </div>
       )}
       <div className="mb-4">
@@ -166,8 +180,17 @@ export default function MemoPage() {
         <button
           onClick={addTask}
           className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+          disabled={isSubmitting}
         >
-          Добави
+          {isSubmitting ? (
+            <span className="flex justify-center items-center space-x-2">
+              <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
+              <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-150"></span>
+              <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-300"></span>
+            </span>
+          ) : (
+            "Добави задача"
+          )}
         </button>
       </div>
 
@@ -223,8 +246,16 @@ export default function MemoPage() {
                       onClick={() => handleDelete(task._id)}
                       className="text-red-600 hover:text-red-800"
                       aria-label="Изтрий"
+                      disabled={deletingTaskId === task._id}
                     >
-                      <FaTrashAlt className="h-5 w-5" />
+                      {deletingTaskId === task._id ? (
+                        <span
+                          className="animate-spin inline-block w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full"
+                          role="status"
+                        ></span>
+                      ) : (
+                        <FaTrashAlt className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
                 </div>

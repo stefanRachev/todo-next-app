@@ -13,8 +13,8 @@ export default function Purchases() {
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const productInputRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const productInputRef = useRef(null);
 
   const router = useRouter();
   const { data: session, status } = useSession();
