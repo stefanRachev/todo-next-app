@@ -22,6 +22,7 @@ export default function PelletsPage() {
   const [dates, setDates] = useState([]);
   const [editingPellet, setEditingPellet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState(null);
 
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -34,23 +35,34 @@ export default function PelletsPage() {
   }, [status, router]);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        setError("Зареждането отне твърде много време. Опитайте отново.");
+        setIsLoading(false);
+      }
+    }, 10000);
+
     if (isDataChanged && accessToken) {
       setIsLoading(true);
+      setError(null);
       fetchPellets(accessToken)
         .then((data) => {
           setPelletsData(data);
-          setTotalBags(calculateTons(data).bags);
-          setTotalTons(calculateTons(data).tons);
-          setDates(calculateTons(data).dates);
+          const calculated = calculateTons(data);
+          setTotalBags(calculated.bags);
+          setTotalTons(calculated.tons);
+          setDates(calculated.dates);
           setIsDataChanged(false);
         })
         .catch((error) => {
-          console.error("Неуспешно зареждане на данните:", error.message);
+          console.error("Грешка при зареждане на пелетите:", error);
+          setError("Неуспешно зареждане на данните: " + error.message);
         })
         .finally(() => {
           setIsLoading(false);
         });
     }
+    return () => clearTimeout(timer);
   }, [isDataChanged, accessToken]);
 
   const handlePelletAdded = () => {
@@ -74,7 +86,7 @@ export default function PelletsPage() {
         return updatedData;
       });
     } catch (error) {
-      console.error("Грешка при изтриване на пелет:", error.message);
+      setError("Грешка при изтриване на пелет: " + error.message);
     }
   };
 
@@ -122,32 +134,37 @@ export default function PelletsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      {/* {isLoading && (
-        <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
-          <div className="loader"></div>
-        </div>
-      )} */}
-      {isLoading && pelletsData.length === 0 && (
-        <Loader text="Зареждам данни за пелети..." />
-      )}
+      {isLoading && <Loader text="Зареждам данни за пелети..." />}
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Въвеждане на пелети за отопление
         </h1>
+
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
         <div className="space-y-4">
           <PelletsForm
             accessToken={accessToken}
             onPelletAdded={handlePelletAdded}
           />
-          <PelletsList
+          {/* <PelletsList
             pelletsData={pelletsData}
             onDelete={handleDeletePellet}
             onEdit={handlePelletEdit}
             totalBags={totalBags}
             totalTons={totalTons}
             dates={dates}
-          />
+          /> */}
+          {!error && pelletsData.length > 0 && (
+            <PelletsList
+              pelletsData={pelletsData}
+              onDelete={handleDeletePellet}
+              onEdit={handlePelletEdit}
+              totalBags={totalBags}
+              totalTons={totalTons}
+              dates={dates}
+            />
+          )}
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           {editingPellet && (
