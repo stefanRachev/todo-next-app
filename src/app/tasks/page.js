@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { deleteTask, editTask } from "@/utils/api";
-import { set } from "mongoose";
+import Loader from "@/components/Loader";
 
 export default function MemoPage() {
   const [tasks, setTasks] = useState([]);
@@ -153,16 +153,7 @@ export default function MemoPage() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Мемо задачи</h1>
-      {isLoading && (
-        <div className="loader fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50">
-          <div className="w-16 h-16 border-4 border-dashed border-gray-400 rounded-full animate-spin"></div>
-          <p className="text-white mt-4">
-            {tasks.length === 0
-              ? "Опитваме се да заредим задачите..."
-              : "Зареждам..."}
-          </p>
-        </div>
-      )}
+      {isLoading && <Loader text="Зареждам задачите..." />}
       <div className="mb-4">
         <textarea
           value={taskText}
@@ -195,9 +186,10 @@ export default function MemoPage() {
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
-      {tasks.length === 0 ? (
+      {!isLoading && tasks.length === 0 && (
         <div className="text-gray-500 italic">Няма добавени задачи.</div>
-      ) : (
+      )}
+      {!isLoading && tasks.length > 0 && (
         <ul className="space-y-4">
           {tasks.map((task, index) => (
             <li key={task._id || index} className="border p-4 rounded">
