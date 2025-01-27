@@ -58,14 +58,19 @@ export default function PelletsList({
                   </button>
                   <button
                     onClick={() => onDelete(pellet._id)}
-                    className="text-red-600 hover:text-red-800 mt-2 md:mt-0"
+                    className={`text-red-600 hover:text-red-800 mt-2 md:mt-0 ${
+                      isDeletingPellet === pellet._id
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
                     aria-label="Изтрий"
+                    disabled={isDeletingPellet === pellet._id}
                   >
                     {isDeletingPellet === pellet._id ? (
                       <span
                         className="animate-spin inline-block w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full"
                         role="status"
-                      ></span> // Лоадинг индикатор със стилове
+                      ></span>
                     ) : (
                       <FaTrashAlt className="h-5 w-5" />
                     )}
