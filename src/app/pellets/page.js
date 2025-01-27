@@ -22,6 +22,7 @@ export default function PelletsPage() {
   const [dates, setDates] = useState([]);
   const [editingPellet, setEditingPellet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeletingPellet, setIsDeletingPellet] = useState(null);
   const [error, setError] = useState(null);
 
   const { data: session, status } = useSession();
@@ -70,6 +71,7 @@ export default function PelletsPage() {
   };
 
   const handleDeletePellet = async (pelletId) => {
+    setIsDeletingPellet(pelletId);
     try {
       await deletePellet(pelletId, accessToken);
 
@@ -85,8 +87,14 @@ export default function PelletsPage() {
 
         return updatedData;
       });
+      setError(null);
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     } catch (error) {
       setError("Грешка при изтриване на пелет: " + error.message);
+    } finally {
+      setIsDeletingPellet(null);
     }
   };
 
@@ -147,24 +155,16 @@ export default function PelletsPage() {
             accessToken={accessToken}
             onPelletAdded={handlePelletAdded}
           />
-          {/* <PelletsList
+          <PelletsList
             pelletsData={pelletsData}
             onDelete={handleDeletePellet}
             onEdit={handlePelletEdit}
             totalBags={totalBags}
             totalTons={totalTons}
             dates={dates}
-          /> */}
-          {!error && pelletsData.length > 0 && (
-            <PelletsList
-              pelletsData={pelletsData}
-              onDelete={handleDeletePellet}
-              onEdit={handlePelletEdit}
-              totalBags={totalBags}
-              totalTons={totalTons}
-              dates={dates}
-            />
-          )}
+            error={error}
+            isDeletingPellet={isDeletingPellet}
+          />
         </div>
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           {editingPellet && (

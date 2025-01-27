@@ -7,10 +7,15 @@ export default function PelletsList({
   totalBags,
   totalTons,
   dates,
+  error,
+  isDeletingPellet,
 }) {
   return (
     <div className="mt-6">
       <h2 className="text-xl font-bold mb-4">Добавени пелети</h2>
+      {error && (
+        <div className="text-red-500 italic mb-4">Възникна грешка: {error}</div>
+      )}
       {pelletsData.length === 0 ? (
         <div className="text-gray-500 italic">
           Няма данни за разход на пелети за момента.
@@ -56,7 +61,14 @@ export default function PelletsList({
                     className="text-red-600 hover:text-red-800 mt-2 md:mt-0"
                     aria-label="Изтрий"
                   >
-                    <FaTrashAlt className="h-5 w-5" />
+                    {isDeletingPellet === pellet._id ? (
+                      <span
+                        className="animate-spin inline-block w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full"
+                        role="status"
+                      ></span> // Лоадинг индикатор със стилове
+                    ) : (
+                      <FaTrashAlt className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
               </li>

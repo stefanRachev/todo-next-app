@@ -10,9 +10,12 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
     year: today.getFullYear(),
   });
   const [bags, setBags] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
 
     const dataToSend = {
       date: new Date(date.year, date.month - 1, date.day).toISOString(),
@@ -44,9 +47,6 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
       const month = pelletDate.getMonth() + 1;
       const year = pelletDate.getFullYear();
 
-      console.log(
-        `Пелетът беше създаден на: ${day}-${month}-${year}, ${result.pellet.bags} чувала`
-      );
       setBags("");
       setDate({
         day: today.getDate(),
@@ -55,28 +55,28 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
       });
     } catch (error) {
       console.error("Грешка:", error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-
   const isValidDate = (day, month, year) => {
-    const daysInMonth = new Date(year, month, 0).getDate();  
-    
-    if (day < 1 || day > daysInMonth) return false; 
-    
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    if (day < 1 || day > daysInMonth) return false;
+
     return true;
   };
-
 
   const handleDateChange = (e, field) => {
     const value = parseInt(e.target.value, 10);
     setDate((prevDate) => {
       const updatedDate = { ...prevDate, [field]: value };
       if (field === "day" && value === "") {
-        updatedDate.day = ""; 
+        updatedDate.day = "";
       }
       if (field === "month" && value === "") {
-        updatedDate.month = "";  
+        updatedDate.month = "";
       }
       if (isValidDate(updatedDate.day, updatedDate.month, updatedDate.year)) {
         return updatedDate;
@@ -84,7 +84,6 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
       return prevDate;
     });
   };
-  
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -143,8 +142,17 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
       <button
         type="submit"
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        disabled={isSubmitting}
       >
-        Въведи
+        {isSubmitting ? (
+          <span className="flex justify-center items-center space-x-2">
+            <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
+            <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-150"></span>
+            <span className="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-300"></span>
+          </span>
+        ) : (
+          "Въведи"
+        )}
       </button>
     </form>
   );
