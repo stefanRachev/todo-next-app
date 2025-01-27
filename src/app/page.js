@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import Link from "next/link";
 
 export default function Home() {
@@ -11,51 +13,49 @@ export default function Home() {
             Добре дошли в нашето приложение!
           </h1>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
-            <div className="p-6 bg-blue-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
-              <h2 className="text-xl sm:text-2xl font-medium text-blue-700">
-                Пазаруване на стоки
-              </h2>
-              <p className="text-gray-500 mt-2 mb-4">
-                Тук можете да създадете списък с желаните стоки.
-              </p>
-              <Link
-                href="/purchases"
-                className="text-blue-600 hover:text-blue-800 transition-all"
-              >
-                Вижте повече
-              </Link>
-            </div>
+            <Link href="/purchases">
+              <div className="p-6 bg-blue-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full cursor-pointer">
+                <h2 className="text-xl sm:text-2xl font-medium text-blue-700">
+                  Пазаруване на стоки
+                </h2>
+                <p className="text-gray-500 mt-2 mb-4">
+                  Тук можете да създадете списък с желаните стоки.
+                </p>
+                <span className="text-blue-600 hover:text-blue-800 transition-all">
+                  Вижте повече
+                </span>
+              </div>
+            </Link>
 
-            <div className="p-6 bg-green-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
-              <h2 className="text-xl sm:text-2xl font-medium text-green-700">
-                Брояч на пелети и разход
-              </h2>
-              <p className="text-gray-500 mt-2 mb-4">
-                Следете ефективно разхода на пелети за отопление. Добавяйте
-                броя на използваните торби, изчислявайте дневния и общия разход.
-              </p>
-              <Link
-                href="/pellets"
-                className="text-green-600 hover:text-green-800 transition-all"
-              >
-                Вижте повече
-              </Link>
-            </div>
+            <Link href="/pellets">
+              <div className="p-6 bg-green-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full cursor-pointer">
+                <h2 className="text-xl sm:text-2xl font-medium text-green-700">
+                  Брояч на пелети и разход
+                </h2>
+                <p className="text-gray-500 mt-2 mb-4">
+                  Следете ефективно разхода на пелети за отопление. Добавяйте
+                  броя на използваните торби, изчислявайте дневния и общия
+                  разход.
+                </p>
+                <span className="text-green-600 hover:text-green-800 transition-all">
+                  Вижте повече
+                </span>
+              </div>
+            </Link>
 
-            <div className="p-6 bg-yellow-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full">
-              <h2 className="text-xl sm:text-2xl font-medium text-yellow-700">
-                Разни задачи
-              </h2>
-              <p className="text-gray-500 mt-2 mb-4">
-                Тук можете да добавяте бъдещи задачи.
-              </p>
-              <Link
-                href="/tasks"
-                className="text-yellow-600 hover:text-yellow-800 transition-all"
-              >
-                Вижте повече
-              </Link>
-            </div>
+            <Link href="/tasks">
+              <div className="p-6 bg-yellow-100 rounded-lg text-center shadow-md hover:shadow-lg transition-all flex flex-col justify-between h-full cursor-pointer">
+                <h2 className="text-xl sm:text-2xl font-medium text-yellow-700">
+                  Разни задачи
+                </h2>
+                <p className="text-gray-500 mt-2 mb-4">
+                  Тук можете да добавяте бъдещи задачи.
+                </p>
+                <span className="text-yellow-600 hover:text-yellow-800 transition-all">
+                  Вижте повече
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
