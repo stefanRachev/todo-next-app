@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { deleteProduct, editProduct } from "@/utils/api";
+import Loader from "@/components/Loader";
 
 export default function Purchases() {
   const [productName, setProductName] = useState("");
@@ -49,7 +50,18 @@ export default function Purchases() {
       }
     };
 
+    const timeout = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        setError(
+          "Зареждането отнема твърде много време. Моля, опитайте отново."
+        );
+      }
+    }, 10000);
+
     fetchProducts();
+
+    return () => clearTimeout(timeout);
   }, [status, accessToken]);
 
   useEffect(() => {
@@ -144,16 +156,8 @@ export default function Purchases() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      {loading && (
-        <div className="loader fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50">
-          <div className="w-16 h-16 border-4 border-dashed border-gray-400 rounded-full animate-spin"></div>
-          <p className="text-white mt-4">
-            {products.length === 0
-              ? "Опитваме се да заредим продукти..."
-              : "Зареждам..."}
-          </p>
-        </div>
-      )}
+      {loading && !error && <Loader text="Зареждане на продуктите..." />}
+
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Създаване на списък за покупки

@@ -11,6 +11,7 @@ import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
 import EditPelletForm from "./components/EditPelletForm";
 import Modal from "./components/Modal";
+import Loader from "@/components/Loader";
 
 export default function PelletsPage() {
   const [pelletsData, setPelletsData] = useState([]);
@@ -111,6 +112,9 @@ export default function PelletsPage() {
     setEditingPellet(null);
   };
 
+  if (status === "loading") {
+    return <div>Зареждам сесията...</div>;
+  }
 
   if (status === "unauthenticated") {
     return null;
@@ -118,10 +122,13 @@ export default function PelletsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      {isLoading && (
+      {/* {isLoading && (
         <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
           <div className="loader"></div>
         </div>
+      )} */}
+      {isLoading && pelletsData.length === 0 && (
+        <Loader text="Зареждам данни за пелети..." />
       )}
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
