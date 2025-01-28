@@ -74,8 +74,18 @@ export default function Purchases() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const productRegex = /^(?![!?.<>/&;])[a-zA-Z0-9а-яА-Я\s.,!?/-]*$/;
+
+
+
     if (!productName || productName.trim() === "") {
       setError("Моля, попълнете полето за продукт.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!productRegex.test(productName)) {
+      setError("Името на продукта съдържа непозволени символи.");
       setIsSubmitting(false);
       return;
     }

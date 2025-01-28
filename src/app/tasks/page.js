@@ -58,10 +58,19 @@ export default function MemoPage() {
   }, [status, accessToken]);
 
   const addTask = async () => {
+    const regex = /([a-zA-Z0-9а-яА-Я\s.,!?/]*[a-zA-Z0-9а-яА-Я.,!?/])?/;
+
+
     if (!taskText || taskText.trim() === "") {
       setError("Моля, въведете текст за задачата.");
       return;
     }
+
+    if (!regex.test(taskText)) {
+      setError("Текстът съдържа непозволени символи.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -109,8 +118,14 @@ export default function MemoPage() {
   };
 
   const handleEdit = async () => {
+
+    const regex = /^[a-zA-Z0-9а-яА-Я]+/;
     if (!editedTaskText) {
       setError("Моля, въведете текст за задачата.");
+      return;
+    }
+    if (!regex.test(editedTaskText)) {
+      setError("Текстът съдържа непозволени символи.");
       return;
     }
 
