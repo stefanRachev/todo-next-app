@@ -155,9 +155,9 @@ export async function PUT(req) {
     }
 
     const bagsParsed = parseInt(bags, 10);
-    if (isNaN(bagsParsed)) {
+    if (isNaN(bagsParsed) || bagsParsed < 1 || bagsParsed > 100) {  
       return NextResponse.json(
-        { message: "Невалиден брой пелети" },
+        { message: "Невалиден брой пелети (от 1 до 100 торби)" },
         { status: 400 }
       );
     }

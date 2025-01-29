@@ -22,7 +22,7 @@ export default function PelletsForm({ accessToken, onPelletAdded, setError }) {
       bags: parseInt(bags, 10),
     };
 
-    try {
+    try {   
       const response = await fetch("/api/pellets", {
         method: "POST",
         headers: {

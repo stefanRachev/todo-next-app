@@ -175,6 +175,7 @@ export default function PelletsPage() {
                 pellet={editingPellet}
                 onUpdate={handleUpdatePellet}
                 accessToken={accessToken}
+                setError={setError}
               />
             </div>
           )}

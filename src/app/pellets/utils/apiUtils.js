@@ -53,17 +53,21 @@ export const editPellet = async (pelletId, updatedData, accessToken) => {
       body: JSON.stringify({ id: pelletId, ...updatedData }),
     });
 
+    const responseData = await response.json();
+
+    console.log("test response data: ", responseData);
+
     if (!response.ok) {
-      const errorData = await response.json();
       throw new Error(
-        errorData.message || "Грешка при редактиране на задачата"
+        responseData.message || "Грешка при редактиране на задачата"
       );
     }
 
-    const { pellet } = await response.json();
-    return pellet;
+    return {
+      pellet: responseData.pellet || null,
+      message: responseData.message || "",
+    };
   } catch (error) {
-    console.error("Error editing task:", error.message);
     throw error;
   }
 };
