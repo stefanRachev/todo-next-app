@@ -154,6 +154,7 @@ export default function PelletsPage() {
           <PelletsForm
             accessToken={accessToken}
             onPelletAdded={handlePelletAdded}
+            setError={setError}
           />
           <PelletsList
             pelletsData={pelletsData}

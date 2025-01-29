@@ -58,8 +58,7 @@ export default function MemoPage() {
   }, [status, accessToken]);
 
   const addTask = async () => {
-    const regex = /([a-zA-Z0-9а-яА-Я\s.,!?/]*[a-zA-Z0-9а-яА-Я.,!?/])?/;
-
+    const regex = /^[a-zA-Z0-9а-яА-Я][a-zA-Z0-9а-яА-Я\s.,!?-]*$/;
 
     if (!taskText || taskText.trim() === "") {
       setError("Моля, въведете текст за задачата.");
@@ -118,8 +117,8 @@ export default function MemoPage() {
   };
 
   const handleEdit = async () => {
+    const regex = /^[a-zA-Z0-9а-яА-Я][a-zA-Z0-9а-яА-Я\s.,!?-]*$/;
 
-    const regex = /^[a-zA-Z0-9а-яА-Я]+/;
     if (!editedTaskText) {
       setError("Моля, въведете текст за задачата.");
       return;

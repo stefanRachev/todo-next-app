@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 
-export default function PelletsForm({ accessToken, onPelletAdded }) {
+export default function PelletsForm({ accessToken, onPelletAdded, setError }) {
   const today = new Date();
   const [date, setDate] = useState({
     day: today.getDate(),
@@ -33,7 +33,14 @@ export default function PelletsForm({ accessToken, onPelletAdded }) {
       });
 
       if (!response.ok) {
-        throw new Error("Грешка при изпращане на данните към сървъра!");
+        const errorResult = await response.json();
+        console.error("Грешка от сървъра:", errorResult);
+
+        if (errorResult.message) {
+          setError(errorResult.message); 
+        } else {      
+          throw new Error("Неочаквана грешка от сървъра!");
+        }
       }
 
       const result = await response.json();

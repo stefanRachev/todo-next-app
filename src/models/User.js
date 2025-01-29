@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new Schema({
   name: {
@@ -21,6 +22,15 @@ const userSchema = new Schema({
     type: String,
     enum: ["google", "github"],
   },
+});
+
+
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  next();
 });
 
 const User = mongoose.models?.User ?? mongoose.model("User", userSchema);

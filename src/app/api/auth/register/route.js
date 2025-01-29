@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import connectToDatabase from "@/lib/mongoDB";
 import { User } from "@/models/User";
 
@@ -39,15 +38,12 @@ export async function POST(req) {
         JSON.stringify({ message: "User already exists" }),
         { status: 409 }
       );
-      
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,
     });
 
     return new NextResponse(

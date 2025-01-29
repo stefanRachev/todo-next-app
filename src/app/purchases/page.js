@@ -74,9 +74,8 @@ export default function Purchases() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const productRegex = /^(?![!?.<>/&;])[a-zA-Z0-9а-яА-Я\s.,!?/-]*$/;
 
-
+    const productRegex = /^[a-zA-Z0-9а-яА-Я][a-zA-Z0-9а-яА-Я\s.,!?-]*$/;
 
     if (!productName || productName.trim() === "") {
       setError("Моля, попълнете полето за продукт.");

@@ -8,10 +8,17 @@ const taskSchema = new Schema({
   taskName: {
     type: String,
     required: true,
+    trim: true,
+    validate: {
+      validator: function (value) {
+        return /^[a-zA-Z0-9а-яА-Я][a-zA-Z0-9а-яА-Я\s.,!?-]*$/.test(value);
+      },
+      message: "Текстът съдържа невалидни символи!",
+    },
   },
   createdAt: {
     type: Date,
-    default: Date.now, 
+    default: Date.now,
   },
 });
 
