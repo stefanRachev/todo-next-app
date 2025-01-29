@@ -59,7 +59,6 @@ export default function Navigation() {
             </svg>
           </button>
 
-          {/* Навигационни линкове */}
           <div
             className={`absolute top-16 left-0 w-full bg-blue-500 md:static md:flex md:items-center md:space-x-6 ${
               isOpen ? "block" : "hidden"

@@ -31,9 +31,13 @@ const RegistrationForm = () => {
         return setErrorMessage("Passwords do not match.");
       }
 
+      if (password.length < 6) {
+       return setErrorMessage("Паролата трябва да е поне 6 символа дълга.");
+      }
+
       const response = await fetch("/api/auth/register", {
         method: "POST",
-        
+
         headers: {
           "content-type": "application/json",
         },
@@ -63,6 +67,11 @@ const RegistrationForm = () => {
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-center mb-6">
         Регистрация
       </h1>
+      <p className="text-sm text-gray-500 mt-1">
+        Препоръчително е да използвате комбинация от главни и малки букви, цифри
+        и специални символи за по-сигурна парола.
+      </p>
+
       <form
         onSubmit={handlerSubmit}
         className="my-5 flex flex-col items-center p-5 border border-gray-200 rounded-md max-w-lg mx-auto w-full space-y-4 sm:max-w-md md:max-w-lg lg:max-w-xl"
@@ -123,9 +132,11 @@ const RegistrationForm = () => {
       {errorMessage && (
         <div className="text-red-500 mt-4 text-center">{errorMessage}</div>
       )}
-       <div className="flex flex-col items-center mt-4">
+      <div className="flex flex-col items-center mt-4">
         <SocialLogin />
-        <div className="text-center text-gray-500 mt-4">- Вече имате регистрация ? -</div>
+        <div className="text-center text-gray-500 mt-4">
+          - Вече имате регистрация ? -
+        </div>
         <Link
           href="/login"
           className="block text-center text-blue-500 hover:underline mt-2"
@@ -133,8 +144,8 @@ const RegistrationForm = () => {
           Влез
         </Link>
       </div>
-      </div>
+    </div>
   );
 };
 
-export default RegistrationForm;    
+export default RegistrationForm;

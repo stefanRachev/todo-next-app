@@ -10,6 +10,7 @@ import { calculateTons } from "./utils/calculateTons";
 import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
 import EditPelletForm from "./components/EditPelletForm";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Modal from "./components/Modal";
 import Loader from "@/components/Loader";
 
@@ -181,6 +182,7 @@ export default function PelletsPage() {
           )}
         </Modal>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }

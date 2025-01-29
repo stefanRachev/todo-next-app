@@ -80,6 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   jwt: {
     secret: process.env.AUTH_SECRET,
+   // maxAge: 60,
   },
   secret: process.env.AUTH_SECRET,
 

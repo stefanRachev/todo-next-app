@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { deleteTask, editTask } from "@/utils/api";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Loader from "@/components/Loader";
 
 export default function MemoPage() {
@@ -280,6 +281,7 @@ export default function MemoPage() {
           ))}
         </ul>
       )}
+      <ScrollToTopButton />
     </div>
   );
 }

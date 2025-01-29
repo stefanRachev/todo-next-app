@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { deleteProduct, editProduct } from "@/utils/api";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Loader from "@/components/Loader";
 
 export default function Purchases() {
@@ -266,6 +267,7 @@ export default function Purchases() {
           )}
         </div>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }
