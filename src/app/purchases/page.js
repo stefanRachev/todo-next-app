@@ -75,7 +75,6 @@ export default function Purchases() {
     e.preventDefault();
     setIsSubmitting(true);
 
-
     const productRegex = /^[a-zA-Z0-9а-яА-Я][a-zA-Z0-9а-яА-Я\s.,!?-]*$/;
 
     if (!productName || productName.trim() === "") {
@@ -133,7 +132,7 @@ export default function Purchases() {
 
   const handleDelete = async (productId) => {
     setDeletingProductId(productId);
-
+    setError("");
     setTimeout(async () => {
       try {
         await deleteProduct(productId, accessToken);
