@@ -1,9 +1,9 @@
 "use client";
 
-//import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();
@@ -43,6 +43,11 @@ const ProfilePage = () => {
           да достъпвате данните, които сте въвели, от всяко устройство.
         </p>
       </div>
+      <Link href="/change-password">
+        <button className="w-full bg-blue-500 text-white p-2 rounded">
+          Промени паролата си
+        </button>
+      </Link>
     </div>
   );
 };

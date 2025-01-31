@@ -80,7 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   jwt: {
     secret: process.env.AUTH_SECRET,
-   // maxAge: 60,
+    // maxAge: 60,
   },
   secret: process.env.AUTH_SECRET,
 
@@ -128,16 +128,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id || token.sub;
-        session.user.email = token.email;
-        session.user.name = token.name;
-        session.user.accessToken = token.accessToken;
-        if (token.authProvideId) {
-          session.user.authProvideId = token.authProvideId;
-        }
-        if (token.authProvider) {
-          session.user.authProvider = token.authProvider;
-        }
+        session.user.id = token.id || token.sub || null;
+        session.user.email = token.email || null;
+        session.user.name = token.name || null;
+        session.user.accessToken = token.accessToken || null;
+        session.user.authProvider = token.authProvider || null;
       }
       return session;
     },
@@ -146,19 +141,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id || user.sub;
         token.email = user.email;
         token.name = user.name;
-        if (user.authProvideId) {
-          token.authProvideId = user.authProvideId;
+        token.authProvider = user.authProvider;
+        token.authProvideId = user.authProvideId;
+      }
+
+      if (account) {
+        if (account.access_token) {
+          token.accessToken = account.access_token;
         }
-        if (user.authProvider) {
-          token.authProvider = user.authProvider;
+        if (account.provider) {
+          token.authProvider = account.provider;
         }
         if (account?.provider === "credentials") {
           token.accessToken = user.id;
         }
       }
-      if (account?.access_token) {
-        token.accessToken = account.access_token;
-      }
+
       return token;
     },
   },
