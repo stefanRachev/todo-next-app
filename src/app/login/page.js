@@ -43,7 +43,7 @@ const Login = () => {
           result.error?.message || result.message || "Неочаквана грешка."
         );
       } else {
-        if (router) { // Проверка дали router е наличен
+        if (router) {
           router.push("/profile");
         }
       }
