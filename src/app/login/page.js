@@ -37,11 +37,15 @@ const Login = () => {
         password,
       });
 
-      if (!!result.error) {
-        console.error(response.error);
-        setError(response.error.message);
+      if (result?.error || result?.message) {
+        console.error(result.error || result.message);
+        setError(
+          result.error?.message || result.message || "Неочаквана грешка."
+        );
       } else {
-        router.push("/profile");
+        if (router) { // Проверка дали router е наличен
+          router.push("/profile");
+        }
       }
     } catch (error) {
       console.error("Login error: ", error);
@@ -92,7 +96,9 @@ const Login = () => {
       </form>
       <div className="flex flex-col items-center mt-4">
         <SocialLogin />
-        <div className="text-center text-gray-500 mt-4">- Все още не сте се регистрирали ? -</div>
+        <div className="text-center text-gray-500 mt-4">
+          - Все още не сте се регистрирали ? -
+        </div>
         <Link
           href="/register"
           className="block text-center text-blue-500 hover:underline mt-2"
