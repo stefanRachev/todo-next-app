@@ -9,6 +9,7 @@ export default function ChangePasswordForm() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
 
@@ -27,6 +28,7 @@ export default function ChangePasswordForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setIsSubmitting(true);
 
     if (!session?.user?.email) {
       return setMessage(
@@ -45,6 +47,8 @@ export default function ChangePasswordForm() {
     });
 
     const data = await res.json();
+    setIsSubmitting(false);
+    
     if (!res.ok) return setMessage(data.message);
 
     setMessage("Паролата е сменена успешно!");
@@ -52,9 +56,9 @@ export default function ChangePasswordForm() {
     setNewPassword("");
     setConfirmNewPassword("");
 
-    setTimeout(() => {    
-      signOut({ redirect: false }); 
-      router.push("/login"); 
+    setTimeout(() => {
+      signOut({ redirect: false });
+      router.push("/login");
     }, 2000);
   };
 
@@ -107,8 +111,9 @@ export default function ChangePasswordForm() {
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded"
+          disabled={isSubmitting}
         >
-          Смени паролата
+          {isSubmitting ? "Смяна..." : "Смени паролата"}
         </button>
       )}
 
