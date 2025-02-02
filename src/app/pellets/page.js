@@ -152,6 +152,9 @@ export default function PelletsPage() {
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
         <div className="space-y-4">
+          <button className="w-full py-2 px-4 mt-4 bg-yellow-500 text-white font-bold rounded-lg hover:bg-yellow-600">
+            Приключи сезона и занули всички пелети
+          </button>
           <PelletsForm
             accessToken={accessToken}
             onPelletAdded={handlePelletAdded}
