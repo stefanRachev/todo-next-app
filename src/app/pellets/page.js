@@ -2,7 +2,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 import { fetchPellets, deletePellet } from "./utils/apiUtils";
 import { useState, useEffect } from "react";
 import { calculateTons } from "./utils/calculateTons";
@@ -28,6 +28,7 @@ export default function PelletsPage() {
 
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
@@ -134,10 +135,16 @@ export default function PelletsPage() {
   };
 
   const finalizeSeason = () => {
-   
-    router.push('/pellets/finalized');
+    // Създаваш URLSearchParams обект, за да създадеш query параметрите
+    const query = new URLSearchParams({
+      totalBags: totalBags,
+      totalTons: totalTons,
+      dates: JSON.stringify(dates), // Преобразуваме масив в string
+    }).toString();
+  
+    // Използваш router.push(), за да изпратиш данните като query параметри
+    router.push(`/pellets/finalized?${query}`);
   };
-
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
   }
