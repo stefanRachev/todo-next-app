@@ -32,10 +32,10 @@ export default function FinalizedSeasonPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Сезонът е завършен!
+          Готов сте да приключите сезона?
         </h1>
         <p className="text-lg text-gray-600">
-          Вашите данни за пелетите са занулени и сезонът е приключен. Благодарим
+          Вашите данни за пелетите ще се занулят и ще се запазят само общите данни! Благодарим
           ви, че използвате нашето приложение.
         </p>
 
@@ -47,10 +47,10 @@ export default function FinalizedSeasonPage() {
             </span>
           </p>
           <p className="text-lg font-bold text-gray-800">
-            Общо тонове: {totalTons}
+            Общо тонове: {totalTons} кг
           </p>
           <p className="text-lg font-bold text-gray-800">
-            Текущи чували: {totalBags}
+            Текущи чували: {totalBags} броя
           </p>
           <p className="text-lg font-bold text-gray-800">
             Дати за достигане на тон:
@@ -68,7 +68,7 @@ export default function FinalizedSeasonPage() {
               //onClick={saveSeasonData}
               className="px-4 py-2 bg-green-600 text-white rounded-md"
             >
-              Запази сезон
+              Запази и приключи сезона
             </button>
           </div>
         </div>
