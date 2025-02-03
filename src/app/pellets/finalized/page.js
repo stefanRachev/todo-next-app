@@ -1,21 +1,21 @@
 "use client";
-import { Suspense } from "react";  // Импортираме Suspense
+import { Suspense } from "react";  
 import { useSearchParams } from "next/navigation";
 
 const FinalizedSeasonPage = () => {
-  const searchParams = useSearchParams(); // Извличаме параметрите от URL
+  const searchParams = useSearchParams(); 
 
-  // Извличаме параметрите от searchParams
+
   const totalBags = searchParams.get('totalBags');
   const totalTons = searchParams.get('totalTons');
   const dates = searchParams.get('dates');
 
-  // Ако някои параметри липсват, показваме "Loading..."
+
   if (!totalBags || !totalTons || !dates) {
     return <div>Loading...</div>;
   }
 
-  const parsedDates = JSON.parse(dates); // Преобразуваме string обратно в масив
+  const parsedDates = JSON.parse(dates); 
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -27,7 +27,6 @@ const FinalizedSeasonPage = () => {
           Вашите данни за пелетите са занулени и сезонът е приключен. Благодарим ви, че използвате нашето приложение.
         </p>
 
-        {/* Рендериране на данните */}
         <div className="mt-6">
           <p className="text-lg font-bold text-gray-800">
             Общо чували: {totalBags}
@@ -47,7 +46,7 @@ const FinalizedSeasonPage = () => {
 
         <div className="mt-6">
           <button
-            onClick={() => window.location.href = "/pellets"} // Пренасочваме с window.location.href
+            onClick={() => window.location.href = "/pellets"} 
             className="px-4 py-2 bg-blue-600 text-white rounded-md"
           >
             Върни се в пелетите

@@ -135,14 +135,14 @@ export default function PelletsPage() {
   };
 
   const finalizeSeason = () => {
-    // Създаваш URLSearchParams обект, за да създадеш query параметрите
+   
     const query = new URLSearchParams({
       totalBags: totalBags,
       totalTons: totalTons,
-      dates: JSON.stringify(dates), // Преобразуваме масив в string
+      dates: JSON.stringify(dates), 
     }).toString();
   
-    // Използваш router.push(), за да изпратиш данните като query параметри
+    
     router.push(`/pellets/finalized?${query}`);
   };
   if (status === "loading") {
