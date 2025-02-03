@@ -135,7 +135,6 @@ export default function PelletsPage() {
   };
 
   const finalizeSeason = () => {
-   
     const query = new URLSearchParams({
       totalBags: totalBags,
       totalTons: totalTons,
