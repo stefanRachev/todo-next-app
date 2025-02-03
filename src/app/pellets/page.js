@@ -2,10 +2,11 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter,useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { fetchPellets, deletePellet } from "./utils/apiUtils";
 import { useState, useEffect } from "react";
 import { calculateTons } from "./utils/calculateTons";
+import { usePellets } from "./context/PelletsContext";
 
 import PelletsForm from "./components/PelletsForm";
 import PelletsList from "./components/PelletList";
@@ -15,12 +16,13 @@ import Modal from "./components/Modal";
 import Loader from "@/components/Loader";
 
 export default function PelletsPage() {
+  const { totalBags, setTotalBags, totalTons, setTotalTons, dates, setDates } = usePellets();
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalBags, setTotalBags] = useState(0);
-  const [totalTons, setTotalTons] = useState(0);
-  const [dates, setDates] = useState([]);
+  // const [totalBags, setTotalBags] = useState(0);
+  // const [totalTons, setTotalTons] = useState(0);
+  // const [dates, setDates] = useState([]);
   const [editingPellet, setEditingPellet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeletingPellet, setIsDeletingPellet] = useState(null);
@@ -28,7 +30,7 @@ export default function PelletsPage() {
 
   const { data: session, status } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
+
   const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
@@ -135,14 +137,7 @@ export default function PelletsPage() {
   };
 
   const finalizeSeason = () => {
-    const query = new URLSearchParams({
-      totalBags: totalBags,
-      totalTons: totalTons,
-      dates: JSON.stringify(dates), 
-    }).toString();
-  
-    
-    router.push(`/pellets/finalized?${query}`);
+    router.push("/pellets/finalized");
   };
   if (status === "loading") {
     return <div>Зареждам сесията...</div>;
