@@ -1,17 +1,10 @@
 "use client";
 
 import { usePellets } from "../context/PelletsContext";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 export default function FinalizedSeasonPage() {
   const { totalBags, totalTons, dates } = usePellets();
-
-  console.log(totalBags);
-  console.log(totalTons);
-  console.log(dates);
-
-  if (totalBags === undefined || totalTons === undefined) {
-    return <div>Loading...</div>;
-  }
 
   const parsedDates = dates;
 
@@ -28,12 +21,14 @@ export default function FinalizedSeasonPage() {
 
         <div className="mt-6">
           <p className="text-lg font-bold text-gray-800">
-            Общо чували: {totalBags}
-          </p>
-          <p className="text-lg font-bold text-gray-800">
             Общо тонове: {totalTons}
           </p>
-          <p className="text-lg font-bold text-gray-800">Дати:</p>
+          <p className="text-lg font-bold text-gray-800">
+            Текущи чували: {totalBags}
+          </p>
+          <p className="text-lg font-bold text-gray-800">
+            Дати за достигане на тон:
+          </p>
           <ul className="list-disc pl-5">
             {parsedDates.length > 0 &&
               parsedDates.map((date, index) => (
@@ -42,6 +37,14 @@ export default function FinalizedSeasonPage() {
                 </li>
               ))}
           </ul>
+          <div className="mt-6">
+            <button
+              //onClick={saveSeasonData}
+              className="px-4 py-2 bg-green-600 text-white rounded-md"
+            >
+              Запази сезон
+            </button>
+          </div>
         </div>
 
         <div className="mt-6">
