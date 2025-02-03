@@ -17,7 +17,7 @@ import Loader from "@/components/Loader";
 
 export default function PelletsPage() {
   
-  const { setTotalBags, setTotalTons, setDates } = usePellets();
+  const { setTotalBags, setTotalTons, setDates ,setFirstDate,setLastDate } = usePellets();
 
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
@@ -71,6 +71,27 @@ export default function PelletsPage() {
       setTotalBags(calculated.bags);
       setTotalTons(calculated.tons);
       setDates(calculated.dates);
+
+      const sortedDates = pelletsData
+      .map(item => new Date(item.date)) 
+      .sort((a, b) => a - b);  
+
+      if (sortedDates.length > 0) {
+        const firstDate = sortedDates[0].toLocaleDateString('bg-BG', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+  
+        const lastDate = sortedDates[sortedDates.length - 1].toLocaleDateString('bg-BG', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+  
+        setFirstDate(firstDate);
+        setLastDate(lastDate);
+      }
     }
   }, [pelletsData]);
 

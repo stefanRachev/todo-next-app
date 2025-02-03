@@ -1,12 +1,32 @@
 "use client";
 
 import { usePellets } from "../context/PelletsContext";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function FinalizedSeasonPage() {
-  const { totalBags, totalTons, dates } = usePellets();
+  const { totalBags, totalTons, dates, firstDate, lastDate } = usePellets();
+  const { data: session, status } = useSession();
+  const accessToken = session?.user?.accessToken;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const parsedDates = dates;
+
+  if (status === "loading") {
+    return <div>Зареждам сесията...</div>;
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -20,6 +40,12 @@ export default function FinalizedSeasonPage() {
         </p>
 
         <div className="mt-6">
+          <p className="text-lg font-bold text-gray-800">
+            Първа и последна дата на сезона:
+            <span className="ml-2 text-gray-600 block">
+              {firstDate} - {lastDate}
+            </span>
+          </p>
           <p className="text-lg font-bold text-gray-800">
             Общо тонове: {totalTons}
           </p>
