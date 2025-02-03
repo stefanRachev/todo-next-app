@@ -1,8 +1,8 @@
 "use client";
-import { Suspense } from "react";  
+//import { Suspense } from "react";  
 import { useSearchParams } from "next/navigation";
 
-const FinalizedSeasonPage = () => {
+export default function FinalizedSeasonPage  ()  {
   const searchParams = useSearchParams(); 
 
 
@@ -57,10 +57,10 @@ const FinalizedSeasonPage = () => {
   );
 };
 
-export default function Page() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <FinalizedSeasonPage />
-    </Suspense>
-  );
-}
+// export default function Page() {
+//   return (
+//     <Suspense fallback={<div>Loading...</div>}>
+//       <FinalizedSeasonPage />
+//     </Suspense>
+//   );
+// }
