@@ -16,13 +16,12 @@ import Modal from "./components/Modal";
 import Loader from "@/components/Loader";
 
 export default function PelletsPage() {
-  const { totalBags, setTotalBags, totalTons, setTotalTons, dates, setDates } = usePellets();
+  
+  const { setTotalBags, setTotalTons, setDates } = usePellets();
+
   const [pelletsData, setPelletsData] = useState([]);
   const [isDataChanged, setIsDataChanged] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  // const [totalBags, setTotalBags] = useState(0);
-  // const [totalTons, setTotalTons] = useState(0);
-  // const [dates, setDates] = useState([]);
   const [editingPellet, setEditingPellet] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeletingPellet, setIsDeletingPellet] = useState(null);
@@ -53,10 +52,6 @@ export default function PelletsPage() {
       fetchPellets(accessToken)
         .then((data) => {
           setPelletsData(data);
-          const calculated = calculateTons(data);
-          setTotalBags(calculated.bags);
-          setTotalTons(calculated.tons);
-          setDates(calculated.dates);
           setIsDataChanged(false);
         })
         .catch((error) => {
@@ -69,6 +64,15 @@ export default function PelletsPage() {
     }
     return () => clearTimeout(timer);
   }, [isDataChanged, accessToken]);
+
+  useEffect(() => {
+    if (pelletsData.length > 0) {
+      const calculated = calculateTons(pelletsData);
+      setTotalBags(calculated.bags);
+      setTotalTons(calculated.tons);
+      setDates(calculated.dates);
+    }
+  }, [pelletsData]);
 
   const handlePelletAdded = () => {
     setIsDataChanged(true);
@@ -83,11 +87,6 @@ export default function PelletsPage() {
         const updatedData = prevData.filter(
           (pellet) => pellet._id !== pelletId
         );
-        const calculated = calculateTons(updatedData);
-
-        setTotalBags(calculated.bags);
-        setTotalTons(calculated.tons);
-        setDates(calculated.dates);
 
         return updatedData;
       });
@@ -113,12 +112,6 @@ export default function PelletsPage() {
       const updatedData = prevData.map((pellet) =>
         pellet._id === updatedPellet._id ? updatedPellet : pellet
       );
-
-      const calculated = calculateTons(updatedData);
-      setTotalBags(calculated.bags);
-      setTotalTons(calculated.tons);
-      setDates(calculated.dates);
-
       return updatedData;
     });
 
@@ -173,9 +166,6 @@ export default function PelletsPage() {
             pelletsData={pelletsData}
             onDelete={handleDeletePellet}
             onEdit={handlePelletEdit}
-            totalBags={totalBags}
-            totalTons={totalTons}
-            dates={dates}
             error={error}
             isDeletingPellet={isDeletingPellet}
           />

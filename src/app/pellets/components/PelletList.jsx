@@ -1,15 +1,17 @@
+"use client";
+
 import { FaTrashAlt, FaPencilAlt } from "react-icons/fa";
+import { usePellets } from "../context/PelletsContext";
 
 export default function PelletsList({
   pelletsData,
   onDelete,
   onEdit,
-  totalBags,
-  totalTons,
-  dates,
   error,
   isDeletingPellet,
 }) {
+  const { totalBags, totalTons, dates } = usePellets();
+  
   return (
     <div className="mt-6">
       <h2 className="text-xl font-bold mb-4">Добавени пелети</h2>
