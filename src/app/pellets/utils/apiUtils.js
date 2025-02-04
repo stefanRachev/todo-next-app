@@ -119,3 +119,25 @@ export const createSeason = async (seasonData, accessToken) => {
     throw error;
   }
 };
+
+export const fetchSeasons = async (accessToken) => {
+  try {
+    const response = await fetch("/api/pellets/save-season", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Неуспешно взимане на сезонни данни.");
+    }
+
+    const seasons = await response.json();
+    return seasons;
+  } catch (error) {
+    console.error("Грешка при взимане на сезонни данни:", error.message);
+    throw error;
+  }
+};

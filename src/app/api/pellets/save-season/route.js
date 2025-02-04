@@ -35,3 +35,30 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET(req) {
+    await connectToDatabase();
+  
+    const emailId = await getUserIdFromToken(req);  
+  
+    try {
+      
+      const seasons = await Season.find({ user: emailId });
+  
+      if (!seasons || seasons.length === 0) {
+        return NextResponse.json(
+          { error: "Няма налични сезони за този потребител." },
+          { status: 404 }
+        );
+      }
+  
+    
+      return NextResponse.json(seasons, { status: 200 });
+    } catch (error) {
+      console.error("Грешка при извличане на сезоните:", error);
+      return NextResponse.json(
+        { error: "Неуспешно извличане на сезоните." },
+        { status: 500 }
+      );
+    }
+  }
