@@ -72,51 +72,6 @@ export async function GET(req) {
   }
 }
 
-export async function DELETE(req) {
-  await connectToDatabase();
-
-  const emailId = await getUserIdFromToken(req);
-
-  try {
-    const { id } = await req.json();
-
-    if (!id) {
-      return NextResponse.json(
-        { message: "Невалидни данни за пелетите" },
-        { status: 400 }
-      );
-    }
-
-    const pellet = await Pellet.findOne({ _id: id });
-
-    if (!pellet) {
-      return NextResponse.json(
-        { message: "Пелетът не беше намерен" },
-        { status: 404 }
-      );
-    }
-
-    if (pellet.user !== emailId) {
-      return NextResponse.json(
-        { message: "Нямате права да изтриете този пелет" },
-        { status: 403 }
-      );
-    }
-
-    await Pellet.deleteOne({ _id: id });
-
-    return NextResponse.json(
-      { message: "Пелетът беше изтрит успешно!" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error deleting pellet:", error.message);
-    return NextResponse.json(
-      { message: "Грешка при изтриването на пелета" },
-      { status: 500 }
-    );
-  }
-}
 
 export async function PUT(req) {
   await connectToDatabase();
@@ -182,3 +137,35 @@ export async function PUT(req) {
     );
   }
 }
+
+
+
+export async function DELETE(req) {
+  await connectToDatabase();
+
+  try {
+    const emailId = await getUserIdFromToken(req);
+
+    if (!emailId) {
+      return NextResponse.json(
+        { message: "Неоторизиран достъп" },
+        { status: 401 }
+      );
+    }
+
+    
+    const result = await Pellet.deleteMany({ user: emailId });
+
+    return NextResponse.json(
+      { message: "Всички записи на пелети са изтрити", deletedCount: result.deletedCount },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Грешка при изтриването:", error.message);
+    return NextResponse.json(
+      { message: "Неуспешно изтриване на записите" },
+      { status: 500 }
+    );
+  }
+}
+

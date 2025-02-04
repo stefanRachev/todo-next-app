@@ -22,7 +22,7 @@ export async function fetchPellets(accessToken) {
 
 export const deletePellet = async (pelletId, accessToken) => {
   try {
-    const response = await fetch(`/api/pellets/`, {
+    const response = await fetch(`/api/pellets/${pelletId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -71,3 +71,28 @@ export const editPellet = async (pelletId, updatedData, accessToken) => {
     throw error;
   }
 };
+
+
+
+
+export async function deleteAllPellets(accessToken) {
+  try {
+    const response = await fetch("/api/pellets", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Грешка при изтриването на пелетите!");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Грешка:", error.message);
+    throw error;
+  }
+}
+
