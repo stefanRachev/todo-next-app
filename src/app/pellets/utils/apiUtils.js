@@ -96,3 +96,26 @@ export async function deleteAllPellets(accessToken) {
   }
 }
 
+
+export const createSeason = async (seasonData, accessToken) => {
+  try {
+    const response = await fetch("/api/pellets/save-season", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(seasonData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Неуспешно създаване на сезонни данни.");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Грешка при създаване на сезонни данни:", error.message);
+    throw error;
+  }
+};
