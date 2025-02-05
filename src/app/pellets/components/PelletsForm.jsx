@@ -15,6 +15,13 @@ export default function PelletsForm({ accessToken, onPelletAdded, setError }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const bagsParsed = parseInt(bags, 10);
+    if (isNaN(bagsParsed) || bagsParsed < 1 || bagsParsed > 100) {
+      setError("Моля, въведете валиден брой чували между 1 и 100.");
+      setIsSubmitting(false);
+      return;
+    }
+
     setIsSubmitting(true);
 
     const dataToSend = {
@@ -22,7 +29,7 @@ export default function PelletsForm({ accessToken, onPelletAdded, setError }) {
       bags: parseInt(bags, 10),
     };
 
-    try {   
+    try {
       const response = await fetch("/api/pellets", {
         method: "POST",
         headers: {
@@ -37,8 +44,8 @@ export default function PelletsForm({ accessToken, onPelletAdded, setError }) {
         console.error("Грешка от сървъра:", errorResult);
 
         if (errorResult.message) {
-          setError(errorResult.message); 
-        } else {      
+          setError(errorResult.message);
+        } else {
           throw new Error("Неочаквана грешка от сървъра!");
         }
       }
