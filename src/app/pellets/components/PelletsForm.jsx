@@ -1,4 +1,3 @@
-// src/app/pellets/components/PelletsForm.jsx
 "use client";
 import { useState } from "react";
 

@@ -86,39 +86,42 @@ export default function SeasonDetailsPage() {
           Подробности за сезона
         </h1>
         <p className="text-lg text-gray-600">
-          Ето информацията за текущия сезон:
+          Ето информацията за изминали сезони на пелетите ви:
         </p>
 
         <div className="mt-6">
-          <p className="text-lg font-bold text-gray-800">
-            Първа и последна дата на сезона:
-            <span className="ml-2 text-gray-600 block">
-              {seasonData[0].firstDate} - {seasonData[0].lastDate}
-            </span>
-          </p>
-          <p className="text-lg font-bold text-gray-800">
-            Общо тонове: {seasonData[0].totalTons} кг
-          </p>
-          <p className="text-lg font-bold text-gray-800">
-            Текущи чували: {seasonData[0].totalBags} броя
-          </p>
-          <p className="text-lg font-bold text-gray-800">
-            Дати за достигане на тон:
-          </p>
-          <ul className="list-disc pl-5">
-            {seasonData[0].dates.map((date, index) => (
-              <li key={index} className="text-gray-600">
-                {date}
-              </li>
-            ))}
-          </ul>
-
+          {seasonData.map((season, index) => (
+            <div key={index} className="mt-6">
+              <p className="text-lg font-bold text-gray-800">
+                Първа и последна дата на сезона:
+                <span className="ml-2 text-gray-600 block">
+                  {season.firstDate} - {season.lastDate}
+                </span>
+              </p>
+              <p className="text-lg font-bold text-gray-800">
+                Общо тонове: {season.totalTons} кг
+              </p>
+              <p className="text-lg font-bold text-gray-800">
+                Текущи чували: {season.totalBags} броя
+              </p>
+              <p className="text-lg font-bold text-gray-800">
+                Дати за достигане на тон:
+              </p>
+              <ul className="list-disc pl-5">
+                {season.dates.map((date, index) => (
+                  <li key={index} className="text-gray-600">
+                    {date}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <div className="mt-6">
             <button
-              onClick={() => router.push("/some-other-page")}
+              onClick={() => router.push("/pellets/finalized")}
               className="px-4 py-2 bg-blue-600 text-white rounded-md"
             >
-              Отиди на друга страница
+              Отиди детаили за пелети
             </button>
           </div>
         </div>
