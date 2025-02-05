@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { fetchSeasons } from "../utils/apiUtils";
+import { FaTrashAlt } from "react-icons/fa";
 
 export default function SeasonDetailsPage() {
   const { data: session, status } = useSession();
@@ -89,9 +90,24 @@ export default function SeasonDetailsPage() {
           Ето информацията за изминали сезони на пелетите ви:
         </p>
 
-        <div className="mt-6">
+        <div className="mt-6 space-y-6">
           {seasonData.map((season, index) => (
-            <div key={index} className="mt-6">
+            <div
+              key={index}
+              className="bg-white shadow-lg rounded-lg p-6 border border-gray-200"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Сезон {index + 1}
+                </h2>
+                <button
+                  onClick={() => onDelete(season.id)}
+                  className="text-red-600 hover:text-red-800 transition duration-300"
+                >
+                  <FaTrashAlt className="w-5 h-5" />
+                </button>
+              </div>
+
               <p className="text-lg font-bold text-gray-800">
                 Първа и последна дата на сезона:
                 <span className="ml-2 text-gray-600 block">
@@ -99,19 +115,23 @@ export default function SeasonDetailsPage() {
                 </span>
               </p>
               <p className="text-lg font-bold text-gray-800">
-                Общо тонове: {season.totalTons} кг
+                Общо тонове:{" "}
+                <span className="text-gray-600 font-normal">
+                  {season.totalTons} кг
+                </span>
               </p>
               <p className="text-lg font-bold text-gray-800">
-                Текущи чували: {season.totalBags} броя
+                Текущи чували:{" "}
+                <span className="text-gray-600 font-normal">
+                  {season.totalBags} броя
+                </span>
               </p>
               <p className="text-lg font-bold text-gray-800">
                 Дати за достигане на тон:
               </p>
-              <ul className="list-disc pl-5">
+              <ul className="list-disc pl-5 text-gray-600">
                 {season.dates.map((date, index) => (
-                  <li key={index} className="text-gray-600">
-                    {date}
-                  </li>
+                  <li key={index}>{date}</li>
                 ))}
               </ul>
             </div>

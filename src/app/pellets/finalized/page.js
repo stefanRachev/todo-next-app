@@ -111,23 +111,29 @@ export default function FinalizedSeasonPage() {
                 </li>
               ))}
           </ul>
-          <div className="mt-6">
+
+          <div className="mt-6 space-y-3">
             <button
               onClick={() => setShowModal(true)}
-              className="px-4 py-2 bg-green-600 text-white rounded-md"
+              className="w-full px-4 py-2 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition"
             >
               Запази и приключи сезона
             </button>
-          </div>
-        </div>
 
-        <div className="mt-6">
-          <button
-            onClick={() => (window.location.href = "/pellets")}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md"
-          >
-            Върни се в пелетите
-          </button>
+            <button
+              onClick={() => (window.location.href = "/pellets/season-details")}
+              className="w-full px-4 py-2 bg-gray-500 text-white rounded-md font-semibold hover:bg-gray-600 transition"
+            >
+              Детайли за сезона
+            </button>
+
+            <button
+              onClick={() => (window.location.href = "/pellets")}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition"
+            >
+              Върни се в пелетите
+            </button>
+          </div>
         </div>
       </div>
 
