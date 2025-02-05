@@ -36,29 +36,30 @@ export async function POST(req) {
   }
 }
 
+
+
 export async function GET(req) {
-    await connectToDatabase();
-  
-    const emailId = await getUserIdFromToken(req);  
-  
-    try {
-      
-      const seasons = await Season.find({ user: emailId });
-  
-      if (!seasons || seasons.length === 0) {
-        return NextResponse.json(
-          { error: "Няма налични сезони за този потребител." },
-          { status: 404 }
-        );
-      }
-  
+  await connectToDatabase();
+
+  const emailId = await getUserIdFromToken(req);
+
+  try {
     
-      return NextResponse.json(seasons, { status: 200 });
-    } catch (error) {
-      console.error("Грешка при извличане на сезоните:", error);
+    const userSeasons = await Season.find({ user: emailId });
+
+    if (!userSeasons || userSeasons.length === 0) {
       return NextResponse.json(
-        { error: "Неуспешно извличане на сезоните." },
-        { status: 500 }
+        { message: "Няма налични завършени сезони за този потребител." },
+        { status: 200 } 
       );
     }
+
+    return NextResponse.json(userSeasons, { status: 200 });
+  } catch (error) {
+    console.error("Грешка при извличане на сезоните:", error);
+    return NextResponse.json(
+      { error: "Неуспешно извличане на сезоните." },
+      { status: 500 }
+    );
   }
+}
