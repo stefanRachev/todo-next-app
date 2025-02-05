@@ -6,8 +6,8 @@ const seasonSchema = new Schema(
     user: { type: String, required: true },
     totalBags: { type: Number, required: true },
     totalTons: { type: Number, required: true },
-    firstDate: { type: Date, required: true },
-    lastDate: { type: Date, required: true },
+    firstDate: { type: String, required: true },
+    lastDate: { type: String, required: true },
     dates: [String],
   },
   { timestamps: true }
