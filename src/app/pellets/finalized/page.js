@@ -8,7 +8,18 @@ import { createSeason } from "../utils/apiUtils";
 import { deleteAllPellets } from "../utils/apiUtils";
 
 export default function FinalizedSeasonPage() {
-  const { totalBags, totalTons, dates, firstDate, lastDate } = usePellets();
+  const {
+    totalBags,
+    totalTons,
+    dates,
+    firstDate,
+    lastDate,
+    setTotalBags,
+    setTotalTons,
+    setDates,
+    setFirstDate,
+    setLastDate,
+  } = usePellets();
   const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
   const router = useRouter();
@@ -38,6 +49,12 @@ export default function FinalizedSeasonPage() {
 
       await deleteAllPellets(accessToken);
       console.log("Пелетите са изтрити успешно.");
+
+      setTotalBags(0);
+      setTotalTons(0);
+      setDates([]);
+      setFirstDate("");
+      setLastDate("");
 
       router.push("/pellets/season-details");
     } catch (error) {
