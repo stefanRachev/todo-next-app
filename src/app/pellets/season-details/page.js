@@ -12,6 +12,9 @@ export default function SeasonDetailsPage() {
   const [seasonData, setSeasonData] = useState(null);
   const [error, setError] = useState(null);
   const [messages, setMessages] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletingSeasonId, setDeletingSeasonId] = useState(null);
+
   const router = useRouter();
 
   const accessToken = session?.user?.accessToken;
@@ -44,11 +47,14 @@ export default function SeasonDetailsPage() {
           console.error("Грешка при зареждане на сезона:", error);
           setError(error.message);
           setLoading(false);
+          setDeletingSeasonId(null);
         });
     }
   }, [accessToken]);
 
   const onDelete = async (seasonId) => {
+    setDeletingSeasonId(seasonId);
+    setIsDeleting(true);
     try {
       const response = await deleteSeason(seasonId, accessToken);
       if (response.message === "Сезонът беше изтрит успешно!") {
@@ -59,6 +65,8 @@ export default function SeasonDetailsPage() {
     } catch (error) {
       console.error("Грешка при изтриването на сезона:", error.message);
       setError("Грешка при изтриването на сезона.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -116,9 +124,19 @@ export default function SeasonDetailsPage() {
                 </h2>
                 <button
                   onClick={() => onDelete(season._id)}
-                  className="text-red-600 hover:text-red-800 transition duration-300"
+                  className={`text-red-600 hover:text-red-800 transition duration-300 ${
+                    isDeleting ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                  }`}
+                  disabled={isDeleting}
                 >
-                  <FaTrashAlt className="w-5 h-5" />
+                  {deletingSeasonId === season._id ? (
+                    <span
+                      className="animate-spin inline-block w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full"
+                      role="status"
+                    ></span>
+                  ) : (
+                    <FaTrashAlt className="w-5 h-5" />
+                  )}
                 </button>
               </div>
 
