@@ -141,3 +141,25 @@ export const fetchSeasons = async (accessToken) => {
     throw error;
   }
 };
+
+export const deleteSeason = async (seasonId, accessToken) => {
+  try {
+    const response = await fetch(`/api/pellets/save-season/${seasonId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ id: seasonId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Неуспешно изтриване на сезона.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Грешка при изтриване на пелет:", error.message);
+    throw error;
+  }
+};

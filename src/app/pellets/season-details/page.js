@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { fetchSeasons } from "../utils/apiUtils";
+import { fetchSeasons, deleteSeason } from "../utils/apiUtils";
 import { FaTrashAlt } from "react-icons/fa";
 
 export default function SeasonDetailsPage() {
@@ -47,6 +47,20 @@ export default function SeasonDetailsPage() {
         });
     }
   }, [accessToken]);
+
+  const onDelete = async (seasonId) => {
+    try {
+      const response = await deleteSeason(seasonId, accessToken);
+      if (response.message === "Сезонът беше изтрит успешно!") {
+        setSeasonData((prevSeasons) =>
+          prevSeasons.filter((season) => season._id !== seasonId)
+        );
+      }
+    } catch (error) {
+      console.error("Грешка при изтриването на сезона:", error.message);
+      setError("Грешка при изтриването на сезона.");
+    }
+  };
 
   if (loading) {
     return <div>Зареждам сезона...</div>;
@@ -93,7 +107,7 @@ export default function SeasonDetailsPage() {
         <div className="mt-6 space-y-6">
           {seasonData.map((season, index) => (
             <div
-              key={index}
+              key={season._id}
               className="bg-white shadow-lg rounded-lg p-6 border border-gray-200"
             >
               <div className="flex justify-between items-center mb-4">
@@ -101,7 +115,7 @@ export default function SeasonDetailsPage() {
                   Сезон {index + 1}
                 </h2>
                 <button
-                  onClick={() => onDelete(season.id)}
+                  onClick={() => onDelete(season._id)}
                   className="text-red-600 hover:text-red-800 transition duration-300"
                 >
                   <FaTrashAlt className="w-5 h-5" />

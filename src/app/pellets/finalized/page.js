@@ -45,10 +45,8 @@ export default function FinalizedSeasonPage() {
       };
 
       const result = await createSeason(seasonData, accessToken);
-      console.log("Сезонът е създаден успешно:", result);
 
       await deleteAllPellets(accessToken);
-      console.log("Пелетите са изтрити успешно.");
 
       setTotalBags(0);
       setTotalTons(0);
