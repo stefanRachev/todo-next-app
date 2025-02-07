@@ -27,11 +27,9 @@ export default function Navigation() {
 
       <nav className="bg-blue-500 text-white">
         <div className="container mx-auto px-4 flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-bold">
-            MyApp
+          <Link href="/" className="text-xl font-bold md:hidden">
+            Начало
           </Link>
-
-          {/* Бутон за мобилно меню */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={`md:hidden block focus:outline-none bg-blue-700 p-2 rounded-full text-white z-50 ${
@@ -50,11 +48,7 @@ export default function Navigation() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d={
-                  isOpen
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M4 6h16M4 12h16M4 18h16"
-                }
+                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
               />
             </svg>
           </button>
