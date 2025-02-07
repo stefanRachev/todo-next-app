@@ -18,14 +18,14 @@ const geistMono = localFont({
 export const metadata = {
   title: "Моето приложение за Todo списъци и разход на пелети",
   description:
-    "Управлявайте задачите си за деня, списъците за покупки и следете разходите за пелети. Вижте прогреса към 1 тон пелети и планирайте ефективно разходите за сезона.",
+    "Управлявайте задачите си за деня, списъците за покупки и следете разхода за пелети. Вижте прогреса към 1 тон пелети и планирайте ефективно разходите за сезона.",
   keywords:
-    "Todo списъци, задачи, пелети, разходи за пелети, прогрес, списък за покупки",
+    "Todo списъци, задачи, пелети, разход за пелети, прогрес, списък за покупки",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="bg">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >

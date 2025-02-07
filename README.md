@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Todo Next App – Personal Productivity Tool
+This web application is designed to help me manage everyday tasks and track specific activities with ease. Built with Next.js, React, and MongoDB, the app provides an intuitive interface and a variety of features for personal organization. Key sections include:
 
-## Getting Started
+1. Shopping List
 
-First, run the development server:
+.I can create, edit, and delete items in a shopping list.
+.This feature allows me to seamlessly track shopping tasks with text-based entries, making it easy to manage day-to-day purchases.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Pellet Consumption Tracker
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+.Tracks the number of pellet bags I use per day with the option to adjust or delete entries, including the ability to add missing previous dates.
+.It calculates and displays the total consumption for the current season, highlighting the point at which a specific threshold (e.g., one ton) is reached.
+.The app displays the date when the threshold is reached and reflects this in the overall yearly consumption.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. Memo Tasks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+.I can create detailed memo tasks (free-text notes) for important reminders and to-do items.
+.The app features a flexible interface with a responsive design that works well on both desktop and mobile devices.
 
-## Learn More
+Key Features:
 
-To learn more about Next.js, take a look at the following resources:
+.User Registration: Users are required to sign up, and all data entered is stored privately and securely for each logged-in user.
+.Data Security: Efforts have been made to ensure user data is secure, with clear guidelines for usage of the site outlined.
+.Responsive Design: The app is optimized for both mobile and desktop devices to ensure a smooth user experience across different screen sizes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Technologies Used:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+.Frontend: Next.js, React, TailwindCSS, React Icons
+.Backend: Node.js, MongoDB, Mongoose
+.Authentication: NextAuth.js for secure user login and registration
+.Data Security: bcryptjs for password hashing and user authentication
 
-## Deploy on Vercel
+Footer & Contact:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+At the bottom of the site, there is a footer with my personal contact information, including links to my GitHub profile, allowing potential employers or collaborators to reach out directly.
