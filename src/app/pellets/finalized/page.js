@@ -36,6 +36,11 @@ export default function FinalizedSeasonPage() {
 
   const saveAndEndSeason = async () => {
     try {
+      if (!firstDate) {
+        alert("Нямате нито една торба, сезонът не може да бъде приключен.");
+        return;
+      }
+
       const seasonData = {
         totalBags,
         totalTons,
@@ -86,29 +91,59 @@ export default function FinalizedSeasonPage() {
         </p>
 
         <div className="mt-6">
-          <p className="text-base sm:text-lg font-bold text-gray-800">
-            Първа и последна дата на сезона:
-            <br />
-            <span className="ml-2 text-blue-400">
-              {firstDate} - {lastDate}
+          <div className="text-lg font-bold text-gray-800">
+            {firstDate ? (
+              <>
+                <p className="text-lg font-bold">
+                  Начало:{" "}
+                  <span className="text-indigo-500 font-medium whitespace-nowrap">
+                    {firstDate}
+                  </span>
+                </p>
+                <p className="text-lg font-bold">
+                  Край:{" "}
+                  <span className="text-indigo-500 font-medium whitespace-nowrap">
+                    {lastDate}
+                  </span>
+                </p>
+              </>
+            ) : (
+              <p className="text-red-600 font-semibold">
+                Няма налични данни за този сезон.
+              </p>
+            )}
+          </div>
+
+          <p className="text-lg font-bold">
+            Общо тонове:{" "}
+            <span className="text-blue-600 font-semibold whitespace-nowrap">
+              {totalTons} кг
             </span>
           </p>
-          <p className="text-lg font-bold text-gray-800">
-            Общо тонове: {totalTons} кг
-          </p>
-          <p className="text-lg font-bold text-gray-800">
-            Текущи чували: {totalBags} броя
+          <p className="text-lg font-bold">
+            Текущи чували:{" "}
+            <span className="text-green-600 font-semibold whitespace-nowrap">
+              {totalBags} броя
+            </span>
           </p>
           <p className="text-lg font-bold text-gray-800">
             Дати за достигане на тон:
           </p>
-          <ul className="list-disc pl-5">
-            {parsedDates.length > 0 &&
+          <ul className="list-disc pl-5 text-gray-600">
+            {parsedDates.length > 0 ? (
               parsedDates.map((date, index) => (
-                <li key={index} className="text-gray-600">
+                <li
+                  key={index}
+                  className="list-disc pl-5 text-blue-600 font-semibold"
+                >
                   {date}
                 </li>
-              ))}
+              ))
+            ) : (
+              <p className="text-red-600 font-semibold">
+                Няма достигнат 1 тон.
+              </p>
+            )}
           </ul>
 
           <div className="mt-6 space-y-3">
@@ -123,7 +158,7 @@ export default function FinalizedSeasonPage() {
               onClick={() => (window.location.href = "/pellets/season-details")}
               className="w-full px-4 py-2 bg-gray-500 text-white rounded-md font-semibold hover:bg-gray-600 transition"
             >
-              Детайли за сезона
+              Детайли за сезоните
             </button>
 
             <button

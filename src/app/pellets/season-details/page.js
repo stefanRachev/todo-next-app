@@ -140,22 +140,30 @@ export default function SeasonDetailsPage() {
                 </button>
               </div>
 
-              <p className="text-lg font-bold text-gray-800">
-                Първа и последна дата на сезона:
-                <span className="ml-2 text-gray-600 block">
-                  {season.firstDate} - {season.lastDate}
-                </span>
-              </p>
-              <p className="text-lg font-bold text-gray-800">
+              <div className="text-lg font-bold text-gray-800">
+                <p className="text-lg font-bold">
+                  Начало:{" "}
+                  <span className="text-indigo-500 font-medium whitespace-nowrap">
+                    {season.firstDate}
+                  </span>
+                </p>
+                <p className="text-lg font-bold">
+                  Край:{" "}
+                  <span className="text-indigo-500 font-medium whitespace-nowrap">
+                    {season.lastDate}
+                  </span>
+                </p>
+              </div>
+
+              <p className="text-lg font-bold">
                 Общо тонове:{" "}
-                <br />
-                <span className="text-gray-600 font-normal">
+                <span className="text-blue-600 font-semibold whitespace-nowrap">
                   {season.totalTons} кг
                 </span>
               </p>
-              <p className="text-lg font-bold text-gray-800">
+              <p className="text-lg font-bold">
                 Текущи чували:{" "}
-                <span className="text-gray-600 font-normal">
+                <span className="text-green-600 font-semibold whitespace-nowrap">
                   {season.totalBags} броя
                 </span>
               </p>
@@ -163,9 +171,17 @@ export default function SeasonDetailsPage() {
                 Дати за достигане на тон:
               </p>
               <ul className="list-disc pl-5 text-gray-600">
-                {season.dates.map((date, index) => (
-                  <li key={index}>{date}</li>
-                ))}
+                {season.dates.length > 0 ? (
+                  <ul className="list-disc pl-5 text-blue-600 font-semibold">
+                    {season.dates.map((date, index) => (
+                      <li key={index}>{date}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-red-600 font-semibold">
+                    Няма достигнат 1 тон.
+                  </p>
+                )}
               </ul>
             </div>
           ))}
