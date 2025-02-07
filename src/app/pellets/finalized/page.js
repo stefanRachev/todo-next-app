@@ -86,9 +86,10 @@ export default function FinalizedSeasonPage() {
         </p>
 
         <div className="mt-6">
-          <p className="text-lg font-bold text-gray-800">
+          <p className="text-base sm:text-lg font-bold text-gray-800">
             Първа и последна дата на сезона:
-            <span className="ml-2 text-gray-600 block">
+            <br />
+            <span className="ml-2 text-blue-400">
               {firstDate} - {lastDate}
             </span>
           </p>

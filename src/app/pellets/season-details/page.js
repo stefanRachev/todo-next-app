@@ -148,6 +148,7 @@ export default function SeasonDetailsPage() {
               </p>
               <p className="text-lg font-bold text-gray-800">
                 Общо тонове:{" "}
+                <br />
                 <span className="text-gray-600 font-normal">
                   {season.totalTons} кг
                 </span>
