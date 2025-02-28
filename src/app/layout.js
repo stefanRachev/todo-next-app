@@ -42,10 +42,17 @@ export default function RootLayout({ children }) {
             <meta name="author" content="Stefan Rachev" />
             <meta property="og:title" content={metadata.title} />
             <meta property="og:description" content={metadata.description} />
-            <meta property="og:url" content="https://todo-next-app-stefan-rachevs-projects.vercel.app/" />
+            <meta
+              property="og:url"
+              content="https://todo-next-app-stefan-rachevs-projects.vercel.app/"
+            />
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:title" content={metadata.title} />
             <meta name="twitter:description" content={metadata.description} />
+            <meta
+              name="google-site-verification"
+              content="google-site-verification=QptWgK9wLF-QicBJvmKNiv9PiSwP-Iw3DoZ6vTNDslQ"
+            />
           </Head>
           <Navigation />
           {children}
