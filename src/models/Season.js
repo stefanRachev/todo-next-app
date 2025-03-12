@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 
 const seasonSchema = new Schema(
   {
-    user: { type: String, required: true },
+    user: { type: String, required: true, index: true },
     totalBags: { type: Number, required: true },
     totalTons: { type: Number, required: true },
     firstDate: { type: String, required: true },

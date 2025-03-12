@@ -4,6 +4,7 @@ const pelletSchema = new Schema({
   user: {
     type: String,
     required: true,
+    index: true,
   },
   date: {
     type: Date,

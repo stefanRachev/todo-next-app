@@ -5,6 +5,7 @@ const productSchema = new Schema({
   user: {
     type: String,
     required: true,
+    index: true,
   },
   productName: {
     type: String,

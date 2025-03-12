@@ -4,6 +4,7 @@ const taskSchema = new Schema({
   user: {
     type: String,
     required: true,
+    index: true,
   },
   taskName: {
     type: String,
